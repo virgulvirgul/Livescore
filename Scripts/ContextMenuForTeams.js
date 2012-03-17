@@ -103,8 +103,22 @@ function showModalForTeams(id_team, number) {
         return false;
 }
 
-function moveTeam(id_team, number) {
-    alert($("#selectChamps"+number+" :selected").html());  
-    $("#selectChamps"+number).empty();
+function moveTeam(id_team, number, currentChampId) {
+    var champName = $("#selectChamps"+number+" :selected").html();
+    var europeChampName = $("#selectEuropeChamps"+number+" :selected").html();
+    if (champName == "Выберите чемпионат..." && (europeChampName == "Выберите международный чемпионат..." 
+                || europeChampName == null) ) {
+        $("#errorAdding").remove();
+        $("#selectChamps"+number).before("<span id='errorAdding' style='color:red;font-size:15px;'>" +
+                                                        "&nbsp;Вы не выбрали чемпионат !<br><br></span>");
+    }
+    else {
+        $.post('../Scripts/TeamsAjax.php', { champName : champName,
+                                            europeChampName : europeChampName,
+                                            currentChampId : currentChampId,
+                                            id_team : id_team,
+                                            action : "moveTeam"});
+        window.location.reload();
+    }
    // alert($('#europeSelect'+number+' option:selected').html());  
 }

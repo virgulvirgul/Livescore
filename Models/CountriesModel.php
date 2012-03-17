@@ -76,6 +76,14 @@ class CountriesModel {
 					 AND continents.name like '".$name_continent."'";
 		return $this->getQuery($query, "Невозможно получить страны по имени континента", __FUNCTION__);
 	}
+    /**
+     * Получаем id континента по id страны
+     * @param id страны $id_country
+     */
+	public function getContinentIdByCoutryId($id_country) {
+	    $query = "SELECT id_continent FROM countries WHERE id_country = {$id_country}";
+        return $this->getQuery($query, "Невозможно получить id континента страны по ID", __FUNCTION__)->fetchColumn(0);
+    }
 	/**
 	 * 
 	 * Получаем эмблему страны по ID

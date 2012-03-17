@@ -34,6 +34,14 @@ class ContinentsModel{
 		$query = "SELECT name, id_continent FROM continents WHERE name like '".$name."'";
 		return $this->getQuery($query, "Невозможно получить континент по имени ", __FUNCTION__);
 	}
+    /**
+     * Получаем имя континента по его id
+     * @param id континента $id_continent
+     */
+	public function getContinentNameByContinentId($id_continent) {
+        $query = "SELECT name FROM continents WHERE id_continent = {$id_continent}";
+        return $this->getQuery($query, "Невозможно получить имя континента по id", __FUNCTION__)->fetchColumn(0);
+    }
 	/**
 	 * 
 	 * Получаем имена всех континентов

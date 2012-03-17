@@ -41,14 +41,17 @@ class TeamsController {
     					 	<ul>
         						<a onclick='editTeam(".$row['id_team'].", {$number}); return false;'><li id='Edit'>Изменить</li></a>
         						<a onclick='showModalForTeams(".$row['id_team'].", {$number}); return false;'><li id='Move'>Переместить</li></a>
-        						
-        						<!-- Модальное меню для команд-->
-        						<div style='display:none' id='modalContent{$number}' >
-        						
-        						<form name='moveTeamForm{$number}'><h5>Чемпионат</h5><br>
-        						<select style='width: 300px' id='selectChamps{$number}' name='selectChamps{$number}'>";
+        						<a onclick='deleteTeam(".$row['id_team'].", {$number});'><li id='Delete'>Удалить</li></a>
+      						</ul>";
+                            echo "<!-- Модальное меню для команд-->
+                                <div style='display:none' id='modalContent{$number}' >
+                                
+                                <form name='moveTeamForm{$number}'><h5>Чемпионат</h5><br>
+                                <select style='width: 300px' id='selectChamps{$number}' name='selectChamps{$number}'>";
+                                 echo "<option selected disabled>Выберите чемпионат...</option>";                                                            
+                                
                                 $id_country = $this->championshipsModel->getIdCoutryByChampionshipId($id_championship);
-        						foreach($this->championshipsModel->getChampionshipsByCountryId($id_country)
+                                foreach($this->championshipsModel->getChampionshipsByCountryId($id_country)
                                                                                         as $number1=>$champRow) {
                                     echo "<option>".$champRow['name']."</option>";                                                            
                                 }
@@ -56,7 +59,9 @@ class TeamsController {
                                 
                                 if ($this->championshipsModel-> checkCanPlayInternationalByChampionshipId($id_championship) == true) {
                                     echo "<h5>Международный чемпионат</h5><br>";
-                                    echo "<select  style='width: 300px' id='europeSelect{$number}'>";
+                                    echo "<select  style='width: 300px' id='selectEuropeChamps{$number}'>";
+                                    echo "<option selected disabled>Выберите международный чемпионат...</option>";                                                            
+                                    
                                     foreach ($this->championshipsModel->getChampionshipsByCountryName("European Cups")
                                                                                           as $number2=>$europeRow) {
                                        echo "<option>".$europeRow['name']."</option>";                                                       
@@ -64,14 +69,11 @@ class TeamsController {
                                                                                           
                                     echo "</select>";
                                 }
-        						echo "<br><br><br>
-        						<input type='button' class='button' onclick='moveTeam(".$row['id_team'].", {$number}); return false;' value='Изменить'>
-        						</form>
+                                echo "<br><br><br>
+                                <input type='button' class='button' onclick='moveTeam(".$row['id_team'].", {$number}, ".$id_championship."); return false;' value='Переместить'>
+                                </form>
                                 </div>
-                                <!-- Модальное меню для команд-->";
-                                
-        						echo "<a onclick='deleteTeam(".$row['id_team'].", {$number});'><li id='Delete'>Удалить</li></a>
-      						</ul>
+                                <!-- Модальное меню для команд-->
     					</div>	
 					<!-- Конец меню для команд -->
 					<span class='team{$number}'><a href='index.php?id_team=".$row['id_team']."'>".$row['name']."</a></span>

@@ -41,10 +41,10 @@ class TeamsModel {
 	 * @param ID чемпионата $id
 	 * @throws PDOException
 	 */
-	public function getTeamsByChampionshipId($id) {
+	public function getTeamsByChampionshipId($id_championship) {
 		$query = "SELECT name, id_team, id_championship 
 					FROM teams 
-						WHERE id_championship = {$id} ORDER BY id_team";
+						WHERE id_championship like '%{$id_championship}%' ORDER BY id_team";
 		return $this->getQuery($query, "Невозможно получить команды по id чемпионата ", __FUNCTION__);
 	}
 	/**
@@ -123,6 +123,44 @@ class TeamsModel {
         $exec_query = "DELETE FROM teams WHERE id_team = {$id_team}";
         return $this->getExec($exec_query, "Невозможно удалить команду", __FUNCTION__);
     }	
+    /**
+     * Если команда учавствует в нескольких чемпионатах, добавляем id чемпионата
+     * @param id команды $id_team
+     * @param id чемпионата $id_championship
+     * 
+     */
+    public function addChampionshipIdByTeamId($id_team, $id_championship) {
+        $exec_query = "UPDATE teams  
+                        SET id_championship = CONCAT(id_championship, ';".$id_championship."')
+                            WHERE id_team = {$id_team}";
+        return $this->getExec($exec_query, "Невозможно добавить чемпионат команде", __FUNCTION__);
+    }
+    /**
+     * Перемещение команды в другой чемпионат
+     * @param id команды $id_team
+     * @param id нового чемпионата $id_championship
+     */   
+    public function moveTeamToAnotherChampionship($id_team, $id_championship) {
+        $exec_query = "UPDATE teams  
+                        SET id_championship = {$id_championship} 
+                            WHERE id_team = {$id_team}";
+        return $this->getExec($exec_query, "Невозможно переместит команду в другой чемпионат", __FUNCTION__);
+    }
+    
+    /**
+     * Перемещение команды в другой международный чемпионат чемпионат
+     * @param id команды $id_team
+     * @param id прошлого чемпионата $id_championship_old
+     * @param id нового чемпионата $id_championship_new
+     */   
+    public function moveTeamToAnotherInternationalChampionship($id_team, $id_championship_old,
+                                                            $id_championship_new) {
+        $exec_query = "UPDATE teams  
+                        SET id_championship = REPLACE(id_championship, '".$id_championship_old."',
+                            '".$id_championship_new."') 
+                            WHERE id_team = {$id_team}";
+        return $this->getExec($exec_query, "Невозможно переместить команду в другой международный чемпионат чемпионат", __FUNCTION__);
+    }
     /**
      * Удаление всех команд по ID чемпионата
      * @param ID чемпионатаs $id_championship

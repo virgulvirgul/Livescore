@@ -13,7 +13,6 @@ class ChampionshipsModel {
 		$this->pdo = Config::getInstance()->getPDO();
 	}
 	/**
-	 * 
 	 * Получаем все чемпионаты
 	 * @throws PDOException
 	 */
@@ -100,7 +99,6 @@ class ChampionshipsModel {
 		return $this->getQuery($query, "Невозможно получить ID чемпионата по имени ", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
-	 * 
 	 * Добавление нового чемпионата
 	 * @param имя чемпионата $name
 	 * @param ID страны в которой находится чемпионат $id_country

@@ -22,7 +22,7 @@ if (isset ($id_championship) && $_POST['action'] == "delete") {
     $teamsModel->deleteTeamsByChampionshipId($id_championship);
 }
 else {
-	if (isset($id_country) && isset($name) && $name != "" && $_POST['action'] == "addTeam") {
+	if (isset($id_country) && isset($name) && $name != "" && $_POST['action'] == "addChamp") {
 		if ($champModel->checkDuplicateChampionship($name) == true) {
 			echo "error";
 		}
