@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+body {
+	background: #4A4A4A url('../Images/site_images/menu-bg.gif') repeat-x 0 0;
+}
+.loginform {
+        display: inline-block;
+        zoom: 1; /* ie7 hack for display:inline-block */
+        #display: inline;
+        border: solid 2px black;
+        padding: 3px 5px;
+        border-radius: 2em;
+       #background-color: #D0F500;
+       
+        box-shadow: 0 1px 0px rgba(0,0,0,.1);
+        #background: gray;
+       
+        position: fixed;
+   		top: 45%;
+    	left: 45%;
+    	margin-top: -50px;
+    	margin-left: -100px;
+    	
+}
+.loginform input {
+        font: normal 12px/100% Arial, Helvetica, sans-serif;
+}
+.loginform .loginfield {
+        color: #D0F500;
+        background: #4A4A4A url('../Images/site_images/menu-bg.gif') repeat-y 0 0;
+        padding: 6px 6px 6px 8px;
+        width: 202px;
+        border: solid 1px black;
+       # outline: none;
+        -webkit-border-radius: 2em;
+        -moz-border-radius: 2em;
+       # border-radius: 2em;
+        -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+        -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+        box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+}
+.loginform .loginbutton {
+        color: white;
+        text-align: center;
+        border: solid 2px black;
+        font-size: 13px;
+        height: 27px;
+       # border-radius: 3em;
+        text-shadow: 0 1px 1px rgba(0,0,0,.6);
+       # background: #696969;
+}
+.loginform .error {
+	color: red;
+	font-size: 12px;
+	text-align: left;
+}
+.loginform .center_text {
+	color: #D0F500;
+	font-size: 15px;
+	font-weight: bold;
+}
+.center_text {
+	        position: fixed;
+   		top: 45%;
+    	left: 45%;
+    	margin-top: -50px;
+    	margin-left: -180px;
+	font-family: Verdana;
+	#color: #FFDEAD;
+	color: #D0F500;
+	#color: white;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+}
+.center_text_ {
+	font-family: Verdana;
+	#color: #FFDEAD;
+	color: #D0F500;
+	#color: white;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+}
+.center_text a:HOVER{
+	color: #white;
+}
+.center_text a{
+	color: #B0C4DE;
+}
