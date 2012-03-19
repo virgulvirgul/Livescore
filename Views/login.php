@@ -7,6 +7,8 @@ $usersController->checkUserPassword();
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="../Css/login_form_style.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
 </head>
 <body>
 <div style="text-align: center;display: <?=$usersController->getHidden();?>" >

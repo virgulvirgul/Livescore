@@ -22,7 +22,7 @@ $(document).ready(function() {
         var name = $('#teamName' + number);
         var oldRes;
         // Получаем данные из TeamAjax.php
-        $.post('../Scripts/TeamsAjax.php', { id_team : id_team, action : "showResult"}, function(result) {
+        $.post('../Ajax/TeamsAjax.php', { id_team : id_team, action : "showResult"}, function(result) {
             // Выводим данные полученные с TeamAjax.php
             name.val(result);
             oldRes = result;
@@ -34,7 +34,7 @@ $(document).ready(function() {
                     //$("#editError" + number).html("Введите название чемпионата !");
                     $("#errorChanging").remove();
                     $("#teamName" + number).after("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Введите название команды !</span>");
-                    $.post('../Scripts/TeamsAjax.php', { id_team : id_team, action : "showResult"}, function(result) {
+                    $.post('../Ajax/TeamsAjax.php', { id_team : id_team, action : "showResult"}, function(result) {
                         // Выводим данные полученные с TeamAjax.php
                         name.val(result);
                     });
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 }
                 // При правильном вводе обновляем данные и закрываем окно редактирования
                 else {
-                    $.post('../Scripts/TeamsAjax.php', { id_team : id_team, 
+                    $.post('../Ajax/TeamsAjax.php', { id_team : id_team, 
                                                     action : "edit", 
                                                     name : name.val()},
                                                     function(result) {
@@ -64,7 +64,7 @@ $(document).ready(function() {
     
 function deleteTeam(id_team, number) {
     if (confirm('Вы уверены что хотите удалить команду ?') == true) {
-        $.post('../Scripts/TeamsAjax.php', { id_team : id_team, 
+        $.post('../Ajax/TeamsAjax.php', { id_team : id_team, 
                                              action : "delete"});
         window.location.reload();
     }
@@ -79,7 +79,7 @@ function addTeam(id_championship, inputElement, formName) {
                 input.before("<span id='errorAdding' style='color:red;font-size:15px;'>&nbsp;Введите название !<br><br></span>");
             }
         else {
-            $.post('../Scripts/TeamsAjax.php', { id_championship : id_championship, 
+            $.post('../Ajax/TeamsAjax.php', { id_championship : id_championship, 
                                             name : input.val(),
                                             action : "addTeam"},
                                             function(result) {
@@ -113,7 +113,7 @@ function moveTeam(id_team, number, currentChampId) {
                                                         "&nbsp;Вы не выбрали чемпионат !<br><br></span>");
     }
     else {
-        $.post('../Scripts/TeamsAjax.php', { champName : champName,
+        $.post('../Ajax/TeamsAjax.php', { champName : champName,
                                             europeChampName : europeChampName,
                                             currentChampId : currentChampId,
                                             id_team : id_team,
