@@ -41,8 +41,9 @@ class TeamsController {
     					 	<ul>
         						<a onclick='editTeam(".$row['id_team'].", {$number}); return false;'><li id='Edit'>Изменить</li></a>
         						<a onclick='showModalForTeams(".$row['id_team'].", {$number}); return false;'><li id='Move'>Переместить</li></a>
-        						<a onclick='deleteTeam(".$row['id_team'].", {$number});'><li id='Delete'>Удалить</li></a>
+        						<a onclick='deleteTeam(".$row['id_team'].", {$number}); return false;'><li id='Delete'>Удалить</li></a>
       						</ul>";
+                            
                             echo "<!-- Модальное меню для команд-->
                                 <div style='display:none' id='modalContent{$number}' >
                                 

@@ -47,7 +47,9 @@ class ChampionshipsAjax {
         // Удаление всех команд из данного чемпината
         $this->championshipsModel->deleteTeamsByChampionshipId($this->id_championship);
     }
-    
+    /**
+     * Добавляем чемпионат
+     */
     private function addChampionship() {
         if ($this->championshipsModel->checkDuplicateChampionship($this->name) == true) {
             echo "error";
@@ -61,3 +63,5 @@ class ChampionshipsAjax {
 }
 
 $championshipAjax = new ChampionshipsAjax($_POST['action'], $_POST['id_country'], $_POST['id_championship'], $_POST['name']);
+
+?>
