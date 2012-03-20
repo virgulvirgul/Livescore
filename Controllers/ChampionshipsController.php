@@ -38,8 +38,8 @@ class ChampionshipsController {
 				as $number=>$row) {
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 					echo "<tr id='tr_number{$number}'>
-					<td width='1px'><a id='aNumber{$number}' href='index.php?id_championship=".$row['id_championship']."'>".($number+1)."</a></td>
-					<td id='selected' height='40px'>
+					<td width='1px'><a id='aNumber{$number}'>".($number+1)."</a></td>
+					<td id='selected{$number}' height='40px'>
 					<!-- Контекст меню для чемпионатов-->
 						<div style='display:none' class='contextMenu' id='champContextMenu{$number}'>
     					 	<ul>

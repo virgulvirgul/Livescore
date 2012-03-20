@@ -34,8 +34,8 @@ class TeamsController {
 							<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td>";
 				foreach($this->teamsModel->getTeamsByChampionshipId($id_championship)
 				as $number=>$row) {
-					echo "<tr><td width='1px'><a href='index.php?id_team=".$row['id_team']."'>".($number+1)."</a></td>
-					<td id='selected' height='40px'>
+					echo "<tr><td width='1px'>".($number+1)."</td>
+					<td id='selected{$number}' height='40px'>
 					<!-- Контекст меню для команд-->
 						<div style='display:none' class='contextMenu' id='teamContextMenu{$number}'>
     					 	<ul>

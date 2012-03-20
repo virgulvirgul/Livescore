@@ -66,8 +66,7 @@ class CreateDBStructure {
 	public function createTablePlayers() {
 		$players = "CREATE TABLE IF NOT EXISTS  players (
 					id_player int(6) primary key auto_increment,
-					first_name varchar(50) NOT NULL, 
-					last_name varchar(50) NOT NULL, 
+					player_name varchar(100) NOT NULL, 
 					birth DATE NOT NULL )";
 		if ($this->pdo1->query($players)) $this->successToCreate("players");
 		else throw new PDOException($this->unnableToCreate("players"));

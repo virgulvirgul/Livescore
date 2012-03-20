@@ -39,18 +39,25 @@ public function getTeamPlayersContent() {
 		}
 		else {
 			echo "<center><h3>Список игроков</h3>
-							<table><tr id='tr_header'><td width='1px'>№</td><td>Фамилия</td><td>Имя</td><td>Амплуа<sup style='color:#D0F500;'>*</sup></td>
+							<table><tr id='tr_header'><td width='1px'>№</td><td>Имя</td><td>Амплуа<sup style='color:#D0F500;'>*</sup></td>
 							<td>Возраст</td></tr>";
 			foreach($this->teamPlayersModel->getTeamPlayersByTeamId($id_team)
 			as $number=>$row) {
-				echo "<tr><td width='1px'><a href='index.php?id_player=".$row['id_player']."'>".$row['player_number']."</a></td>
-									<td id='selected' height='40px'>
-										<div id='div".($number+1)."' style='display:{$display}'>
-										<a href='index.php?id_player=".$row['id_player']."''>".$this->playersModel->getPlayerLastNameById($row['id_player'])."</a></div>
-									</td>
-									<td id='selected'>
-									<a href='index.php?id_player=".$row['id_player']."''>".$this->playersModel->getPlayerFirstNameById($row['id_player'])."</a>
-									</td>
+				echo "<tr>
+				<td width='1px'>".$row['player_number']."</td>
+				<td id='selected{$number}' height='40px'>
+								
+				<!-- Контекст меню для игроков -->
+						<div style='display:none' class='contextMenu' id='playerContextMenu{$number}'>
+    					 	<ul>
+        						<a onclick='editPlayer(".$row['id_player'].", {$number}); return false;'><li id='Edit'>Изменить</li></a>
+        						<a onclick='showModalForPlayers(".$row['id_player'].", {$number}); return false;'><li id='Move'>Переместить</li></a>
+        						<a onclick='deletePlayer(".$row['id_player'].", {$number}); return false;'><li id='Delete'>Удалить</li></a>
+      						</ul>
+      					</div>
+				<span class='player{$number}'><a href='index.php?id_player=".$row['id_player']."''>".$this->playersModel->getPlayerNameById($row['id_player'])."</a></div>
+				</span>
+				</td>
 									<td id='selected'>
 									".$row['player_position']."
 									</td>
