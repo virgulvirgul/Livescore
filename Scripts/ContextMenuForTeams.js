@@ -82,9 +82,7 @@ function addTeam(id_championship, inputElement, formName) {
                                             name : input.val(),
                                             action : "addTeam"},
                                             function(result) {
-                                                input.before(result);
                                                 if (result == "error") {
-                                                    alert("ERORRRRRR");
                                                 $("#errorAdding").remove();
                                                 input.before("<span id='errorAdding' style='color:red;font-size:15px;'>" +
                                                         "&nbsp;Такая команда уже существует !<br><br></span>");

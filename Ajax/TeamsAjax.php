@@ -87,7 +87,7 @@ class TeamsAjax {
      */
     private function moveTeam() {
         
-        if ($_POST['champName'] != "Выберите чемпионат...") {
+        if ($this->championshipName != "Выберите чемпионат...") {
         
         
         // Если находимся в международном чемпионате
@@ -105,7 +105,7 @@ class TeamsAjax {
             $this->internationalChampionshipName != null && $this->internationalChampionshipName != "" 
             && isset($this->internationalChampionshipName)) {
                 
-        $id_championship_europe = $this->championsipModel->getChampionshipIdByName($this->internationalChampionshipName);
+        $id_championship_europe = $this->championshipsModel->getChampionshipIdByName($this->internationalChampionshipName);
         $this->teamsModel->addChampionshipIdByTeamId($this->id_team, $id_championship_europe);
     } 
             
@@ -114,11 +114,11 @@ class TeamsAjax {
      * Получаем имя континента для того чтобы определить находимся ли мы в интернациональном чемпионате
      */
     private function getContinentName() {
-         $this->id_championship = $this->championsipModel->getChampionshipIdByName($this->championshipName);
-         $this->id_country = $this->championshipsModel->getIdCoutryByChampionshipId($this->id_championship);
-         $this->id_continent = $countriesModel->getContinentIdByCoutryId($this->id_country);
+    	$this->id_championship = $this->championshipsModel->getChampionshipIdByName($this->championshipName);
+		$this->id_country = $this->championshipsModel->getIdCoutryByChampionshipId($this->id_championship);
+		$this->id_continent = $this->countriesModel->getContinentIdByCountryId($this->id_country);
          
-         return $this->continentsModel->getContinentNameByContinentId($this->id_continent);
+        return $this->continentsModel->getContinentNameByContinentId($this->id_continent);
     }
 }
 
