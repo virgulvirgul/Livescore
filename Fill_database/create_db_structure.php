@@ -1,3 +1,7 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 <?php
 error_reporting(E_ALL);
 define('DB_DSN', 'mysql:host=localhost;');
@@ -77,7 +81,7 @@ class CreateDBStructure {
 						id_player int(6) NOT NULL, 
 						id_team int(6) NOT NULL, 
 						player_number tinyint(2) NOT NULL, 
-						player_position varchar(2) NOT NULL)";
+						player_position ENUM('GK', 'D', 'M', 'AM', 'ST') NOT NULL)";
 		if ($this->pdo1->query($team_players)) $this->successToCreate("team_players");
 		else throw new PDOException($this->unnableToCreate("team_players"));
 	}
@@ -162,7 +166,7 @@ class CreateDBStructure {
 try {
 $pdo = new PDO(DB_DSN, DB_LOGIN, DB_PASSWORD);
 $createStructure = new CreateDBStructure($pdo);
-$createStructure->deleteDB();
+//$createStructure->deleteDB();
 $createStructure->createDB(); 
 $createStructure->createTableContinents();
 $createStructure->createTableCountries();

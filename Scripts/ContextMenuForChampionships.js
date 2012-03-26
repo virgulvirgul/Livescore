@@ -32,7 +32,7 @@ $(document).ready(function() {
 			 	if (name.val() == "") {
 			 		//$("#editError" + number).html("Введите название чемпионата !");
 			 		$("#errorChanging").remove();
-			 		$("#champName" + number).after("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Введите название чемпионата !</span>");
+			 		$("#champName" + number).after("<span id='errorChanging' >&nbsp;Введите название чемпионата !</span>");
 			 		$.post('../Ajax/ChampionshipsAjax.php', { id_championship : id_champ, action : "showResult"}, function(result) {
 					    // Выводим данные полученные с ChampionshipsAjax.php
 						name.val(result);
@@ -48,7 +48,7 @@ $(document).ready(function() {
 			 										    // Если такой чемпионат существует не даём добавить
 			 											if (result == "error" && name.val() != oldRes) {
 			 										 		$("#errorChanging").remove();
-			 												$("#champName" + number).after("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Такой чемпионат уже существует !</span>");
+			 												$("#champName" + number).after("<span id='errorChanging' >&nbsp;Такой чемпионат уже существует !</span>");
 			 											}
 			 											else {
 			 												$("span.championship" + number).html("<span class='championship"+number+"'>" +
@@ -76,8 +76,8 @@ function addChamp(id_country, inputElement, formName) {
 	var form = $(formName);
 		if (input.val() == "")  
 			{
-				$("#errorAdding").remove();
-				input.before("<span id='errorAdding' style='color:red;font-size:15px;'>&nbsp;Введите название !<br><br></span>");
+				$("#errorChanging").remove();
+				input.before("<span id='errorChanging' >&nbsp;Введите название !<br><br></span>");
 			}
 		else {
 			$.post('../Ajax/ChampionshipsAjax.php', { id_country : id_country, 
@@ -86,8 +86,8 @@ function addChamp(id_country, inputElement, formName) {
 											function(result) {
 												if (result == "error") {
 													
-												$("#errorAdding").remove();
-												input.before("<span id='errorAdding' style='color:red;font-size:15px;'>" +
+												$("#errorChanging").remove();
+												input.before("<span id='errorChanging' >" +
 														"&nbsp;Такой чемпионат уже существует !<br><br></span>");
 												}
 												else {
@@ -96,6 +96,6 @@ function addChamp(id_country, inputElement, formName) {
 												}
 											});
 			input.val("");
-			$("#errorAdding").remove();
+			$("#errorChanging").remove();
 		}
 }

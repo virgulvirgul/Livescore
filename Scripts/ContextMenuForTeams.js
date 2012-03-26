@@ -32,7 +32,7 @@ $(document).ready(function() {
                 if (name.val() == "") {
                     //$("#editError" + number).html("Введите название чемпионата !");
                     $("#errorChanging").remove();
-                    $("#teamName" + number).after("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Введите название команды !</span>");
+                    $("#teamName" + number).after("<span id='errorChanging'>&nbsp;Введите название команды !</span>");
                     $.post('../Ajax/TeamsAjax.php', { id_team : id_team, action : "showResult"}, function(result) {
                         // Выводим данные полученные с TeamAjax.php
                         name.val(result);
@@ -47,7 +47,7 @@ $(document).ready(function() {
                                                     function(result) {
                                                         if (result == "error" && name.val() != oldRes) {
                                                             $("#errorChanging").remove();
-                                                            $("#teamName" + number).after("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Такая команда уже существует !</span>");
+                                                            $("#teamName" + number).after("<span id='errorChanging'>&nbsp;Такая команда уже существует !</span>");
                                                         }
                                                         else {
                                                             $("span.team" + number).html("<span class='team"+number+"'>" +
@@ -74,8 +74,8 @@ function addTeam(id_championship, inputElement, formName) {
     var form = $(formName);
         if (input.val() == "")  
             {
-                $("#errorAdding").remove();
-                input.before("<span id='errorAdding' style='color:red;font-size:15px;'>&nbsp;Введите название !<br><br></span>");
+                $("#errorChaging").remove();
+                input.before("<span id='errorChanging'>&nbsp;Введите название !<br><br></span>");
             }
         else {
             $.post('../Ajax/TeamsAjax.php', { id_championship : id_championship, 
@@ -83,16 +83,16 @@ function addTeam(id_championship, inputElement, formName) {
                                             action : "addTeam"},
                                             function(result) {
                                                 if (result == "error") {
-                                                $("#errorAdding").remove();
-                                                input.before("<span id='errorAdding' style='color:red;font-size:15px;'>" +
+                                                $("#errorChanging").remove();
+                                                input.before("<span id='errorChanging'>" +
                                                         "&nbsp;Такая команда уже существует !<br><br></span>");
                                                 }
                                                 else {
-                                                    //window.location.reload();
+                                                    window.location.reload();
                                                 }
                                             });
             input.val("");
-            $("#errorAdding").remove();
+            $("#errorChanging").remove();
         }
 }
 
@@ -106,8 +106,8 @@ function moveTeam(id_team, number, currentChampId) {
     var europeChampName = $("#selectEuropeChamps"+number+" :selected").html();
     if (champName == "Выберите чемпионат..." && (europeChampName == "Выберите международный чемпионат..." 
                 || europeChampName == null) ) {
-        $("#errorAdding").remove();
-        $("#selectChamps"+number).before("<span id='errorAdding' style='color:red;font-size:15px;'>" +
+        $("#errorChanging").remove();
+        $("#selectChamps"+number).before("<span id='errorChanging'>" +
                                                         "&nbsp;Вы не выбрали чемпионат !<br><br></span>");
     }
     else {
@@ -118,5 +118,4 @@ function moveTeam(id_team, number, currentChampId) {
                                             action : "moveTeam"});
         window.location.reload();
     }
-   // alert($('#europeSelect'+number+' option:selected').html());  
 }

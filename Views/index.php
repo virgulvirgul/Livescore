@@ -133,8 +133,10 @@ echo "<span style='color:red'>".$error."</span>";
 <script type="text/javascript" src="../Scripts/modal.js"></script> 
 <script type="text/javascript" src="../Scripts/ContextMenuForChampionships.js"></script>
 <script type="text/javascript" src="../Scripts/ContextMenuForTeams.js"></script>
-<script type="text/javascript" src="../Scripts/OtherScripts.js"></script>
 <script type="text/javascript" src="../Scripts/ContextMenuForTeamPlayers.js"></script>
+<script type="text/javascript" src="../Scripts/easyTooltip.js"></script>
+<script type="text/javascript" src="../Scripts/OtherScripts.js"></script>
+
 
 </body>
 </html>

@@ -39,7 +39,7 @@ public function getTeamPlayersContent() {
 		}
 		else {
 			echo "<center><h3>Список игроков</h3>
-							<table><tr id='tr_header'><td width='1px'>№</td><td>Имя</td><td>Амплуа<sup style='color:#D0F500;'>*</sup></td>
+							<table><tr id='tr_header'><td width='1px'>№</td><td>Имя</td><td><div id='amplua'>Амплуа<sup style='color:#D0F500;'>*</sup></div></td>
 							<td>Возраст</td></tr>";
 			foreach($this->teamPlayersModel->getTeamPlayersByTeamId($id_team)
 			as $number=>$row) {
@@ -50,11 +50,22 @@ public function getTeamPlayersContent() {
 				<!-- Контекст меню для игроков -->
 						<div style='display:none' class='contextMenu' id='playerContextMenu{$number}'>
     					 	<ul>
-        						<a onclick='editPlayer(".$row['id_player'].", {$number}); return false;'><li id='Edit'>Изменить</li></a>
+        						<a onclick='showModalForEditPlayer(".$row['id_player'].", {$number}); return false;'><li id='Edit'>Изменить</li></a>
         						<a onclick='showModalForPlayers(".$row['id_player'].", {$number}); return false;'><li id='Move'>Переместить</li></a>
         						<a onclick='deletePlayer(".$row['id_player'].", {$number}); return false;'><li id='Delete'>Удалить</li></a>
       						</ul>
       					</div>
+      			<!-- Конец контекст меню для игроков -->
+      			 <!-- Модальное меню для команд-->
+                                <div style='display:none' id='modalContent{$number}'>	
+                                <form id='editPlayerForm{$number}' action=''>
+                                   <h6>Новое имя </h6><br><input type='text' style='width:300px;' id='editPlayerName{$number}'><br><br><br>
+                                    <h6>Новый номер </h6><br><input type='text' style='width:300px;' id='editPlayerNumber{$number}'><br><br><br>
+                                    <h6>Новое амплуа </h6><br><select><option></option></select><br><br><br>
+                                 <input type='submit' class='button' onclick='editPlayer(".$row['id_player'].", {$number}); return false;' value='Изменить'>
+                                    
+                                </form>	
+                                </div>
 				<span class='player{$number}'><a href='index.php?id_player=".$row['id_player']."''>".$this->playersModel->getPlayerNameById($row['id_player'])."</a></div>
 				</span>
 				</td>
@@ -65,10 +76,10 @@ public function getTeamPlayersContent() {
 									</td></tr>";
 			}
 			echo "</table></center>";
-			echo "<h5>* GK - GoalKeeper (Вратарь)<br>&nbsp;&nbsp;&nbsp;D - Defender (Защитник)
+			echo "<div id='easyTooltip' style='display:none;'><h5>* GK - GoalKeeper (Вратарь)<br>&nbsp;&nbsp;&nbsp;D - Defender (Защитник)
 					<br>&nbsp;&nbsp;&nbsp;M - Midfielder (Полузащитник)
 					<br>&nbsp;&nbsp;&nbsp;AM - AttaсkingMidfielder (Атакующий полузащитник)
-					<br>&nbsp;&nbsp;&nbsp;ST - Striker (Нападающий)</h5>";
+					<br>&nbsp;&nbsp;&nbsp;ST - Striker (Нападающий)</h5></div>";
 			//$this->addTeam();
 		}
 	}

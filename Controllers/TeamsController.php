@@ -47,7 +47,7 @@ class TeamsController {
                             echo "<!-- Модальное меню для команд-->
                                 <div style='display:none' id='modalContent{$number}' >
                                 
-                                <form name='moveTeamForm{$number}'><h5>Чемпионат</h5><br>
+                                <form name='moveTeamForm{$number}'><h6>Чемпионат</h6><br>
                                 <select style='width: 300px' id='selectChamps{$number}' name='selectChamps{$number}'>";
                                  echo "<option selected disabled>Выберите чемпионат...</option>";                                                            
                                 
@@ -59,7 +59,7 @@ class TeamsController {
                                 echo "</select><br><br>";
                                 
                                 if ($this->championshipsModel-> checkCanPlayInternationalByChampionshipId($id_championship) == true) {
-                                    echo "<h5>Международный чемпионат</h5><br>";
+                                    echo "<h6>Международный чемпионат</h6><br>";
                                     echo "<select  style='width: 300px' id='selectEuropeChamps{$number}'>";
                                     echo "<option selected disabled>Выберите международный чемпионат...</option>";                                                            
                                     

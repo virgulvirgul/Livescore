@@ -1,3 +1,7 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 <?php
 $start_time = microtime(true);
 error_reporting(E_ALL);
@@ -164,10 +168,10 @@ class FillTables {
 		$update_query1 = "UPDATE team_players SET player_position = 'GK' WHERE id_player IN (1, 2, 3, 4);";
 		$update_query2 = "UPDATE team_players SET player_position = 'D' WHERE id_player IN (5, 6, 7, 8, 9, 10, 11, 12, 13);";
 		$update_query3 = "UPDATE team_players SET player_position = 'M' WHERE id_player IN (14, 15, 16, 17, 18);";
-		$update_query4 = "UPDATE team_players SET player_position = 'AM' WHERE id_player IN (19, 20, 21, 22, 23)";
+		$update_query4 = "UPDATE team_players SET player_position = 'AM' WHERE id_player IN (19, 20, 21, 22, 23);";
 		$update_query5 = "UPDATE team_players SET player_position = 'ST' WHERE id_player IN (24, 25, 26, 27, 28, 29, 30);";
-		if (! $this->pdo->exec($update_query1)) throw new PDOException($this->unnableToInsert("update_team_players"));
-		else $this->successToInsert("update_team_players");
+		//if (! $this->pdo->exec($update_query1)) throw new PDOException($this->unnableToInsert("update_team_players"));
+		//else $this->successToInsert("update_team_players");
 		if (! $this->pdo->exec($update_query2)) throw new PDOException($this->unnableToInsert("update_team_players"));
 		else $this->successToInsert("update_team_players");
 		if (! $this->pdo->exec($update_query3)) throw new PDOException($this->unnableToInsert("update_team_players"));

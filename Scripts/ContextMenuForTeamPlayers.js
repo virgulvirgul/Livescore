@@ -13,27 +13,41 @@ $(document).ready(function() {
       }
     })})});
     
-    // Редактирование чимени игрока
-    function editPlayer(id_player, number) {
-        // Выводим форму для редактирования
-        $("span.player"+number).html("<form id='form_' action=''>" +
-                "<input class='editPlayerInput' value='' id='playerName" + number + "' type='text'></form>");
-        var name = $('#playerName' + number);
-        var oldRes;
+    function showModalForEditPlayer(id_player, number) {
+        $('#modalContent' + number).modal();
+        showResults(id_player, number);
+        return false;
+    }
+    
+    var oldName, oldNumber;
+
+    function showResults(id_player, number) {
+        var name = $('#editPlayerName' + number);
+        var number = $('#editPlayerNumber' + number);
         // Получаем данные из TeamPlayersAjax.php
-        $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, action : "showResult"}, function(result) {
+        // Получаем имя игрока
+        $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, action : "showPlayerName"}, function(result) {
             // Выводим данные полученные с TeamPlayersAjax.php
             name.val(result);
-            oldRes = result;
+            oldName = result;
         });
+        // Получаем номер игрока
+         $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, action : "showPlayerNumber"}, function(result) {
+            // Выводим данные полученные с TeamPlayersAjax.php
+            number.val(result);
+            oldNumber = result;
+        });
+    }
+    function editPlayer(id_player, number) {
+        // Выводим форму для редактирования
+        var name = $('#editPlayerName' + number);
         
-         $("#form_").submit(function () {
                 // Если поле ввода пустое то выводим сообщение и заставляем ввести имя
                 if (name.val() == "") {
                     //$("#editError" + number).html("Введите название чемпионата !");
                     $("#errorChanging").remove();
-                    $("#playerName" + number).after("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Введите имя игрока !</span>");
-                    $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, action : "showResult"}, function(result) {
+                    $("#editPlayerName" + number).before("<span id='errorChanging'>&nbsp;Введите имя игрока !<br><br></span>");
+                    $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, action : "showPlayerName"}, function(result) {
                         // Выводим данные полученные с TeamAjax.php
                         name.val(result);
                     });
@@ -45,20 +59,17 @@ $(document).ready(function() {
                                                     action : "edit", 
                                                     name : name.val()},
                                                     function(result) {
-                                                        if (result == "error" && name.val() != oldRes) {
+                                                        if (result == "error" && name.val() != oldName) {
                                                             $("#errorChanging").remove();
-                                                            $("#playerName" + number).after("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Игрок с таким именем уже существует !</span>");
+                                                            $("#editPlayerName" + number).before("<span id='errorChanging' style='color:red;font-size:15px;'>&nbsp;Игрок с таким именем уже существует !<br><br></span>");
                                                         }
                                                         else {
-                                                            $("span.player" + number).html("<span class='player"+number+"'>" +
-                                                                    "<a href='index.php?id_player="+id_player+"''>"+name.val()+"</a></span>");
+                                                           // $("span.player" + number).html("<span class='player"+number+"'>" +
+                                                            //        "<a href='index.php?id_player="+id_player+"''>"+name.val()+"</a></span>");
                                                         }
                                                     });
                     
                     
                     return false;
                 }
-            });
     }
-    
-    

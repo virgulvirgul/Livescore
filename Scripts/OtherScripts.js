@@ -12,6 +12,17 @@ $(document).ready(function() {
 					$(this).css('backgroundColor', '#6495ED');
 			});
 			});
+			
+			
+			$("#amplua").tooltip({
+                txt: 'GK - GoalKeeper (Вратарь)' +
+                    '<br>D - Defender (Защитник)' +
+                    '<br>M - Midfielder (Полузащитник)'+
+                    '<br>AM - AttaсkingMidfielder (Атакующий полузащитник)'+
+                    '<br>ST - Striker (Нападающий)',
+               
+            });
 });
+
 
 
