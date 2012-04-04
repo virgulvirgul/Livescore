@@ -61,7 +61,8 @@ public function getTeamPlayersContent() {
                                 <form id='editPlayerForm{$number}' action=''>
                                    <h6>Новое имя </h6><br><input type='text' style='width:300px;' id='editPlayerName{$number}'><br><br><br>
                                     <h6>Новый номер </h6><br><input type='text' style='width:300px;' id='editPlayerNumber{$number}'><br><br><br>
-                                    <h6>Новое амплуа </h6><br><select><option></option></select><br><br><br>
+                                    <h6>Новое амплуа </h6><br>
+                                    <select style='width:300px;' id='editPlayerPosition{$number}'><option selected disabled>Выберите амплуа...</option><option>GK</option><option>D</option><option>M</option><option>AM</option><option>ST</option></select><br><br><br>
                                  <input type='submit' class='button' onclick='editPlayer(".$row['id_player'].", {$number}); return false;' value='Изменить'>
                                     
                                 </form>	
@@ -76,10 +77,6 @@ public function getTeamPlayersContent() {
 									</td></tr>";
 			}
 			echo "</table></center>";
-			echo "<div id='easyTooltip' style='display:none;'><h5>* GK - GoalKeeper (Вратарь)<br>&nbsp;&nbsp;&nbsp;D - Defender (Защитник)
-					<br>&nbsp;&nbsp;&nbsp;M - Midfielder (Полузащитник)
-					<br>&nbsp;&nbsp;&nbsp;AM - AttaсkingMidfielder (Атакующий полузащитник)
-					<br>&nbsp;&nbsp;&nbsp;ST - Striker (Нападающий)</h5></div>";
 			//$this->addTeam();
 		}
 	}
