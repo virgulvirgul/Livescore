@@ -12,6 +12,8 @@ $mainController = new MainController();
 <!-- CSS -->
 <link rel="stylesheet" href="../Css/style.css" type="text/css" />
 <link rel="stylesheet" href="../Css/modal.css" type="text/css" />
+<link rel="stylesheet" href="../Css/autocomplete.css" type="text/css" />
+
 
 <!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="css/style-ie.css" media="screen, projection, tv" /><![endif]-->
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
@@ -136,7 +138,7 @@ echo "<span style='color:red'>".$error."</span>";
 <script type="text/javascript" src="../Scripts/ContextMenuForTeamPlayers.js"></script>
 <script type="text/javascript" src="../Scripts/easyTooltip.js"></script>
 <script type="text/javascript" src="../Scripts/OtherScripts.js"></script>
-
+<script type="text/javascript" src="../Scripts/autocomplete.js"></script>
 
 </body>
 </html>

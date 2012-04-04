@@ -15,6 +15,25 @@ class FillTables {
 	public function __construct(PDO $pdo) {
 		$this->pdo = $pdo;
 	}
+	public function truncateAll() {
+		$query1 = "TRUNCATE TABLE continents";
+		$query2 = "TRUNCATE TABLE countries";
+		$query3 = "TRUNCATE TABLE championships";
+		$query4 = "TRUNCATE TABLE teams";
+		$query5 = "TRUNCATE TABLE users";
+		$query6 = "TRUNCATE TABLE players";
+		$query7 = "TRUNCATE TABLE team_players";
+		$query8 = "TRUNCATE TABLE referees";
+		if (! $this->pdo->query($query1)) throw new PDOException($this->unnableToInsert("truncate continents"));
+		if (! $this->pdo->query($query2)) throw new PDOException($this->unnableToInsert("truncate countries"));
+		if (! $this->pdo->query($query3)) throw new PDOException($this->unnableToInsert("truncate championships"));
+		if (! $this->pdo->query($query4)) throw new PDOException($this->unnableToInsert("truncate teams"));
+		if (! $this->pdo->query($query5)) throw new PDOException($this->unnableToInsert("truncate users"));
+		if (! $this->pdo->query($query6)) throw new PDOException($this->unnableToInsert("truncate players"));
+		if (! $this->pdo->query($query7)) throw new PDOException($this->unnableToInsert("truncate team_players"));
+		if (! $this->pdo->query($query8)) throw new PDOException($this->unnableToInsert("truncate referees"));
+		
+	}
 	public function insertIntoContinents() {
 		$continents = array('Other','Europe', 'Asia', 'South America',
 						'North America', 'Africa', 'Australia', 'Oceania');
@@ -170,8 +189,8 @@ class FillTables {
 		$update_query3 = "UPDATE team_players SET player_position = 'M' WHERE id_player IN (14, 15, 16, 17, 18);";
 		$update_query4 = "UPDATE team_players SET player_position = 'AM' WHERE id_player IN (19, 20, 21, 22, 23);";
 		$update_query5 = "UPDATE team_players SET player_position = 'ST' WHERE id_player IN (24, 25, 26, 27, 28, 29, 30);";
-		//if (! $this->pdo->exec($update_query1)) throw new PDOException($this->unnableToInsert("update_team_players"));
-		//else $this->successToInsert("update_team_players");
+		if (! $this->pdo->exec($update_query1)) throw new PDOException($this->unnableToInsert("update_team_players"));
+		else $this->successToInsert("update_team_players");
 		if (! $this->pdo->exec($update_query2)) throw new PDOException($this->unnableToInsert("update_team_players"));
 		else $this->successToInsert("update_team_players");
 		if (! $this->pdo->exec($update_query3)) throw new PDOException($this->unnableToInsert("update_team_players"));
@@ -201,6 +220,7 @@ class FillTables {
 try {
 $pdo = new PDO(DB_DSN, DB_LOGIN, DB_PASSWORD);
 $fillTables = new FillTables($pdo);
+$fillTables->truncateAll();
 $fillTables->insertIntoContinents();
 $fillTables->insertIntoCountries();
 $fillTables->insertIntoChampionships();

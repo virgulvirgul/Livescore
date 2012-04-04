@@ -51,22 +51,53 @@ public function getTeamPlayersContent() {
 						<div style='display:none' class='contextMenu' id='playerContextMenu{$number}'>
     					 	<ul>
         						<a onclick='showModalForEditPlayer(".$row['id_player'].", {$number}); return false;'><li id='Edit'>Изменить</li></a>
-        						<a onclick='showModalForPlayers(".$row['id_player'].", {$number}); return false;'><li id='Move'>Переместить</li></a>
+        						<a onclick='showModalForMovePlayer(".$row['id_player'].", {$number}); return false;'><li id='Move'>Переместить</li></a>
         						<a onclick='deletePlayer(".$row['id_player'].", {$number}); return false;'><li id='Delete'>Удалить</li></a>
       						</ul>
       					</div>
       			<!-- Конец контекст меню для игроков -->
-      			 <!-- Модальное меню для команд-->
-                                <div style='display:none' id='modalContent{$number}'>	
+      			 <!-- Модальное меню для редактирования игроков -->
+                                <div style='display:none' id='modalEditContent{$number}'>	
                                 <form id='editPlayerForm{$number}' action=''>
                                    <h6>Новое имя </h6><br><input type='text' style='width:300px;' id='editPlayerName{$number}'><br><br><br>
                                     <h6>Новый номер </h6><br><input type='text' style='width:300px;' id='editPlayerNumber{$number}'><br><br><br>
                                     <h6>Новое амплуа </h6><br>
-                                    <select style='width:300px;' id='editPlayerPosition{$number}'><option selected disabled>Выберите амплуа...</option><option>GK</option><option>D</option><option>M</option><option>AM</option><option>ST</option></select><br><br><br>
+                                    <select style='width:300px;' id='editPlayerPosition{$number}'>
+                                    <option selected disabled>Выберите амплуа...</option>
+                                    <option>GK</option><option>D</option>
+                                    <option>M</option><option>AM</option>
+                                    <option>ST</option>
+                                    </select><br><br><br>
                                  <input type='submit' class='button' onclick='editPlayer(".$row['id_player'].", {$number}); return false;' value='Изменить'>
                                     
                                 </form>	
                                 </div>
+      			 <!-- Конец модального меню для редактирования игроков-->
+      			 
+                  <!-- Модальное меню для перемещения игроков -->
+                                <div style='display:none' id='modalMoveContent{$number}'>
+                                <form id='movePlayerForm{$number}' action=''>
+                                
+                                 <h6>Введите название команды </h6><input type='text' style='width:300px;' id='selectTeam{$number}'><br><br><br>
+                                
+                                 <h6>Выберите континент  </h6><br> <select id='selectContinent{$number}'style='width:300px;'>
+                                 </select><br><br><br>
+                                 <h6>Выберите страну  </h6><br> <select disabled id='selectCountry{$number}' style='width:300px;'></select><br><br><br>
+                                 <h6>Выберите чемпионат  </h6><br> <select disabled id='selectChampionship{$number}' style='width:300px;'></select><br><br><br>
+                                <!-- <h6>Выберите команду  </h6><br> <select disabled id='selectTeam{$number}' style='width:300px;'></select><br><br><br> -->
+                                 <h6>Номер  </h6><br><input type='text' style='width:300px;' id='movePlayerNumber{$number}'><br><br><br>
+                                 <h6>Амплуа  </h6><br> <select style='width:300px;' id='movePlayerPosition{$number}'>
+                                    <option selected disabled>Выберите амплуа...</option>
+                                    <option>GK</option><option>D</option>
+                                    <option>M</option><option>AM</option>
+                                    <option>ST</option>
+                                    </select><br><br><br>
+                               <input type='submit' class='button' onclick='movePlayer(".$row['id_player'].", {$number}); return false;' value='Переместить'>
+                                 
+                                </form>	
+                                </div>
+      			 <!-- Конец модального меню для перемещения игроков-->
+      			 
 				<span class='player{$number}'><a href='index.php?id_player=".$row['id_player']."''>".$this->playersModel->getPlayerNameById($row['id_player'])."</a></div>
 				</span>
 				</td>

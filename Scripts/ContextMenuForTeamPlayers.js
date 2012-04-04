@@ -14,11 +14,56 @@ $(document).ready(function() {
     })})});
     
     function showModalForEditPlayer(id_player, number) {
-        $('#modalContent' + number).modal();
+        $('#modalEditContent' + number).modal();
         showResults(id_player, number);
         return false;
     }
-    
+    function showModalForMovePlayer(id_player, number) {
+    	selectValues(id_player, number);
+        $('#modalMoveContent' + number).modal();
+    	$('#simplemodal-container').css({'height' : '550px'});
+    }
+    function selectValues(id_player, number) {
+    	/*var continents = $('#selectContinent' + number);
+    	var countries = $('#selectCountry' + number);
+    	var championships = $('#selectChampionship' + number);
+    	var teams = $('#selectTeam' + number);
+    	
+    	 $.post('../Ajax/TeamPlayersAjax.php', {action : "showContinents"}, function(result) {
+             // Выводим данные полученные с TeamPlayersAjax.php
+             var options = '<option disabled selected>Выберите континент</option>';
+             
+    		 $(result.continents).each(function() {
+                 options += '<option>' + $(this).attr('name') + '</option>';
+             });
+    		 continents.html(options);
+         }, "json");
+    	 
+    	 continents.change(function () {
+    		 $.post('../Ajax/TeamPlayersAjax.php', {action : "showCountries", continent_name : continents.val()}, function(result) {
+                 // Выводим данные полученные с TeamPlayersAjax.php
+                 var options = '<option disabled selected>Выберите страну</option>';
+                 
+        		 $(result.countries).each(function() {
+                     options += '<option>' + $(this).attr('name') + '</option>';
+                 });
+        		 countries.html(options);
+        		 countries.attr('disabled', false);
+             }, "json");
+    	 });
+    	 /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    	$('#selectTeam' + number).autocompleteArray([
+	    "Магадан",
+	    "Магас",
+	    "Магнитогорск", ],
+	    	    {
+    			    delay:10,
+    			    minChars:1,
+    			    matchSubset:1,
+    			    autoFill:true,
+    			    maxItemsToShow:10
+    			    });
+    }
     var oldName, oldNumber;
 
     function showResults(id_player, number) {
@@ -65,21 +110,35 @@ $(document).ready(function() {
                     });
                     return false;
                 }
-                
-                if (playerNumber.val() != "" && name.val() != "") {
+                if (name.val() != "" && name.val() != oldName) {
                     $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, 
                                                     action : "edit", 
-                                                    name : name.val(),
-                                                    player_number : playerNumber.val(),
-                                                    player_position : playerPosition },
+                                                    name : name.val()},
                                                     ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
                                                     function(result) {
-                                                        if (result == "errorName" && name.val() != oldName) {
+                                                        if (result == "errorName") {
                                                             $("#errorChanging").remove();
                                                             name.before("<span id='errorChanging'>&nbsp;Игрок с таким именем уже существует !<br><br></span>");
                                                         }
-                                                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                                                        else if (result == "errorNumber" && playerNumber.val() != oldNumber) {
+                                                        else {
+                                                           // $("span.player" + number).html("<span class='player"+number+"'>" +
+                                                            //        "<a href='index.php?id_player="+id_player+"''>"+name.val()+"</a></span>");
+                                                            window.location.reload();
+                                                        }
+                                                    });
+                    
+                    
+                    return false;
+                }
+                
+                if (playerNumber.val() != "" && playerNumber.val() != oldNumber) {
+                    $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, 
+                                                    action : "edit",
+                                                    player_number : playerNumber.val(),
+                                                    player_position : playerPosition},
+                                                    ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+                                                    function(result) {
+                                                        if (result == "errorNumber") {
                                                             alert ('ololo');
                                                             $("#errorChanging").remove();
                                                             playerNumber.before("<span id='errorChanging'> &nbsp;Игрок с таким номером уже существует !<br><br></span>");
@@ -89,6 +148,19 @@ $(document).ready(function() {
                                                             //        "<a href='index.php?id_player="+id_player+"''>"+name.val()+"</a></span>");
                                                             window.location.reload();
                                                         }
+                                                    });
+                    
+                    
+                    return false;
+                }
+                
+                if (playerPosition != "Выберите амплуа...") {
+                    $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, 
+                                                    action : "edit",
+                                                    player_position : playerPosition},
+                                                    ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+                                                    function(result) {
+                                                            window.location.reload();
                                                     });
                     
                     
