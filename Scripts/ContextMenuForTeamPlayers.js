@@ -22,6 +22,7 @@ $(document).ready(function() {
     	selectValues(id_player, number);
         $('#modalMoveContent' + number).modal();
     	$('#simplemodal-container').css({'height' : '550px'});
+    	return false;
     }
     function selectValues(id_player, number) {
     	/*var continents = $('#selectContinent' + number);
@@ -52,18 +53,31 @@ $(document).ready(function() {
              }, "json");
     	 });
     	 /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    	$('#selectTeam' + number).autocompleteArray([
-	    "Магадан",
-	    "Магас",
-	    "Магнитогорск", ],
-	    	    {
-    			    delay:10,
-    			    minChars:1,
-    			    matchSubset:1,
-    			    autoFill:true,
-    			    maxItemsToShow:10
-    			    });
+    	$('#selectTeam' + number).autocomplete("../Scripts/autocomplete.php", {
+    		delay:10,
+    		minChars:2,
+    		matchSubset:1,
+    		autoFill:true,
+    		matchContains:1,
+    		cacheLength:10,
+    		selectFirst:true,
+    		formatItem:liFormat,
+    		maxItemsToShow:10,
+    		onItemSelect:selectItem
+    	}); 
     }
+    
+    function liFormat (row, i, champ) {
+    	var result = row[0] + '<p class=showChampName>' + row[2] + '</p>';
+    	return result;
+    }
+    function selectItem(li) {
+    	if( li == null ) var sValue = 'А ничего не выбрано!';
+    	if( !!li.extra ) var sValue = li.extra[0];
+    	else var sValue = li.selectValue;
+    	return sValue;
+    }
+    
     var oldName, oldNumber;
 
     function showResults(id_player, number) {

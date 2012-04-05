@@ -16,6 +16,13 @@ class TeamsModel {
 		return $this->getQuery($query, "Невозможно получить все команды ", __FUNCTION__);
 	}
 	/**
+	 * Получаем названия всех команд
+	 */
+	public function getTeamsNames() {
+		$query = "SELECT name FROM teams";
+ 		return $this->getQuery($query, "Невозможно получить названия всеx команды ", __FUNCTION__);
+	}
+	/**
 	 * 
 	 * Получаем команду по ID
 	 * @param id команды $id

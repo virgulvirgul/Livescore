@@ -28,7 +28,7 @@
 }
 
 .ac_results li {
-	position:relative;
+	position: inherit;
     margin: 0px;
 	padding: 2px 5px;
 	cursor: pointer;
