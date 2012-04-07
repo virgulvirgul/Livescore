@@ -1,5 +1,7 @@
 <?php
 require_once '../Config/config.php.inc';
+
+// id_team_player
 // id_player;
 // id_team;
 // player_number
@@ -61,17 +63,30 @@ class TeamPlayersModel {
 		return $this->getQuery($query, "Невозможно получить id команды по id игрока ", __FUNCTION__)->fetchColumn(0);
 	}
     /**
-     * Проверяем есть ли уже игрок с данным номером
-     * @param номер игрока $id_player
+     * Проверяем есть ли уже игрок с данным номером в данной команде
+     * @param номер игрока $id_number
+     * @param id команды $id_team
      */
-	public function checkDuplicatePlayerNumber($player_number) {
-        $query = "SELECT id_team_player FROM team_players WHERE player_number = {$player_number}";
+	public function checkDuplicatePlayerNumber($player_number, $id_team) {
+        $query = "SELECT id_team_player FROM team_players WHERE player_number = {$player_number} AND id_team = {$id_team}";
         if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
             return true;
         }
             else {
                 return false;
             }
+    }
+    /**
+     * Перемещение игрока в другую команду
+     * @param id игрока $id_player
+     * @param id команды $id_team
+     * @param номер игрока $player_number
+     * @param позиция игрока $player_position
+     */
+    public function moveTeamPlayerByPlayerId($id_player, $id_team, $player_number, $player_position) {
+    	$exec_query = "INSERT INTO team_players(id_team_player, id_player, id_team, player_number, player_position) 
+    					VALUES(NULL, {$id_player}, {$id_team} , '".$player_number."', '".$player_position."')";
+    	return $this->getExec($exec_query, "Невозможно переместить игрока в другую команду", __FUNCTION__);
     }
     /**
      * 

@@ -75,8 +75,9 @@ class ChampionshipsController {
 	public function getChampionshipEmblem() {
 		$id_country = $this->championshipsModel->getIdCoutryByChampionshipId($_GET['id_championship']);
 		echo "<h2><img align='middle' id='flag' src='".$this->COUNTRY_IMAGES."
-												".$this->countriesModel->getCountryEmblemById($id_country)."'>&nbsp;
-									".$this->countriesModel->getCountryNameById($id_country)." -> ".$this->championshipsModel->getChampionshipNameById($_GET['id_championship'])."</h2><br>";
+				".$this->countriesModel->getCountryEmblemById($id_country)."'>&nbsp;
+				<a href='index.php?id_country=".$id_country."' class='hrefEmblem'>".$this->countriesModel->getCountryNameById($id_country)."</a> 
+					-> <a href='index.php?id_championship=".$_GET['id_championship']."' class='hrefEmblem'>".$this->championshipsModel->getChampionshipNameById($_GET['id_championship'])."</a></h2><br>";
 	}
 	/**
 	*

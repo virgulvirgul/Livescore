@@ -78,13 +78,7 @@ public function getTeamPlayersContent() {
                                 <div style='display:none' id='modalMoveContent{$number}'>
                                 <form id='movePlayerForm{$number}' action=''>
                                 
-                                 <h6>Введите название команды </h6><input type='text' style='width:300px;' id='selectTeam{$number}'><br><br><br>
-                                
-                                 <h6>Выберите континент  </h6><br> <select id='selectContinent{$number}'style='width:300px;'>
-                                 </select><br><br><br>
-                                 <h6>Выберите страну  </h6><br> <select disabled id='selectCountry{$number}' style='width:300px;'></select><br><br><br>
-                                 <h6>Выберите чемпионат  </h6><br> <select disabled id='selectChampionship{$number}' style='width:300px;'></select><br><br><br>
-                                <!-- <h6>Выберите команду  </h6><br> <select disabled id='selectTeam{$number}' style='width:300px;'></select><br><br><br> -->
+                                 <h6>Введите название команды </h6><br><input type='text' style='width:300px;' id='movePlayerTeam{$number}'><br><br><br>
                                  <h6>Номер  </h6><br><input type='text' style='width:300px;' id='movePlayerNumber{$number}'><br><br><br>
                                  <h6>Амплуа  </h6><br> <select style='width:300px;' id='movePlayerPosition{$number}'>
                                     <option selected disabled>Выберите амплуа...</option>
@@ -123,9 +117,9 @@ public function getFullEmblem() {
 	
 	echo "<h2><img align='middle' id='flag' src='".$this->COUNTRY_IMAGES."
 			".$this->countriesModel->getCountryEmblemById($id_country)."'>&nbsp;
-			".$this->countriesModel->getCountryNameById($id_country)." -> 
-			".$this->championshipsModel->getChampionshipNameById($id_championship)." -> 
-			".$this->teamsModel->getTeamNameByTeamId($id_team)."</h2><br>";
+			<a href='index.php?id_country=".$id_country."' class='hrefEmblem'>".$this->countriesModel->getCountryNameById($id_country)."</a> -> 
+			<a href='index.php?id_championship=".$id_championship."&option=teams_list' class='hrefEmblem'>".$this->championshipsModel->getChampionshipNameById($id_championship)."</a> -> 
+			<a href='index.php?id_team=".$_GET['id_team']."' class='hrefEmblem'>".$this->teamsModel->getTeamNameByTeamId($id_team)."</a></h2><br>";
 	}
 }
 

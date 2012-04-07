@@ -771,9 +771,14 @@ font-size: 1.1em;
 }
 
 .showChampName {
-  position:absolute;
+  position: absolute;
   top:1px;
   right:15px;
   font-size:0.8em;
   color: #D0F500;
+}
+
+.hrefEmblem {
+	text-decoration: none;
+	color: #D0F500;
 }

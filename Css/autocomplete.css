@@ -18,7 +18,7 @@
 .ac_results iframe {
 	display:none;/*sorry for IE5*/
 	display/**/:block;/*sorry for IE5*/
-	position:absolute;
+	position: relative;
 	top:0;
 	left:0;
 	z-index:-1;
@@ -28,7 +28,7 @@
 }
 
 .ac_results li {
-	position: inherit;
+	position: relative;
     margin: 0px;
 	padding: 2px 5px;
 	cursor: pointer;

@@ -21,7 +21,6 @@ $(document).ready(function() {
     function showModalForMovePlayer(id_player, number) {
     	selectValues(id_player, number);
         $('#modalMoveContent' + number).modal();
-    	$('#simplemodal-container').css({'height' : '550px'});
     	return false;
     }
     function selectValues(id_player, number) {
@@ -53,7 +52,7 @@ $(document).ready(function() {
              }, "json");
     	 });
     	 /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    	$('#selectTeam' + number).autocomplete("../Scripts/autocomplete.php", {
+    	$('#movePlayerTeam' + number).autocomplete("../Scripts/autocomplete.php", {
     		delay:10,
     		minChars:2,
     		matchSubset:1,
@@ -63,19 +62,12 @@ $(document).ready(function() {
     		selectFirst:true,
     		formatItem:liFormat,
     		maxItemsToShow:10,
-    		onItemSelect:selectItem
     	}); 
     }
     
-    function liFormat (row, i, champ) {
-    	var result = row[0] + '<p class=showChampName>' + row[2] + '</p>';
+    function liFormat (row, i, num) {
+    	var result = row[0] + '<div class=showChampName>' + row[1] + '</div>';
     	return result;
-    }
-    function selectItem(li) {
-    	if( li == null ) var sValue = 'А ничего не выбрано!';
-    	if( !!li.extra ) var sValue = li.extra[0];
-    	else var sValue = li.selectValue;
-    	return sValue;
     }
     
     var oldName, oldNumber;
@@ -178,6 +170,61 @@ $(document).ready(function() {
                                                     });
                     
                     
+                    return false;
+                }
+    }
+
+    
+    function movePlayer(id_player, number) {
+    	
+        var teamName = $('#movePlayerTeam' + number);
+        var playerNumber = $('#movePlayerNumber' + number);
+        var playerPosition = $('#movePlayerPosition' + number + " :selected").html();
+                // Если поле ввода пустое то выводим сообщение и заставляем ввести имя
+                if (teamName.val() == "") {
+                    //$("#editError" + number).html("Введите название чемпионата !");
+                    $("#errorChanging").remove();
+                    teamName.before("<span id='errorChanging'>&nbsp;Введите имя команды !<br><br></span>");
+                    return false;
+                }
+
+              // Если поле ввода пустое то выводим сообщение и заставляем ввести имя
+                if (playerNumber.val() == "") {
+                    $("#errorChanging").remove();
+                    playerNumber.before("<span id='errorChanging'>&nbsp;Введите номер игрока !<br><br></span>");
+                    return false;
+                }
+                
+                if (playerPosition == "Выберите амплуа...") {
+                    $("#errorChanging").remove();
+                    $('#movePlayerPosition' + number).before("<span id='errorChanging'>&nbsp;Выберите амплуа !<br><br></span>");
+                    return false;
+                }
+                
+                if (playerNumber.val() != "" && teamName.val() != "" && playerPosition != "Выберите амплуа...") {
+                    $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, 
+                                                    action : "move",
+                                                    team_name: teamName.val(),
+                                                    player_number : playerNumber.val(),
+                                                    player_position : playerPosition},
+                                                    function(result) {
+                                                    	if (result == "errorTeamName") {
+                                                    		 $("#errorChanging").remove();
+                                                             teamName.before("<span id='errorChanging'>&nbsp;Такой команды не существует !<br><br></span>");
+                                                    	}
+                                                    	else
+                                                        if (result == "errorNumber") {
+                                                            $("#errorChanging").remove();
+                                                            playerNumber.before("<span id='errorChanging'> &nbsp;Игрок с таким номером уже существует !<br><br></span>");
+                                                        }
+                                                        else {
+                                                           // $("span.player" + number).html("<span class='player"+number+"'>" +
+                                                            //        "<a href='index.php?id_player="+id_player+"''>"+name.val()+"</a></span>");
+                                                            window.location.reload();
+                                                        }
+                                                    });
+                    
+
                     return false;
                 }
     }

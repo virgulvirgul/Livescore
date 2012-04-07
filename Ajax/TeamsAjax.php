@@ -44,6 +44,7 @@ class TeamsAjax {
         if($this->action == "edit" && $this->id_team != null) $this->editTeam();
         if($this->action == "addTeam" && $this->team_name != null) $this->addTeam();
         if($this->action == "moveTeam" && $this->id_team != null) $this->moveTeam();
+        if($this->action == "delete") $this->deleteTeam();
     }
     /**
      * Получаем название команды по её id
