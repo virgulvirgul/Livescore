@@ -18,7 +18,7 @@ class TeamPlayersModel {
 	 */
 	public function getAllTeamPlayers() {
 		$query = "SELECT id_team_player, id_player, id_team, player_number, player_position
-			FROM team_players";
+						FROM team_players";
 		return $this->getQuery($query, "Невозможно получить всех игроков всех команд", __FUNCTION__);
 	}
 	/**
@@ -29,7 +29,13 @@ class TeamPlayersModel {
 	 */
 	public function getTeamPlayersByTeamId($id) {
 		$query = "SELECT id_team_player, id_player, id_team, player_number, player_position
-					FROM team_players WHERE id_team = {$id} ORDER BY player_position, player_number";
+					FROM team_players WHERE id_team = {$id} order by (CASE player_position
+   																		WHEN 'GK' THEN 0
+    																	WHEN 'D' THEN 1
+    																	WHEN 'M' THEN 2
+    																	WHEN 'AM' THEN 3
+    																	WHEN 'ST' THEN 4
+																	  END) , player_number";
 		return $this->getQuery($query, "Невозможно получить всех игроков команды (по id_team) ", __FUNCTION__);
 	}
 	/**
@@ -39,7 +45,9 @@ class TeamPlayersModel {
 	 * @throws PDOException
 	 */
 	public function getTeamPlayersPlayerNumberByPlayerId($id) {
-		$query = "SELECT player_number FROM team_players WHERE id_player = {$id}";
+		$query = "SELECT player_number 
+					FROM team_players 
+						WHERE id_player = {$id}";
 		return $this->getQuery($query, "Невозможно получить номер игрока по ID ", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
@@ -49,7 +57,9 @@ class TeamPlayersModel {
 	 * @throws PDOException
 	 */
 	public function getTeamPlayersPlayerPositionByPlayerId($id) {
-		$query = "SELECT player_position FROM team_players WHERE id_player = {$id}";
+		$query = "SELECT player_position 
+					FROM team_players 
+						WHERE id_player = {$id}";
 		return $this->getQuery($query, "Невозможно получить позицию игрока по ID ", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
@@ -59,7 +69,9 @@ class TeamPlayersModel {
 	 * @throws PDOException
 	 */
 	public function getTeamPlayersIdTeamByPlayerId($id) {
-		$query = "SELECT id_team FROM team_players WHERE id_player = {$id}";
+		$query = "SELECT id_team
+					 FROM team_players
+						WHERE id_player = {$id}";
 		return $this->getQuery($query, "Невозможно получить id команды по id игрока ", __FUNCTION__)->fetchColumn(0);
 	}
     /**
@@ -68,7 +80,9 @@ class TeamPlayersModel {
      * @param id команды $id_team
      */
 	public function checkDuplicatePlayerNumber($player_number, $id_team) {
-        $query = "SELECT id_team_player FROM team_players WHERE player_number = {$player_number} AND id_team = {$id_team}";
+        $query = "SELECT id_team_player
+        			 FROM team_players 
+        				WHERE player_number = {$player_number} AND id_team = {$id_team}";
         if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
             return true;
         }
@@ -111,6 +125,15 @@ class TeamPlayersModel {
     	                        SET player_number = {$player_number} 
     	                            WHERE id_player = {$id_player}";
     	return $this->getExec($exec_query, "Невозможно изменить номер игроку", __FUNCTION__);
+    }
+    /**
+     * Удаляем игрока из команды
+     * @param id игрока $id_player
+     */
+    public function deleteTeamPlayer($id_player) {
+    	$exec_query = "DELETE FROM team_players
+    					WHERE id_player = {$id_player}";
+    	return $this->getExec($exec_query, "Невозможно удалить игрока", __FUNCTION__);
     }
 	/**
 	 * 

@@ -23,6 +23,10 @@ $(document).ready(function() {
         $('#modalMoveContent' + number).modal();
     	return false;
     }
+    function showModalForAddTeamPlayer(id_team) {
+        $('#modalAddTeamPlayerContent').modal();
+        return false;
+    }
     function selectValues(id_player, number) {
     	/*var continents = $('#selectContinent' + number);
     	var countries = $('#selectCountry' + number);
@@ -227,4 +231,12 @@ $(document).ready(function() {
 
                     return false;
                 }
+    }
+
+    function deletePlayer(id_player) {
+        if (confirm('Вы уверены что хотите удалить игрока ?') == true) {
+            $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, 
+                                                 action : "delete"});
+            window.location.reload();
+        }
     }

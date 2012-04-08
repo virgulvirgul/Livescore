@@ -69,6 +69,16 @@ class PlayersModel {
                             WHERE id_player= {$id_player}";
         return $this->getExec($exec_query, "Невозможно обновить имя игрока", __FUNCTION__);
 	}
+	
+	/**
+ 	 * Удаляем игрока по его id
+	 * @param id игрока $id_player
+	 */
+	public function deletePlayerByPlayerId($id_player) {
+		$exec_query = "DELETE FROM players
+						WHERE id_player = {$id_player}";
+		return $this->getExec($exec_query, "Невозможно удалить игрока", __FUNCTION__);
+	}
 	/**
 	*
 	* Выполняем запрос

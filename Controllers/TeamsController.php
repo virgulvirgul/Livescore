@@ -108,16 +108,7 @@ class TeamsController {
                 <input id='newTeamName' type='text'>&nbsp&nbsp&nbsp
                 <input class='button' onclick='addTeam({$_GET['id_championship']}, newTeamName, newTeamForm);' type='button' value='Добавить'>
                 </form></center>";
-		/*if (isset($_POST['name']) && $_POST['name'] != "" && $_GET['action'] == 'add') {
-			$name = $_POST['name'];
-			$id_championship = $_GET['id_championship'];
-			$this->teamsModel->addTeam($name, $id_championship);
-					
-				echo "<script>alert('Команда успешно добавлена');
-									window.location = 'index.php?id_championship=".$id_championship."&&option=teams_list';</script>";
-					
-				unset($_POST['name']); unset($_GET['action']);
-		}*/
+     
 	}
 }
 

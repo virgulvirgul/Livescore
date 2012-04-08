@@ -52,7 +52,7 @@ public function getTeamPlayersContent() {
     					 	<ul>
         						<a onclick='showModalForEditPlayer(".$row['id_player'].", {$number}); return false;'><li id='Edit'>Изменить</li></a>
         						<a onclick='showModalForMovePlayer(".$row['id_player'].", {$number}); return false;'><li id='Move'>Переместить</li></a>
-        						<a onclick='deletePlayer(".$row['id_player'].", {$number}); return false;'><li id='Delete'>Удалить</li></a>
+        						<a onclick='deletePlayer(".$row['id_player']."); return false;'><li id='Delete'>Удалить</li></a>
       						</ul>
       					</div>
       			<!-- Конец контекст меню для игроков -->
@@ -92,7 +92,7 @@ public function getTeamPlayersContent() {
                                 </div>
       			 <!-- Конец модального меню для перемещения игроков-->
       			 
-				<span class='player{$number}'><a href='index.php?id_player=".$row['id_player']."''>".$this->playersModel->getPlayerNameById($row['id_player'])."</a></div>
+				<span class='player{$number}'><a style='cursor:pointer'>".$this->playersModel->getPlayerNameById($row['id_player'])."</a></div>
 				</span>
 				</td>
 									<td id='selected'>
@@ -102,9 +102,37 @@ public function getTeamPlayersContent() {
 									</td></tr>";
 			}
 			echo "</table></center>";
-			//$this->addTeam();
+			$this->addTeamPlayer();
 		}
 	}
+}
+/**
+ *
+ * Добавление команды
+ */
+public function addTeamPlayer() {
+	echo "<center><a><h3>Добавить игрока</h3></a>
+	<form class='form' id='newTeamPlayerForm' action='' onsubmit='addTeamPlayer({$_GET['id_team']}, newTeamName, newTeamForm); return false;'>
+	<input class='button' onclick='showModalForAddTeamPlayer({$_GET['id_team']}); return false;' type='button' value='Добавить'>
+	</form></center>";
+	echo "<!-- Модальное меню для добавления игрока-->
+	<div style='display:none' id='modalAddTeamPlayerContent{$number}' >
+	<form name='addTeamPlayerForm'>
+	<h6>Имя игрока</h6><br>
+	<input type='text' style='width:300px;' id='addTeamPlayerName'><br><br><br>
+	<h6>Номер игрока</h6><br>
+	<input type='text' style='width:300px;' id='addTeamPlayerNumber'><br><br><br>
+	<h6>Дата рождения игрока</h6><br>
+	<input type='text' style='width:300px;' id='addTeamPlayerBirth'><br><br><br>
+	<h6>Позиция игрока</h6><br>
+	<select style='width: 300px' id='addTeamPlayerPosition'>
+	 								<option selected disabled>Выберите амплуа...</option>
+                                    <option>GK</option><option>D</option>
+                                    <option>M</option><option>AM</option>
+                                    <option>ST</option>
+	</select><br><br><br>
+	<input type='submit' class='button' onclick='addTeamPlayer({$_GET['id_team']}); return false;' value='Добавить'>
+	</div>";
 }
 /**
 *
