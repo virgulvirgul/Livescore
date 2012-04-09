@@ -1,7 +1,7 @@
 <?php
 require_once '../Config/config.php.inc';
 // id_player
-// name;
+// player_name;
 // birth;
 class PlayersModel {
 	private $pdo;
@@ -13,7 +13,7 @@ class PlayersModel {
 	 * Получаем всех игроков
 	 */
 	public function getAllPlayers() {
-		$query = "SELECT id_player, first_name, last_name, birth FROM players";
+		$query = "SELECT id_player, player_name birth FROM players";
 		return $this->getQuery($query, "Невозможно получить всех игроков ", __FUNCTION__);
 	}
 	/**
@@ -22,7 +22,7 @@ class PlayersModel {
 	 * @param ID игрока $id_player
 	 */
 	public function getPlayerById($id_player) {
-		$query = "SELECT id_player, first_name, last_name birth FROM players WHERE id_player = ".$id_player."";
+		$query = "SELECT id_player, player_name, birth FROM players WHERE id_player = ".$id_player."";
 		return $this->getQuery($query, "Невозможно получить игрока по ID ", __FUNCTION__);
 	}
 	/**
@@ -69,7 +69,16 @@ class PlayersModel {
                             WHERE id_player= {$id_player}";
         return $this->getExec($exec_query, "Невозможно обновить имя игрока", __FUNCTION__);
 	}
-	
+	/**
+	 * Добавление нового игрока
+	 * @param имя игрока $player_name
+	 * @param дата рождения игрока $player_birth
+	 */
+	public function addPlayer($player_name, $player_birth) {
+		$exec_query = "INSERT INTO players(id_player, player_name, birth)
+						VALUES(NULL, '".$player_name."', '".$player_birth."')";
+		return $this->getExec($exec_query, "Невозможно добавить нового игрока", __FUNCTION__);
+	}
 	/**
  	 * Удаляем игрока по его id
 	 * @param id игрока $id_player
@@ -78,6 +87,12 @@ class PlayersModel {
 		$exec_query = "DELETE FROM players
 						WHERE id_player = {$id_player}";
 		return $this->getExec($exec_query, "Невозможно удалить игрока", __FUNCTION__);
+	}
+	/**
+	 * Получаем последний вставленный id игрока в таблице
+	 */
+	public function getLastInsertedPlayerId() {
+		return $this->pdo->lastInsertId();
 	}
 	/**
 	*

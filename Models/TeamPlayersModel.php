@@ -82,7 +82,7 @@ class TeamPlayersModel {
 	public function checkDuplicatePlayerNumber($player_number, $id_team) {
         $query = "SELECT id_team_player
         			 FROM team_players 
-        				WHERE player_number = {$player_number} AND id_team = {$id_team}";
+        				WHERE player_number = '{$player_number}' AND id_team = {$id_team}";
         if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
             return true;
         }
@@ -98,8 +98,9 @@ class TeamPlayersModel {
      * @param позиция игрока $player_position
      */
     public function moveTeamPlayerByPlayerId($id_player, $id_team, $player_number, $player_position) {
-    	$exec_query = "INSERT INTO team_players(id_team_player, id_player, id_team, player_number, player_position) 
-    					VALUES(NULL, {$id_player}, {$id_team} , '".$player_number."', '".$player_position."')";
+    	$exec_query = "UPDATE team_players
+    					SET id_team = {$id_team}, player_number = '".$player_number."', player_position = '".$player_position."'
+    						WHERE id_player = {$id_player}";
     	return $this->getExec($exec_query, "Невозможно переместить игрока в другую команду", __FUNCTION__);
     }
     /**
@@ -125,6 +126,18 @@ class TeamPlayersModel {
     	                        SET player_number = {$player_number} 
     	                            WHERE id_player = {$id_player}";
     	return $this->getExec($exec_query, "Невозможно изменить номер игроку", __FUNCTION__);
+    }
+    /**
+     * Добавление нового игрока в команду
+     * @param id игрока $id_player
+     * @param id команды $id_team
+     * @param номер игрока $player_number
+     * @param позиция игрока $player_position
+     */
+    public function addTeamPlayer($id_player, $id_team, $player_number, $player_position) {
+    	$exec_query = "INSERT INTO team_players(id_team_player, id_player, id_team, player_number, player_position) 
+    					VALUES(NULL, '{$id_player}', {$id_team} , '".$player_number."', '".$player_position."')";
+    	return $this->getExec($exec_query, "Невозможно добавить нового игрока в команду", __FUNCTION__);
     }
     /**
      * Удаляем игрока из команды

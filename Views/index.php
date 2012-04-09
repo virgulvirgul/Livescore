@@ -10,6 +10,7 @@ $mainController = new MainController();
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- CSS -->
+<link rel="stylesheet" href="../Css/ui-darkness/jquery-ui-1.8.18.custom.css" type="text/css" />
 <link rel="stylesheet" href="../Css/style.css" type="text/css" />
 <link rel="stylesheet" href="../Css/modal.css" type="text/css" />
 <link rel="stylesheet" href="../Css/autocomplete.css" type="text/css" />
@@ -131,6 +132,7 @@ echo "<span style='color:red'>".$error."</span>";
 
 </div>
 <script type="text/javascript" src="../Scripts/jquery-1.7.1.js"></script> 
+<script type="text/javascript" src="../Scripts/jquery-ui-1.8.18.min.js"></script>
 <script type="text/javascript" src="../Scripts/contextmenu.js"></script> 
 <script type="text/javascript" src="../Scripts/modal.js"></script> 
 <script type="text/javascript" src="../Scripts/ContextMenuForChampionships.js"></script>

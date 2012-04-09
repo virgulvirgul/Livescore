@@ -25,6 +25,8 @@ $(document).ready(function() {
     }
     function showModalForAddTeamPlayer(id_team) {
         $('#modalAddTeamPlayerContent').modal();
+        $('#simplemodal-container').css({'height' : '400px'});
+        $('#addTeamPlayerBirth').datepicker({ changeYear: true, changeMonth: true, dateFormat: "yy-mm-dd",  yearRange: "1960:-15y"});
         return false;
     }
     function selectValues(id_player, number) {
@@ -93,7 +95,7 @@ $(document).ready(function() {
             oldNumber = result;
         });
     }
-    function editPlayer(id_player, number) {
+    function editPlayer(id_player, number, id_team) {
         // Выводим форму для редактирования
         var name = $('#editPlayerName' + number);
         var playerNumber = $('#editPlayerNumber' + number);
@@ -144,18 +146,15 @@ $(document).ready(function() {
                 if (playerNumber.val() != "" && playerNumber.val() != oldNumber) {
                     $.post('../Ajax/TeamPlayersAjax.php', { id_player : id_player, 
                                                     action : "edit",
-                                                    player_number : playerNumber.val(),
-                                                    player_position : playerPosition},
+                                                    player_number : playerNumber.val(), 
+                                                    id_team: id_team},
                                                     ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
                                                     function(result) {
                                                         if (result == "errorNumber") {
-                                                            alert ('ololo');
                                                             $("#errorChanging").remove();
                                                             playerNumber.before("<span id='errorChanging'> &nbsp;Игрок с таким номером уже существует !<br><br></span>");
                                                         }
                                                         else {
-                                                           // $("span.player" + number).html("<span class='player"+number+"'>" +
-                                                            //        "<a href='index.php?id_player="+id_player+"''>"+name.val()+"</a></span>");
                                                             window.location.reload();
                                                         }
                                                     });
@@ -239,4 +238,61 @@ $(document).ready(function() {
                                                  action : "delete"});
             window.location.reload();
         }
+    }
+    
+    function addTeamPlayer(id_team) {
+    	 var playerName = $('#addTeamPlayerName');
+    	 var playerBirth = $('#addTeamPlayerBirth');
+         var playerNumber = $('#addTeamPlayerNumber');
+         var playerPosition = $('#addTeamPlayerPosition :selected').html();
+         
+         // Если поле ввода пустое то выводим сообщение и заставляем ввести имя
+         if (playerName.val() == "") {
+             //$("#editError" + number).html("Введите название чемпионата !");
+             $("#errorChanging").remove();
+             playerName.before("<span id='errorChanging'>&nbsp;Введите имя игрока !<br><br></span>");
+             return false;
+         }
+         if (playerNumber.val() == "") {
+             //$("#editError" + number).html("Введите название чемпионата !");
+             $("#errorChanging").remove();
+             playerNumber.before("<span id='errorChanging'>&nbsp;Введите номер игрока !<br><br></span>");
+             return false;
+         }
+         if (playerBirth.val() == "") {
+             //$("#editError" + number).html("Введите название чемпионата !");
+             $("#errorChanging").remove();
+             playerBirth.before("<span id='errorChanging'>&nbsp;Введите дату рождения игрока !<br><br></span>");
+             return false;
+         }
+         if (playerPosition == "Выберите амплуа...") {
+             $("#errorChanging").remove();
+             $('#addTeamPlayerPosition').before("<span id='errorChanging'>&nbsp;Выберите амплуа !<br><br></span>");
+             return false;
+         }
+         if (playerName.val() != "" && playerNumber != "" && playerBirth != "" && playerPosition != "Выберите амплуа...") {
+             $.post('../Ajax/TeamPlayersAjax.php', {id_team: id_team,
+            	 							 action : "add", 
+                                             name : playerName.val(),
+                                             player_number : playerNumber.val(),
+                                             player_birth : playerBirth.val(),
+                                             player_position : playerPosition},
+                                             ////// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+                                             function(result) {
+                                                 if (result == "errorName") {
+                                                     $("#errorChanging").remove();
+                                                     playerName.before("<span id='errorChanging'>&nbsp;Игрок с таким именем уже существует !<br><br></span>");
+                                                 }
+                                                 else if (result == "errorNumber") {
+                                                     $("#errorChanging").remove();
+                                                     playerNumber.before("<span id='errorChanging'> &nbsp;Игрок с таким номером уже существует !<br><br></span>");
+                                                 }
+                                                 else {
+                                                      window.location.reload();
+                                                  }
+                                             });
+             
+             
+             return false;
+         }
     }

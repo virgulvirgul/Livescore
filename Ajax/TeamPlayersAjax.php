@@ -1,7 +1,5 @@
 <?php
 require_once '../Models/PlayersModel.php';
-require_once '../Models/ContinentsModel.php';
-require_once '../Models/CountriesModel.php';
 require_once '../Models/TeamPlayersModel.php';
 require_once '../Models/TeamsModel.php';
 
@@ -50,6 +48,11 @@ class TeamPlayersAjax {
     private $player_position;
     /**
      * 
+     * Дата рождения игрока (нужна при добавлении нового игрока)
+     */
+    private $player_birth;
+    /**
+     * 
      * Имя команды в которой играет игрок
      */
     private $team_name;
@@ -59,7 +62,7 @@ class TeamPlayersAjax {
      */
     private $current_id_team;
 	public function __construct($action, $id_player = null, $player_name = null, $player_number = null, $player_position = null,
-								$team_name = null, $current_id_team = null) {
+								$player_birth = null, $team_name = null, $current_id_team = null) {
 		$this->playersModel = new PlayersModel();
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->teamsModel = new TeamsModel();
@@ -69,6 +72,7 @@ class TeamPlayersAjax {
 		if($player_name != null) $this->player_name = $player_name;
         if($player_number != null) $this->player_number = $player_number;
         if($player_position != null) $this->player_position = $player_position;
+        if($player_birth != null) $this->player_birth = $player_birth;
         if($team_name != null) $this->team_name = $team_name;
         if($current_id_team != null) $this->current_id_team = $current_id_team;
         
@@ -77,6 +81,7 @@ class TeamPlayersAjax {
 		if($this->action == "edit" && $this->id_player != null) $this->editPlayer();
 		if($this->action == "move") $this->movePlayer();	
 		if($this->action == "delete") $this->deletePlayer();	
+		if($this->action == "add") $this->addPlayer();
 		
 	}
 	/**
@@ -96,20 +101,21 @@ class TeamPlayersAjax {
      */
 	private function editPlayer() {
 		/**
-		 * Если игрок с таким именем есть то выдаём ошибку
-		 */
+		* Если игрок с таким именем есть то выдаём ошибку
+		*/
 		if ($this->player_name != null && $this->playersModel->checkDuplicatePlayer($this->player_name)) {
             echo "errorName";
         }
+        else
         /**
-         * Если игрок с таким номером уже есть то выводим ошибку
-         */
-        if ($this->player_number && $this->teamPlayersModel->checkDuplicatePlayerNumber($this->player_number, $this->current_id_team)) {
+		* Если игрок с таким номером уже есть то выводим ошибку
+		*/
+        if ($this->player_number != null && $this->teamPlayersModel->checkDuplicatePlayerNumber($this->player_number, $this->current_id_team)) {
             echo "errorNumber";
         }
         /**
-         * Иначе обновляем только те данные, которые были изменены
-         */
+		* Иначе обновляем только те данные, которые были изменены
+		*/
             if ($this->player_number != null) $this->teamPlayersModel->updatePlayerNumberByPlayerId($this->id_player, $this->player_number);
             if ($this->player_name != null) $this->playersModel->updatePlayerName($this->id_player, $this->player_name);
             if ($this->player_position != null) {
@@ -147,8 +153,35 @@ class TeamPlayersAjax {
 		$this->playersModel->deletePlayerByPlayerId($this->id_player);
 		$this->teamPlayersModel->deleteTeamPlayer($this->id_player);
 	}
+	/**
+	 * Добавление игрока
+	 */	
+	private function addPlayer() {
+		/**
+		 * Если игрок с таким именем есть то выдаём ошибку
+		 */
+		if ($this->playersModel->checkDuplicatePlayer($this->player_name)) {
+			echo "errorName";
+		}
+		else
+		/**
+		 * Если игрок с таким номером уже есть то выводим ошибку
+		 */
+		if ($this->teamPlayersModel->checkDuplicatePlayerNumber($this->player_number, $this->current_id_team)) {
+			echo "errorNumber";
+		}
+		/**
+		 * Иначе добавляем данные в таблицы players и team_players
+		 */
+		else {
+			$this->playersModel->addPlayer($this->player_name, $this->player_birth);
+			$this->teamPlayersModel->addTeamPlayer($this->playersModel->getLastInsertedPlayerId(),
+					 $this->current_id_team, $this->player_number, $this->player_position);
+		}
+			
+	}
 }
 
 $playerAjax = new TeamPlayersAjax($_POST['action'], $_POST['id_player'], $_POST['name'], $_POST['player_number'], $_POST['player_position'],
-									$_POST['team_name'], $_GET['id_team']);
+									$_POST['player_birth'], $_POST['team_name'], $_POST['id_team']);
 ?>

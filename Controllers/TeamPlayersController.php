@@ -68,7 +68,7 @@ public function getTeamPlayersContent() {
                                     <option>M</option><option>AM</option>
                                     <option>ST</option>
                                     </select><br><br><br>
-                                 <input type='submit' class='button' onclick='editPlayer(".$row['id_player'].", {$number}); return false;' value='Изменить'>
+                                 <input type='submit' class='button' onclick='editPlayer(".$row['id_player'].", {$number}, {$_GET['id_team']}); return false;' value='Изменить'>
                                     
                                 </form>	
                                 </div>
@@ -123,7 +123,7 @@ public function addTeamPlayer() {
 	<h6>Номер игрока</h6><br>
 	<input type='text' style='width:300px;' id='addTeamPlayerNumber'><br><br><br>
 	<h6>Дата рождения игрока</h6><br>
-	<input type='text' style='width:300px;' id='addTeamPlayerBirth'><br><br><br>
+	<input style='width:300px;' id='addTeamPlayerBirth' /><br><br><br>
 	<h6>Позиция игрока</h6><br>
 	<select style='width: 300px' id='addTeamPlayerPosition'>
 	 								<option selected disabled>Выберите амплуа...</option>
