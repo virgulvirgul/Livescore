@@ -54,8 +54,7 @@ class ChampionshipsAjax {
         if ($this->championshipsModel->checkDuplicateChampionship($this->name) == true) {
             echo "error";
         }
-        else
-        { 
+        else { 
             $this->championshipsModel->addChampionship($this->name, $this->id_country);
             echo $this->championshipsModel->getChampionshipIdByName($this->name);
         }

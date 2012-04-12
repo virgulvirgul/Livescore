@@ -26,11 +26,11 @@ class StadiumsModel {
 	}
 	/**
 	*
-	* Получаем описание стадиона по его id
+	* Получаем вместительность стадиона по его id
 	* @param id стадиона $id_stadium
 	*/
-	public function getStadiumDescriptionById($id_stadium) {
-		$query = "SELECT description
+	public function getStadiumCapacityById($id_stadium) {
+		$query = "SELECT capacity
 						FROM stadiums
 							WHERE id_stadium = {$id_stadium}";
 		return $this->getQuery($query, "Невозможно получить описание стадиона по его id", __FUNCTION__)->fetchColumn(0);
@@ -54,9 +54,9 @@ class StadiumsModel {
 	 * @param описание $description
 	 * @param id команды которой принадлежит стадион $id_team
 	 */
-	public function addStadium($name, $description, $id_team) {
+	public function addStadium($name, $capacity, $image, $id_team) {
 		$exec_query = "INSERT INTO stadiums(id_stadium, name, description, id_team)
-						VALUES (NULL. ".$name.", {$id_team})";
+						VALUES (NULL. ".$name.", '".$capacity."' , '".$image."', {$id_team})";
 		return $this->getExec($exec_query, "Невозможно создать стадион", __FUNCTION__);
 		
 	}

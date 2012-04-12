@@ -102,8 +102,8 @@ public function getTeamPlayersContent() {
 									</td></tr>";
 			}
 			echo "</table></center>";
-			$this->addTeamPlayer();
 		}
+		$this->addTeamPlayer();
 	}
 }
 /**

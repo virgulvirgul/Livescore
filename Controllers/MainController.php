@@ -1,5 +1,5 @@
 <?php
-require_once '../Models/ContinentsModel.php';
+/*require_once '../Models/ContinentsModel.php';
 require_once '../Models/TeamsModel.php';
 require_once '../Models/PrivateMessagesInboxModel.php';
 
@@ -7,9 +7,11 @@ require_once '../Models/TeamPlayersModel.php';
 require_once '../Models/UsersModel.php';
 
 require_once '../Controllers/MessagesController.php';
+require_once '../Controllers/MessagesController.php';
 require_once '../Controllers/ChampionshipsController.php';
-require_once '../Controllers/TeamsController.php';
-require_once '../Controllers/TeamPlayersController.php';
+require_once '../Controllers/TeamsController.php';*/
+require_once '../Scripts/autoload.php';
+
 
 class MainController {
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
@@ -65,10 +67,13 @@ class MainController {
 			&& !isset($_GET['messages']) && !isset($_GET['action']) && !isset($_GET['id_team']))
 			 $this->getIndexContent();
 		
-		if (isset($_GET['id_country'])) new ChampionshipsController();
+		if (isset($_GET['id_country']) && !isset($_GET['option'])) new ChampionshipsController();
 
 		//if (isset($_GET['id_championship'])) $this->getTeamsContent();
 		if (isset($_GET['id_championship'])) new ChampionshipsController();
+		
+		if (isset($_GET['id_country']) && isset($_GET['option']) && $_GET['option']=='referees_list') new RefereesController();
+		
 		if (isset($_GET['option']) && $_GET['option']=='teams_list') new TeamsController();
 		if (isset($_GET['id_team'])) new TeamPlayersController();
 		if (isset($_GET['messages'])) new MessagesController('messages');

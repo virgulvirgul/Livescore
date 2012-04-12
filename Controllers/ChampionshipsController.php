@@ -27,6 +27,7 @@ class ChampionshipsController {
 		if (isset($id_country)) {
 			echo "<h2><img align='middle' id='flag' src='".$this->COUNTRY_IMAGES."
 								".$this->countriesModel->getCountryEmblemById($id_country)."'>&nbsp;".$this->countriesModel->getCountryNameById($id_country)."</h2><br>";
+			echo "<a id='a_champ' href='index.php?id_country=".$_GET['id_country']."&option=referees_list'>Список судей</a><br><br>";
 			if ($this->championshipsModel->getChampionshipsByCountryId($id_country)->rowCount() < 1) {
 				echo "<h4>Чемпионатов нет</h4><br>";
 				$this->addChampionship();
@@ -59,13 +60,14 @@ class ChampionshipsController {
 	}
 	/**
 	 * 
-	 *  Получаем список доступных действий для данного чемпионата
+	 *  Получаем список доступных действий для выбранного чемпионата
 	 */
 	public function getOneChampionshipContent() {
 		if (isset($_GET['id_championship']) && !isset($_GET['option'])) {
 			$this->getChampionshipEmblem();
 			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=closest_matches'>Ближайшие матчи</a><br>";
-			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=teams_list'>Список команд</a>";
+			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=teams_list'>Список команд</a><br>";
+			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=stadiums_list'>Список стадионов</a><br>";
 		}
 	} 
 	/**
@@ -89,36 +91,6 @@ class ChampionshipsController {
 				<input id='newChampName' type='text'>&nbsp&nbsp&nbsp
 				<input class='button' onclick='addChamp({$_GET['id_country']}, newChampName, newChampForm);' type='button' value='Добавить'>
 				</form></center>";
-		/*if (isset($_POST['name']) && $_POST['name'] != "" && $_GET['action'] == 'add') {
-			$name = $_POST['name'];
-			if ($this->championshipsModel->checkDuplicateChampionship($name) == true) {
-				echo "<script>alert('Такой чемпионат уже существует')</script>";
-			}
-			else {
-				$id_country = $_GET['id_country'];
-				$this->championshipsModel->addChampionship($name, $id_country);
-					
-				echo "<script>alert('Чемпионат успешно добавлен');
-							window.location = 'index.php?id_country=".$id_country."';</script>";
-					
-				unset($_POST['name']); unset($_GET['action']);
-			}
-		}*/
-	}
-	/**
-	 *
-	 * Удаление чемпионата
-	 * @param ID удаляемого чемпионата $id_championship
-	 */
-	public function deleteChampionship($id_championship) {
-		$name = $this->championshipsModel->getChampionshipNameById($id_championship);
-		echo "<script>if (confirm('Вы уверены что хотите удалить чемпионат {".$name."} ?') == true)
-						alert ('asdasda');</script>";
-	}
-	public function updateChampionship($id_championship) {
-		$name = $this->championshipsModel->getChampionshipNameById($id_championship);
-		echo "<script>if (confirm('Вы уверены что хотите редактировать чемпионат {".$name."} ?') == true)
-							alert ('asdasda');</script>";
 	}
 }
 

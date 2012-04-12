@@ -77,7 +77,7 @@ function addChamp(id_country, inputElement, formName) {
 		if (input.val() == "")  
 			{
 				$("#errorChanging").remove();
-				input.before("<span id='errorChanging' >&nbsp;Введите название !<br><br></span>");
+				input.before("<span id='errorChanging'>&nbsp;Введите название !<br><br></span>");
 			}
 		else {
 			$.post('../Ajax/ChampionshipsAjax.php', { id_country : id_country, 
@@ -87,7 +87,7 @@ function addChamp(id_country, inputElement, formName) {
 												if (result == "error") {
 													
 												$("#errorChanging").remove();
-												input.before("<span id='errorChanging' >" +
+												input.before("<span id='errorChanging'>" +
 														"&nbsp;Такой чемпионат уже существует !<br><br></span>");
 												}
 												else {

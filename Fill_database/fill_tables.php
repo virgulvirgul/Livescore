@@ -201,10 +201,10 @@ class FillTables {
 		else $this->successToInsert("update_team_players");
 	}
 	public function insertIntoReferees() {
-		$referees = "INSERT INTO referees(id_referee, first_name, last_name, birth, id_country)
-						VALUES ('NULL', 'Martin', 'Atkinson', '1971-03-31', 3),
-								('NULL', 'Stephen', 'Graham Bennett', '1961-01-17', 3),
-								('NULL', 'Phil', 'Dowd', '1963-01-26', 3)";
+		$referees = "INSERT INTO referees(id_referee, referee_name, birth, id_country)
+						VALUES ('NULL', 'Martin Atkinson', '1971-03-31', 3),
+								('NULL', 'Stephen Graham Bennett', '1961-01-17', 3),
+								('NULL', 'Phil Dowd', '1963-01-26', 3)";
 		if (! $this->pdo->exec($referees)) throw new PDOException($this->unnableToInsert("referees"));
 			else $this->successToInsert("referees");
 	}

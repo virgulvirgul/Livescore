@@ -3,8 +3,7 @@ require_once '../Config/config.php.inc';
 /**
  * 
  * id_referee 	
- * first_name 	
- * last_name 	
+ * referee_name 	
  * birth 	
  * id_country
  *
@@ -13,6 +12,16 @@ class RefereesModel {
 	private $pdo;
 	public function __construct() {
 		$this->pdo = Config::getInstance()->getPDO();
+	}
+	/**
+	 * Получаем список судей из данной страны
+	 * @param id страны $id_country
+	 */
+	public function getRefereesByCountryId($id_country) {
+		$query = "SELECT id_referee, referee_name, birth
+					FROM referees
+						WHERE id_country = {$id_country}";
+		return $this->getQuery($query, "Невозможно получить судей по id страны", __FUNCTION__);
 	}
 	/**
 	 * 
@@ -30,21 +39,10 @@ class RefereesModel {
 	 * Получаем имя судьи по его id
 	 * @param id судьи $id_referee
 	 */
-	public function getRefereeFirstNameById($id_referee) {
-		$query = "SELECT first_name 
+	public function getRefereeNameById($id_referee) {
+		$query = "SELECT referee_name 
 					FROM referees
 						WHERE id_referee = {$id_referee}";
-		return $this->getQuery($query, "Невозможно получить имя судьи по ID", __FUNCTION__)->fetchColumn(0);
-	}
-	/**
-	*
-	* Получаем фамилию судьи по его id
-	* @param id судьи $id_referee
-	*/
-	public function getRefereeLastNameById($id_referee) {
-		$query = "SELECT last_name
-						FROM referees
-							WHERE id_referee = {$id_referee}";
 		return $this->getQuery($query, "Невозможно получить имя судьи по ID", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
@@ -69,6 +67,52 @@ class RefereesModel {
 								WHERE id_referee = {$id_referee}";
 		return $this->getQuery($query, "Невозможно получить возраст по id судьи", __FUNCTION__)->fetchColumn(0);
 	} 
+	/**
+	 * Проверяем есть ли уже судья с данным именем
+	 * @param имя судьи $referee_name
+	 */
+	public function checkDuplicateReferee($referee_name) {
+		$query = "SELECT id_referee
+					FROM referees 
+						WHERE referee_name like '".$referee_name."'";
+		if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	/**
+	 * Изменяем имя судьи по его id
+	 * @param id судьи $id_referee
+	 * @param имя судьи $refereee_name
+	 */
+	public function updateRefereeById($id_referee, $referee_name) {
+		$exec_query = "UPDATE referees
+						SET referee_name='".$referee_name."'
+							WHERE id_referee = {$id_referee}";
+		return $this->getExec($exec_query, "Невозможно изменит имя судьи", __FUNCTION__);
+	}
+	/**
+	 * Добаление судьи
+	 * @param id страны $id_country
+	 * @param имя судьи $referee_name
+	 * @param дата рождения судьи $referee_birth
+	 */
+	public function addReferee($id_country, $referee_name, $referee_birth) {
+		$exec_query = "INSERT INTO referees(id_referee, referee_name, birth, id_country)
+						VALUES ('NULL', '".$referee_name."', '".$referee_birth."', {$id_country})";
+		return $this->getExec($exec_query, "Невозможно добавить судью", __FUNCTION__);
+	}
+	/**
+	 * Удаляем судью по его id
+	 * @param id судьи $id_referee
+	 */
+	public function deleteRefereeById($id_referee) {
+		$exec_query = "DELETE FROM referees 
+							WHERE id_referee = {$id_referee}";
+		return $this->getExec($exec_query, "Невозможно удалить судью", __FUNCTION__);
+	}
 	/**
 	*
 	* Выполняем запрос
