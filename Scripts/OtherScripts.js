@@ -22,6 +22,7 @@ $(document).ready(function() {
                     '<br>ST - Striker (Нападающий)',
                
             });
+			
 });
 
 

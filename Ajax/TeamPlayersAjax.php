@@ -1,8 +1,5 @@
 <?php
-require_once '../Models/PlayersModel.php';
-require_once '../Models/TeamPlayersModel.php';
-require_once '../Models/TeamsModel.php';
-
+require_once '../Scripts/autoload.php';
 
 class TeamPlayersAjax {
 	/**
@@ -116,8 +113,8 @@ class TeamPlayersAjax {
         /**
 		* Иначе обновляем только те данные, которые были изменены
 		*/
-            if ($this->player_number != null) $this->teamPlayersModel->updatePlayerNumberByPlayerId($this->id_player, $this->player_number);
-            if ($this->player_name != null) $this->playersModel->updatePlayerName($this->id_player, $this->player_name);
+            if ($this->player_number != null  && $this->teamPlayersModel->checkDuplicatePlayerNumber($this->player_number, $this->current_id_team) == false) $this->teamPlayersModel->updatePlayerNumberByPlayerId($this->id_player, $this->player_number);
+            if ($this->player_name != null && $this->playersModel->checkDuplicatePlayer($this->player_name) == false) $this->playersModel->updatePlayerName($this->id_player, $this->player_name);
             if ($this->player_position != null) {
                $this->teamPlayersModel->updatePlayerPositionByPlayerId($this->id_player, $this->player_position);
            }

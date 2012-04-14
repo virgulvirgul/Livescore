@@ -114,7 +114,7 @@ class FillTables {
 		$this->successToInsert("championships");
 	} 
 	public function insertIntoTeams() {
-		$teams_england_name = array('Arsenal', 'Manchester City', 'Man Utd', 'Chelsea', 'Newcastle',
+		$teams_england_name = array('Arsenal', 'Manchester City', 'Manchester Utd', 'Chelsea', 'Newcastle',
 				'Liverpool', 'Tottenham', 'Stoke City', 'Aston Villa', 'Norwich City', 'Fulham',
 				'Swansea', 'Bolton', 'Blackburn', 'Sunderland', 'Wolves',  'Everton',
 				'West Brom', 'Wigan', 'QPR');
@@ -189,8 +189,8 @@ class FillTables {
 		$update_query3 = "UPDATE team_players SET player_position = 'M' WHERE id_player IN (14, 15, 16, 17, 18);";
 		$update_query4 = "UPDATE team_players SET player_position = 'AM' WHERE id_player IN (19, 20, 21, 22, 23);";
 		$update_query5 = "UPDATE team_players SET player_position = 'ST' WHERE id_player IN (24, 25, 26, 27, 28, 29, 30);";
-		if (! $this->pdo->exec($update_query1)) throw new PDOException($this->unnableToInsert("update_team_players"));
-		else $this->successToInsert("update_team_players");
+		//if (! $this->pdo->exec($update_query1)) throw new PDOException($this->unnableToInsert("update_team_players"));
+		//else $this->successToInsert("update_team_players");
 		if (! $this->pdo->exec($update_query2)) throw new PDOException($this->unnableToInsert("update_team_players"));
 		else $this->successToInsert("update_team_players");
 		if (! $this->pdo->exec($update_query3)) throw new PDOException($this->unnableToInsert("update_team_players"));
@@ -208,7 +208,31 @@ class FillTables {
 		if (! $this->pdo->exec($referees)) throw new PDOException($this->unnableToInsert("referees"));
 			else $this->successToInsert("referees");
 	}
-	
+	public function insertIntoStadiums() {
+		$stadiums = "INSERT INTO stadiums(id_stadium, name, capacity, image, id_team)
+						VALUES ('NULL', 'Emirates Stadium', '60,355', 'arsenal.jpg', 1),
+								('NULL', 'Etihad Stadium', '47,726', 'mancity.jpg', 2),
+								('NULL', 'Old Trafford', '75,957', 'manutd.jpg', 3),
+								('NULL', 'Stamford Bridge', '42,449', 'chelsea.jpg', 4),
+								('NULL', 'Sports Direct Arena', '52,387', 'newcastle.jpg', 5),
+								('NULL', 'Anfield', '45,362', 'liverpool.jpg', 6),
+								('NULL', 'White Hart Lane', '36,238', 'tottenham.jpg', 7),
+								('NULL', 'Britannia Stadium', '28,384', 'stoke.jpg', 8),
+								('NULL', 'Villa Park', '42,788', 'aston_villa.jpg', 9),
+								('NULL', 'Carrow Road', '26,034', 'norwich.jpg', 10),
+								('NULL', 'Craven Cottage', '26,000', 'fulham.jpg', 11),
+								('NULL', 'Liberty Stadium', '20,532', 'swansea.jpg', 12),
+								('NULL', 'Reebok Stadium', '28,723', 'bolton.jpg', 13),
+								('NULL', 'Ewood Park', '31,367', 'blackburn.jpg', 14),
+								('NULL', 'Stadium of Light', '49,000', 'sunderland.jpg', 15),
+								('NULL', 'Halliwell Jones Stadium', '14,206', 'wolves.jpg', 16),
+								('NULL', 'Goodison Park', '40,170', 'everton.jpg', 17),
+								('NULL', 'The Hawthorns', '27,877', 'West_brom.jpg', 18),
+								('NULL', 'DW Stadium', '25,138', 'wigan.jpg', 19),
+								('NULL', 'Loftus Road', '19,148', 'QPR.jpg', 20)";
+		if (! $this->pdo->exec($stadiums)) throw new PDOException($this->unnableToInsert("stadiums"));
+		else $this->successToInsert("stadiums");
+	}
 	private function unnableToInsert($str) {
 		return "<p style='color:red'>Невозможно добавить данные в  таблицу {<span style='color:blue'>".$str."</span>}</p>";
 	}
@@ -230,6 +254,7 @@ $fillTables->insertIntoPlayers();
 $fillTables->insertIntoTeamPlayers();
 $fillTables->updateTeamPlayers();
 $fillTables->insertIntoReferees();
+$fillTables->insertIntoStadiums();
 }
 catch (PDOException $e) {
 	echo $e->getMessage();

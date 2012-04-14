@@ -1,4 +1,6 @@
 <?php
+require_once '../Config/config.php.inc';
+
 /**
  * 
  * id_stadium		 	 	 	 	 
@@ -46,7 +48,26 @@ class StadiumsModel {
 								WHERE id_stadium = {$id_stadium}";
 		return $this->getQuery($query, "Невозможно получить id команды по id стадиона", __FUNCTION__)->fetchColumn(0);
 	}
-	
+	/**
+	 * Получаем id стадиона по id команды
+	 * @param id команды $id_team
+	 */
+	public function getStadiumIdByTeamId($id_team) {
+		$query = "SELECT id_stadium
+					FROM stadiums
+						WHERE id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить id стадиона по id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получае изображение стадиона по его id
+	 * @param id стадиона $id_stadium
+	 */
+	public function getStadiumImageByStadiumId($id_stadium) {
+		$query = "SELECT image
+					FROM stadiums
+						WHERE id_stadium = {$id_stadium}";
+		return $this->getQuery($query, "Невозможно получить изображение стадиоа по id стадиона", __FUNCTION__)->fetchColumn(0);
+	}
 	/**
 	 * 
 	 * Добавляем стадион

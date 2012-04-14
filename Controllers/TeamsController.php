@@ -1,20 +1,21 @@
 <?php 
-require_once '../Models/TeamsModel.php';
-require_once '../Models/ChampionshipsModel.php';
-require_once '../Models/CountriesModel.php';
+require_once '../Scripts/autoload.php';
 
 class TeamsController {
 	
 	private $teamsModel;
 	private $championshipsModel;
 	private $countriesModel;
+	private $stadiumsModel;
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
 	private $SITE_IMAGES = '../Images/site_images/';
+	private $STADIUMS_IMAGES = '../Images/stadiums/';
 	
 	public function __construct() {
 		$this->teamsModel = new TeamsModel();
 		$this->championshipsModel = new ChampionshipsModel();
 		$this->countriesModel = new CountriesModel();
+		$this->stadiumsModel = new StadiumsModel();
 		$this->getTeamsContent();
 	}
 	/**
@@ -31,7 +32,7 @@ class TeamsController {
 			}
 			else {
 				echo "<center><h3>Список команд</h3>
-							<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td>";
+							<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td><td>Стадион</td>";
 				foreach($this->teamsModel->getTeamsByChampionshipId($id_championship)
 				as $number=>$row) {
 					echo "<tr><td width='1px'>".($number+1)."</td>
@@ -78,7 +79,17 @@ class TeamsController {
     					</div>	
 					<!-- Конец меню для команд -->
 					<span class='team{$number}'><a href='index.php?id_team=".$row['id_team']."'>".$row['name']."</a></span>
-									</td></tr>";
+									</td>";
+                                
+					$id_stadium = $this->stadiumsModel->getStadiumIdByTeamId($row['id_team']);
+					if ($id_stadium != null) {
+						$stadium_name = $this->stadiumsModel->getStadiumNameById($id_stadium);
+						$stadium_image = $this->stadiumsModel->getStadiumImageByStadiumId($id_stadium);
+						$stadium_capacity = $this->stadiumsModel->getStadiumCapacityById($id_stadium);
+					echo "<td><div onmouseenter='getTooltipForStadiums({$id_stadium}, \"".$stadium_capacity."\", \"".$stadium_image."\");' id='stadium{$id_stadium}'>".$stadium_name."</div></td>";
+					}
+					else echo "<td>NONE</td>";
+					echo "</tr>";
 				}
 				echo "</table></center>";
 				$this->addTeam();
