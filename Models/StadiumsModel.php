@@ -69,6 +69,21 @@ class StadiumsModel {
 		return $this->getQuery($query, "Невозможно получить изображение стадиоа по id стадиона", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
+	 * Проверяем есть ли уже стадион с таким именем
+	 * @param unknown_type $stadium_name
+	 */
+	public function checkDuplicateStadium($stadium_name) {
+		$query = "SELECT id_stadium
+					FROM stadiums
+						WHERE name like '".$stadium_name."'";
+		if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	/**
 	 * 
 	 * Добавляем стадион
 	 * @param имя стадиона $name
@@ -76,8 +91,8 @@ class StadiumsModel {
 	 * @param id команды которой принадлежит стадион $id_team
 	 */
 	public function addStadium($name, $capacity, $image, $id_team) {
-		$exec_query = "INSERT INTO stadiums(id_stadium, name, description, id_team)
-						VALUES (NULL. ".$name.", '".$capacity."' , '".$image."', {$id_team})";
+		$exec_query = "INSERT INTO stadiums(id_stadium, name, capacity, image, id_team)
+						VALUES (NULL, '".$name."', '".$capacity."' , '".$image."', {$id_team})";
 		return $this->getExec($exec_query, "Невозможно создать стадион", __FUNCTION__);
 		
 	}

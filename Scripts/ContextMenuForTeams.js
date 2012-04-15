@@ -74,7 +74,7 @@ function addTeam(id_championship, inputElement, formName) {
     var form = $(formName);
         if (input.val() == "")  
             {
-                $("#errorChaging").remove();
+                $("#errorChanging").remove();
                 input.before("<span id='errorChanging'>&nbsp;Введите название !<br><br></span>");
             }
         else {

@@ -75,9 +75,7 @@ class TeamsController {
                                 <input type='button' class='button' onclick='moveTeam(".$row['id_team'].", {$number}, ".$id_championship."); return false;' value='Переместить'>
                                 </form>
                                 </div>
-                                <!-- Модальное меню для команд-->
     					</div>	
-					<!-- Конец меню для команд -->
 					<span class='team{$number}'><a href='index.php?id_team=".$row['id_team']."'>".$row['name']."</a></span>
 									</td>";
                                 
@@ -86,9 +84,32 @@ class TeamsController {
 						$stadium_name = $this->stadiumsModel->getStadiumNameById($id_stadium);
 						$stadium_image = $this->stadiumsModel->getStadiumImageByStadiumId($id_stadium);
 						$stadium_capacity = $this->stadiumsModel->getStadiumCapacityById($id_stadium);
-					echo "<td><div onmouseenter='getTooltipForStadiums({$id_stadium}, \"".$stadium_capacity."\", \"".$stadium_image."\");' id='stadium{$id_stadium}'>".$stadium_name."</div></td>";
+					echo "<td><div onmouseover='getTooltipForStadiums({$id_stadium}, \"".$stadium_capacity."\", \"".$stadium_image."\");' id='stadium{$id_stadium}'>".$stadium_name."</div></td>";
 					}
-					else echo "<td>NONE</td>";
+					else echo "<!-- Контекст меню для добавления стадиона-->
+						<div style='display:none' class='contextMenu' id='addStadiumContextMenu{$number}'>
+    					 	<ul>
+        						<a onclick='addStadiumModal({$number}, ".$row['id_team'].")'><li id='Add'>Добавить</li></a>
+      						</ul>
+    					</div>	
+					<!-- Конец меню для добавления стадиона -->
+					<!-- Модальное меню для стадиона-->
+                                <div style='display:none' id='stadiumModalContent{$number}' >
+                                  <form  enctype='multipart/form-data' target='hiddenframe{$number}' name='addStadium{$number}'  method='POST' action='../Ajax/StadiumsAjax.php'>
+                                  	<h6>Название стадиона</h6><br>
+                                  	<input type='text' name='stadiumName{$number}' id='stadiumName{$number}' style='width:300px;'><br><br><br>
+                                  	<h6>Вместительность</h6><br>
+                                  	<input type='text' name='stadiumCapacity{$number}' 'id='stadiumCapacity{$number}' style='width:300px;'><br><br><br>
+                                  	<h6>Загрузите изображение</h6><br>
+                                  	<input align='middle' type='file' name='stadiumImage{$number}' id='stadiumImage{$number}' size='25px' ><br><br><br>
+                                    <input type='submit' class='button' onclick='addStadium({$number}, ".$row['id_team'].", stadiumName{$number}, stadiumCapacity{$number}, stadiumImage{$number});' value='Добавить'>
+                                  	<input type='hidden' name='hid' value='".$this->teamsModel->getTeamsByChampionshipId($id_championship)->rowCount()."'>
+                                  	<input type='hidden' name='id_team' value=".$row['id_team'].">
+                                  	<iframe id='hiddenframe{$number}' name='hiddenframe{$number}' style='width:0px; height:0px; border:0px'></iframe>
+                                  </form>
+                                </div>
+                     <!-- Модальное меню для стадиона-->
+					<td><span class='addStadium{$number}'>NONE</span></td>";
 					echo "</tr>";
 				}
 				echo "</table></center>";
