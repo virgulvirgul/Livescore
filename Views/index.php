@@ -140,9 +140,11 @@ echo "<span style='color:red'>".$error."</span>";
 <script type="text/javascript" src="../Scripts/ContextMenuForTeamPlayers.js"></script>
 <script type="text/javascript" src="../Scripts/ContextMenuForReferees.js"></script>
 <script type="text/javascript" src="../Scripts/ContextMenuForStadiums.js"></script>
+<script type="text/javascript" src="../Scripts/Games.js"></script>
 <script type="text/javascript" src="../Scripts/easyTooltip.js"></script>
 <script type="text/javascript" src="../Scripts/OtherScripts.js"></script>
 <script type="text/javascript" src="../Scripts/autocomplete.js"></script>
+<script type="text/javascript" src="../Scripts/timepicker.js"></script>
 
 </body>
 </html>

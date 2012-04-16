@@ -27,6 +27,17 @@ class StadiumsModel {
 		return $this->getQuery($query, "Невозможно получить имя стадиона по его id", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
+	 *
+	 * Получаем id стадиона по его названию
+	 * @param название стадиона  $id_stadium
+	 */
+	public function getStadiumIdByName($stadium_name) {
+		$query = "SELECT id_stadium
+					FROM stadiums
+						WHERE name like '".$stadium_name."'";
+		return $this->getQuery($query, "Невозможно получить id стадиона по его названию", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
 	*
 	* Получаем вместительность стадиона по его id
 	* @param id стадиона $id_stadium

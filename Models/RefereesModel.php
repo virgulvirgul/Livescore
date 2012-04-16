@@ -20,7 +20,7 @@ class RefereesModel {
 	public function getRefereesByCountryId($id_country) {
 		$query = "SELECT id_referee, referee_name, birth
 					FROM referees
-						WHERE id_country = {$id_country}";
+						WHERE id_country = {$id_country} ORDER BY referee_name";
 		return $this->getQuery($query, "Невозможно получить судей по id страны", __FUNCTION__);
 	}
 	/**

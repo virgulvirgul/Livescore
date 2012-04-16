@@ -124,7 +124,12 @@ class GamesModel {
 											WHERE id_game = {$id_game}";
 		return $this->getQuery($query, "Невозможно получить дополнительную инфо по id игры ", __FUNCTION__)->fetchColumn(0);
 	}
-	
+	/**
+	 * Получаем последний вставленный id игры в таблице
+	 */
+	public function getLastInsertedGameId() {
+		return $this->pdo->lastInsertId();
+	}
 	/**
 	 * 
 	 * Добавляем игру
@@ -141,8 +146,8 @@ class GamesModel {
 								$id_stadium, $more_info) {
 		$exec_query = "INSERT INTO games(id_game, date, id_team_owner, id_team_guest, id_championship, tour,
 					id_referee, id_stadium, more_info) 
-						VALUES(NULL, ".$date.", {$id_team_owner}, {$id_team_guest},
-								{$id_championship}), {$tour}, {$id_referee}, {$id_stadium}, '".$more_info."')";
+						VALUES(NULL, '".$date."', {$id_team_owner}, {$id_team_guest},
+								{$id_championship}, '".$tour."', {$id_referee}, {$id_stadium}, '".$more_info."')";
 		return $this->getExec($exec_query, "Невозможно добавить игру", __FUNCTION__);
 	}
 	/**

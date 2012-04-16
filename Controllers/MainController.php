@@ -75,6 +75,8 @@ class MainController {
 		if (isset($_GET['id_country']) && isset($_GET['option']) && $_GET['option']=='referees_list') new RefereesController();
 		
 		if (isset($_GET['option']) && $_GET['option']=='teams_list') new TeamsController();
+		if (isset($_GET['option']) && $_GET['option']=='add_game') new GamesController();
+		
 		if (isset($_GET['id_team'])) new TeamPlayersController();
 		if (isset($_GET['messages'])) new MessagesController('messages');
 		if (isset($_GET['action']) && $_GET['action'] == 'readMsg') new MessagesController('read');
