@@ -1,5 +1,4 @@
 
-
 $(document).ready(function() {
 			/**
  			* При наведениие на ячейку меняем её цвет
@@ -9,11 +8,11 @@ $(document).ready(function() {
 					$(this).css('backgroundColor', '#D0F500');
 			});
 			$('#selected' + i).mouseout(function() {
-					$(this).css('backgroundColor', '#6495ED');
+					$(this).css('backgroundColor', '');
 			});
 			});
-			
-			
+		
+
 			$("#amplua").tooltip({
                 txt: 'GK - GoalKeeper (Вратарь)' +
                     '<br>D - Defender (Защитник)' +

@@ -49,7 +49,7 @@ class GamesModel {
 	public function getAllDatesByChampionshipId($id_championship) {
 		$query = "SELECT DISTINCT DATE(date) AS date
 					FROM games
-						WHERE id_championship = {$id_championship}";
+						WHERE id_championship = {$id_championship} ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить дату игры по ID ", __FUNCTION__);
 	}
 	/**
@@ -62,7 +62,7 @@ class GamesModel {
 		$query = "SELECT id_game, TIME(date) as date, id_team_owner, id_team_guest, score_owner, score_guest, tour, id_referee, id_stadium, more_info
 					FROM games
 						WHERE YEAR(date) like '".$year."' AND MONTH(date) like '".$month."'
-							AND DAY(date) like '".$day."'";
+							AND DAY(date) like '".$day."' ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
 	}
 	/**

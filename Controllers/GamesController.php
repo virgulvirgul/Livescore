@@ -90,9 +90,9 @@ class GamesController {
 		
 		
 		echo '<h2>Список матчей</h2><br><br>';
-		echo "<center><table>";
-		foreach ($this->gamesModel->getAllDatesByChampionshipId($id_championship) as $row_date) {
-			
+		echo "<center><table style='border:0;'>";
+		$i = 0;
+		foreach ($this->gamesModel->getAllDatesByChampionshipId($id_championship) as $number=>$row_date) {
 			$allDate = $row_date['date'];
 			$year = substr($allDate, 0, 4);
 			$month = substr($allDate, 5, 2);
@@ -111,15 +111,15 @@ class GamesController {
 			echo "<tr id='tr_header'><td colspan='4'>".$date."</td></tr>";
 				
 			foreach ($this->gamesModel->getAllGamesByDate($year, $month_for_sql, $day_for_sql) as $row) {
+				$i++;
 				$team_owner_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_owner']);
 				$team_guest_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_guest']);
-			
 				$hour = substr($row['date'], 0, 2);
 				$minute = substr($row['date'], 3, 2);
-					
 				$hour = date('H : i',mktime($hour,$minute));
-				
-				echo "<tr><td width='8%'>".$hour."</td><td align='right' width='30%'><div align='right'>".$team_owner_name."</div> <td width='6%'> <div align='center'> ? - ? </div></td><td width='30%'><div align='left'>".$team_guest_name."</div></td></td></tr>";
+				if ($i % 2 == 0) $backgroundColor = '#5475ED';
+					else $backgroundColor = '';
+				echo "<tr><td style='background-color:".$backgroundColor.";' width='25px'>".$hour."</td><td style='background-color:".$backgroundColor.";' align='right' width='100px'><div align='right'>".$team_owner_name."</div> <td style='background-color:".$backgroundColor.";' width='20px'> <div align='center'> ? - ? </div></td><td style='background-color:".$backgroundColor.";' width='100px'><div align='left'>".$team_guest_name."</div></td></td></tr>";
 			}
 		}
 		/*foreach ($this->gamesModel->getGamesByChampionshipId($id_championship) as $row) {
