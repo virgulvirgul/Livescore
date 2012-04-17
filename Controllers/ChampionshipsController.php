@@ -67,7 +67,8 @@ class ChampionshipsController {
 			$this->getChampionshipEmblem();
 			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=closest_matches'>Ближайшие матчи</a><br>";
 			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=teams_list'>Список команд</a><br>";
-			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=add_game'>Добваить матч</a><br>";
+			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=add_game'>Добавить матч</a><br>";
+			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_games'>Список матчей</a><br>";
 		}
 	} 
 	/**

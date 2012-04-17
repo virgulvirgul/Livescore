@@ -171,8 +171,34 @@ class FillTables {
 									('NULL', 'Tomas Gervinho', '1975-01-24'),
 									('NULL', 'Marouane Chamakh', '1975-01-24'),
 									('NULL', 'Ryo Miyaichi', '1975-01-24');";
+		$insert_query2 = "INSERT INTO players (id_player, player_name,  birth)
+							VALUES ('NULL', 'Stuart Taylor', '1975-01-24'),
+									('NULL', 'Gunnar Nielsen', '1975-01-24'),
+									('NULL', 'Joe Hart', '1975-01-24'),
+									('NULL', 'Micah Richards ', '1975-01-24'),
+									('NULL', 'Vincent Kompany', '1975-01-24'),
+									('NULL', 'Pablo Zabaleta', '1975-01-24'),
+									('NULL', 'Joleon Lescott', '1975-01-24'),
+									('NULL', 'Aleksandar Kolarov', '1975-01-24'),
+									('NULL', 'Stefan Savić', '1975-01-24'),
+									('NULL', 'Gaël Clichy', '1975-01-24'),
+									('NULL', 'Kolo Touré', '1975-01-24'),
+									('NULL', 'James Milner', '1975-01-24'),
+									('NULL', 'David Pizarro', '1975-01-24'),
+									('NULL', 'Adam Johnson', '1975-01-24'),
+									('NULL', 'Gareth Barry', '1975-01-24'),
+									('NULL', 'Samir Nasri', '1975-01-24'),
+									('NULL', 'Owen Hargreaves', '1975-01-24'),
+									('NULL', 'David Silva','1975-01-24'),
+									('NULL', 'Yaya Touré', '1975-01-24'),
+									('NULL', 'Edin Džeko', '1975-01-24'),
+									('NULL', 'Sergio Agüero', '1975-01-24'),
+									('NULL', 'Carlos Tévez', '1975-01-24'),
+									('NULL', 'Mario Balotelli', '1975-01-24');";
 		if (! $this->pdo->exec($insert_query)) throw new PDOException($this->unnableToInsert("players"));
 		else $this->successToInsert("players");
+		if (! $this->pdo->exec($insert_query2)) throw new PDOException($this->unnableToInsert("players2"));
+		else $this->successToInsert("players2");
 	}
 	public function insertIntoTeamPlayers() {
 		for ($i = 1; $i < 31; $i++) {
@@ -181,14 +207,20 @@ class FillTables {
 				if (! $this->pdo->exec($insert_query)) throw new PDOException($this->unnableToInsert("team_players"));
 		else $this->successToInsert("team_players");
 		}
+		for ($i = 31; $i < 53; $i++) {
+			$insert_query = "INSERT INTO team_players (id_player, id_team, player_number)
+			VALUES ({$i}, 2, {$i})";
+			if (! $this->pdo->exec($insert_query)) throw new PDOException($this->unnableToInsert("team_players2"));
+					else $this->successToInsert("team_players2");
+		}
 		
 	}
 	public function updateTeamPlayers() {
 		$update_query1 = "UPDATE team_players SET player_position = 'GK' WHERE id_player IN (1, 2, 3, 4);";
-		$update_query2 = "UPDATE team_players SET player_position = 'D' WHERE id_player IN (5, 6, 7, 8, 9, 10, 11, 12, 13);";
-		$update_query3 = "UPDATE team_players SET player_position = 'M' WHERE id_player IN (14, 15, 16, 17, 18);";
-		$update_query4 = "UPDATE team_players SET player_position = 'AM' WHERE id_player IN (19, 20, 21, 22, 23);";
-		$update_query5 = "UPDATE team_players SET player_position = 'ST' WHERE id_player IN (24, 25, 26, 27, 28, 29, 30);";
+		$update_query2 = "UPDATE team_players SET player_position = 'D' WHERE id_player IN (5, 6, 7, 8, 9, 10, 11, 12, 13, 34, 35, 36, 37, 38, 39, 40, 41);";
+		$update_query3 = "UPDATE team_players SET player_position = 'M' WHERE id_player IN (14, 15, 16, 17, 18, 42, 43, 44, 45, 46);";
+		$update_query4 = "UPDATE team_players SET player_position = 'AM' WHERE id_player IN (19, 20, 21, 22, 23, 47, 48, 49);";
+		$update_query5 = "UPDATE team_players SET player_position = 'ST' WHERE id_player IN (24, 25, 26, 27, 28, 29, 30, 50, 51, 52, 53);";
 		//if (! $this->pdo->exec($update_query1)) throw new PDOException($this->unnableToInsert("update_team_players"));
 		//else $this->successToInsert("update_team_players");
 		if (! $this->pdo->exec($update_query2)) throw new PDOException($this->unnableToInsert("update_team_players"));

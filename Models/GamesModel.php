@@ -23,14 +23,47 @@ class GamesModel {
 		$this->pdo = Config::getInstance()->getPDO();
 	}
 	/**
+	 * Получаем все игры по id чемпионата
+	 * @param id чемпионата $id_championship
+	 */
+	public function getGamesByChampionshipId($id_championship) {
+		$query = "SELECT id_game, date, id_team_owner, id_team_guest, score_owner, score_guest, tour, id_referee, id_stadium, more_info
+					FROM games 
+						WHERE id_championship  = {$id_championship} ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить все игры по ID чемпионата ", __FUNCTION__);
+	}
+	/**
 	 * Получаем дату игры по её id
 	 * @param id игры $id_game
 	 */
 	public function getGameDateById($id_game) {
-		$query = "SELECT date 
+		$query = "SELECT date
 					FROM games
 						WHERE id_game = {$id_game}";
 		return $this->getQuery($query, "Невозможно получить дату игры по ID ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получуаем даты матчей по id чемпионата
+	 * @param id чемпионата $id_championship
+	 */
+	public function getAllDatesByChampionshipId($id_championship) {
+		$query = "SELECT DISTINCT DATE(date) AS date
+					FROM games
+						WHERE id_championship = {$id_championship}";
+		return $this->getQuery($query, "Невозможно получить дату игры по ID ", __FUNCTION__);
+	}
+	/**
+	 * Получаем все матчи по дате
+	 * @param год $year
+	 * @param месяц $month
+	 * @param день $day
+	 */
+	public function getAllGamesByDate($year, $month, $day) {
+		$query = "SELECT id_game, TIME(date) as date, id_team_owner, id_team_guest, score_owner, score_guest, tour, id_referee, id_stadium, more_info
+					FROM games
+						WHERE YEAR(date) like '".$year."' AND MONTH(date) like '".$month."'
+							AND DAY(date) like '".$day."'";
+		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
 	}
 	/**
 	 * 

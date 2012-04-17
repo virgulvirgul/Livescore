@@ -90,6 +90,7 @@ class CreateDBStructure {
 		////////Игроки на игре
 		$team_game_players = "CREATE TABLE IF NOT EXISTS team_game_players (
 								id_team_game_player int(8) primary key auto_increment,
+								id_team int(8) NOT NULL,
 								id_players varchar(100) NOT NULL, 
 								red_card varchar (200) DEFAULT '',
 								yellow_card varchar(200) DEFAULT '', 

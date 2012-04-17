@@ -33,7 +33,6 @@ class MainController {
 	public function getLeftMenu() {
 		foreach ($this->continentsModel->getAllContinents() as $row)  {
 			echo "<div id='continents'>".$row['name']."</div><br>";
-			echo "";
 			foreach ($this->countriesModel->getCountriesByContinentIdOrderedByName($row['id_continent']) 
 								as $row1)  {
 				echo "<li><a href='index.php?id_country=".$row1['id_country']."'>
@@ -76,6 +75,7 @@ class MainController {
 		
 		if (isset($_GET['option']) && $_GET['option']=='teams_list') new TeamsController();
 		if (isset($_GET['option']) && $_GET['option']=='add_game') new GamesController();
+		if (isset($_GET['option']) && $_GET['option']=='show_games') new GamesController();
 		
 		if (isset($_GET['id_team'])) new TeamPlayersController();
 		if (isset($_GET['messages'])) new MessagesController('messages');

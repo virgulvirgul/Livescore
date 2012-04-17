@@ -99,8 +99,8 @@ class GamesAjax {
 		$this->gamesModel->addGame($this->date, $this->team_owner_id, $this->team_guest_id, $id_championship, $this->tour,
 						$this->id_referee, $id_stadium, '');
 		$id_game = $this->gamesModel->getLastInsertedGameId();
-		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_owner_start), $id_game);
-		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_guest_start), $id_game);
+		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_owner_start), $this->team_owner_id, $id_game);
+		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_guest_start), $this->team_guest_id, $id_game);
 	}
 }
 
