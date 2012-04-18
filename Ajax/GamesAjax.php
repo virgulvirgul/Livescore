@@ -116,6 +116,7 @@ class GamesAjax {
 	 */
 	private function scored() {
 		$this->teamGamePlayersModel->updateScoreByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
+		$this->gamesModel->updateScoreByGameId($this->id_game, $this->id_team);
 	}
 }
 

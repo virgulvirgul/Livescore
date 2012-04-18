@@ -205,6 +205,25 @@ class GamesModel {
 		return $this->getExec($exec_query, "Невозможно изменить score_guest по id игры", __FUNCTION__);
 	}
 	/**
+	 * Если игра уже началась ставим вместо ? - 0
+	 */
+	public function setScores($id_game) {
+		$exec_query = "UPDATE games SET score_guest = 0, score_owner = 0 WHERE id_game = {$id_game}";
+		return $this->getExec($exec_query, "Невозможно изменить ?  на 0", __FUNCTION__);
+	}
+	/**
+	 * При голе меняем значение голов у команды на +1
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function updateScoreByGameId($id_game, $id_team) {
+		$exec_query = "UPDATE games SET score_guest = score_guest + 1 WHERE id_game = {$id_game} AND id_team_guest = {$id_team}";
+		$exec_query1 = "UPDATE games SET score_owner = score_owner + 1 WHERE id_game = {$id_game} AND id_team_owner = {$id_team}";
+		$this->getExec($exec_query1, "Невозможно изменить значение голов", __FUNCTION__);
+		
+		$this->getExec($exec_query, "Невозможно изменить значение голов", __FUNCTION__);
+	}
+	/**
 	*
 	* Выполняем запрос
 	* @param запрос $query

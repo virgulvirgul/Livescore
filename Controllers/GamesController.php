@@ -139,12 +139,16 @@ class GamesController {
 	}
 	public function getOneGameContent() {
 		$id_game = $_GET['id_game'];
+		if($this->gamesModel->getScoreGuestByGameId($id_game) == '?') $this->gamesModel->setScores($id_game);
 		$id_team_owner = $this->gamesModel->getTeamOwnerIdByGameId($id_game);
 		$id_team_guest = $this->gamesModel->getTeamGuestIdByGameId($id_game);
 		$team_owner_name = $this->teamsModel->getTeamNameByTeamId($id_team_owner);
 		$team_guest_name = $this->teamsModel->getTeamNameByTeamId($id_team_guest);
 		
-		echo "<h2>".$team_owner_name." <span id='score_owner'> ? </span> - <span id='score_guest'> ? </span> ".$team_guest_name." </h2><br><br>";
+		$team_owner_score = $this->gamesModel->getScoreOwnerByGameId($id_game);
+		$team_guest_score = $this->gamesModel->getScoreGuestByGameId($id_game);
+		
+		echo "<h2>".$team_owner_name." <span id='score_owner'> ".$team_owner_score." </span> - <span id='score_guest'> ".$team_guest_score." </span> ".$team_guest_name." </h2><br><br>";
 		echo "<center><table>";
 		
 		echo "<tr id='tr_header'><td colspan='3' width='300px'>".$team_owner_name."</td><td width='300px' colspan='3'>".$team_guest_name."</td></tr>";
