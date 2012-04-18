@@ -44,10 +44,14 @@ class GamesAjax {
 	private $id_referee;
 	private $date;
 	private $stadium_name;
-	
+	private $id_team;
+	private $id_player;
+	private $minute;
+	private $id_game;
 	
 	public function __construct($action = null, $team_name = null, $team_owner_id = null, $team_guest_id = null, $team_owner_start = null, 
-								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null ) {
+								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null, $id_team = null,
+								$id_player = null, $minute = null, $id_game = null ) {
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamsModel = new TeamsModel();
@@ -66,9 +70,14 @@ class GamesAjax {
 		if ($id_referee != null) $this->id_referee = $id_referee;
 		if ($date != null) $this->date = $date;
 		if ($stadium_name != null) $this->stadium_name = $stadium_name;
+		if ($id_team != null) $this->id_team = $id_team;
+		if ($id_player != null) $this->id_player = $id_player;
+		if ($minute != null) $this->minute = $minute;
+		if ($id_game != null) $this->id_game = $id_game;
 		
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
 		if ($this->action == "addGame") $this->addGame();
+		if ($this->action == "scored") $this->scored();
 		
 	}
 	/**
@@ -102,8 +111,15 @@ class GamesAjax {
 		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_owner_start), $this->team_owner_id, $id_game);
 		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_guest_start), $this->team_guest_id, $id_game);
 	}
+	/**
+	 * Обрабатываем забитый гол.
+	 */
+	private function scored() {
+		$this->teamGamePlayersModel->updateScoreByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
+	}
 }
 
 $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_owner_id'], $_POST['team_guest_id'], $_POST['team_owner_start'], 
-							$_POST['team_guest_start'], $_POST['tour'], $_POST['id_referee'], $_POST['date'], $_POST['stadium_name']);
+							$_POST['team_guest_start'], $_POST['tour'], $_POST['id_referee'], $_POST['date'], $_POST['stadium_name'], $_POST['id_team'], 
+							$_POST['id_player'], $_POST['minute'], $_POST['id_game']);
 ?>

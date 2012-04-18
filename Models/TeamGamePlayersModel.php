@@ -14,6 +14,16 @@ class TeamGamePlayersModel {
 		$this->pdo = Config::getInstance()->getPDO();
 	}
 	/**
+	 * Получаем стартовый состав по id игры и id команды
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function getPlayersIdByGameAndTeamId($id_game, $id_team) {
+		$query = "SELECT id_players FROM team_game_players
+					WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить стартовый состав по id игры и id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
 	 * Добавляем стартовый состав
 	 * @param массив игроков $id_players
 	 * @param id игры $id_game
@@ -22,6 +32,19 @@ class TeamGamePlayersModel {
 		$exec_query = "INSERT INTO team_game_players(id_team_game_player, id_team, id_players, id_game)
 						VALUES(NULL, {$id_team}, '".$id_players."', '".$id_game."')";
 		return $this->getExec($exec_query, "Невозможно добавит стартовый состав", __FUNCTION__);
+	}
+	
+	/**
+	 * При голе пишим кто забил ($id_player) и на какой минуте($minute)
+	 * @param id игры $id_game
+	 * @param id игрока $id_player
+	 * @param минута $minute
+	 */
+	public function updateScoreByGameId($id_game, $id_team, $id_player, $minute) {
+		$exec_query = "UPDATE team_game_players
+						SET score = CONCAT(score, '".$id_player.", ".$minute.",') 
+							WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getExec($exec_query, "Невозможно записать гол", __FUNCTION__);
 	}
 	/**
 	*

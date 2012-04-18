@@ -47,6 +47,10 @@ $(document).ready(function () {
     });
 });
 
+	function ololo1(input) {
+		alert(input);
+	   
+	}
 
 
 	function addGame(team_owner, team_guest, team_owner_start, team_guest_start, tour, referee, date, stadium) {
@@ -94,3 +98,30 @@ $(document).ready(function () {
 				});
 	}
 	
+function scored_form() {
+    $('#scored').modal();
+}
+function scored(id_team, id_player, minute, id_game) {
+	
+	$.post('../Ajax/GamesAjax.php', {   id_team : $(id_team).val(), 
+										id_player : $(id_player).val(),
+										minute : $(minute).val(),
+										id_game : id_game,
+										action : "scored" },
+										function(result) {
+								        	alert(result);
+								        });
+}
+function showTeamPlayers(selected_element, target_element) {
+	$(target_element).attr('disabled', false);
+	var team_name = $(selected_element + ":selected").html();
+	$.post('../Ajax/GamesAjax.php', { team_name : team_name, 
+        								action : "showPlayers"},
+        function(result) {
+        	var options = '';
+        	$(result.players).each(function() {
+        		options += '<option value="' + $(this).attr('id_player') + '">' + $(this).attr('player_number') + ' ' + $(this).attr('player_name') + '</option>';
+        	});
+        	$(target_element).html(options);
+        }, "json");
+}

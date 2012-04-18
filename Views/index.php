@@ -14,6 +14,20 @@ $mainController = new MainController();
 <link rel="stylesheet" href="../Css/style.css" type="text/css" />
 <link rel="stylesheet" href="../Css/modal.css" type="text/css" />
 <link rel="stylesheet" href="../Css/autocomplete.css" type="text/css" />
+<script type="text/javascript" src="../Scripts/jquery-1.7.1.js"></script> 
+<script type="text/javascript" src="../Scripts/jquery-ui-1.8.18.min.js"></script>
+<script type="text/javascript" src="../Scripts/contextmenu.js"></script> 
+<script type="text/javascript" src="../Scripts/modal.js"></script> 
+<script type="text/javascript" src="../Scripts/ContextMenuForChampionships.js"></script>
+<script type="text/javascript" src="../Scripts/ContextMenuForTeams.js"></script>
+<script type="text/javascript" src="../Scripts/ContextMenuForTeamPlayers.js"></script>
+<script type="text/javascript" src="../Scripts/ContextMenuForReferees.js"></script>
+<script type="text/javascript" src="../Scripts/ContextMenuForStadiums.js"></script>
+<script type="text/javascript" src="../Scripts/Games.js"></script>
+<script type="text/javascript" src="../Scripts/easyTooltip.js"></script>
+<script type="text/javascript" src="../Scripts/OtherScripts.js"></script>
+<script type="text/javascript" src="../Scripts/autocomplete.js"></script>
+<script type="text/javascript" src="../Scripts/timepicker.js"></script>
 
 
 <!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="css/style-ie.css" media="screen, projection, tv" /><![endif]-->

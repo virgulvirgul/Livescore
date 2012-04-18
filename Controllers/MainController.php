@@ -63,7 +63,7 @@ class MainController {
 	 */
 	public function checkContent() {
 		if (!isset($_GET['id_country']) && !isset($_GET['id_championship']) 
-			&& !isset($_GET['messages']) && !isset($_GET['action']) && !isset($_GET['id_team']))
+			&& !isset($_GET['messages']) && !isset($_GET['action']) && !isset($_GET['id_team']) && !isset($_GET['id_game']))
 			 $this->getIndexContent();
 		
 		if (isset($_GET['id_country']) && !isset($_GET['option'])) new ChampionshipsController();
@@ -76,6 +76,7 @@ class MainController {
 		if (isset($_GET['option']) && $_GET['option']=='teams_list') new TeamsController();
 		if (isset($_GET['option']) && $_GET['option']=='add_game') new GamesController();
 		if (isset($_GET['option']) && $_GET['option']=='show_games') new GamesController();
+		if (isset($_GET['id_game'])) new GamesController();
 		
 		if (isset($_GET['id_team'])) new TeamPlayersController();
 		if (isset($_GET['messages'])) new MessagesController('messages');
