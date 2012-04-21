@@ -47,12 +47,6 @@ $(document).ready(function () {
     });
 });
 
-	function ololo1(input) {
-		alert(input);
-	   
-	}
-
-
 	function addGame(team_owner, team_guest, team_owner_start, team_guest_start, tour, referee, date, stadium) {
 		if ($(team_owner).val() == 'Выберите команду...') {
 			$("#errorChanging").remove();
@@ -101,6 +95,18 @@ $(document).ready(function () {
 function scored_form() {
     $('#scored').modal();
 }
+
+function yellow_card_form() {
+    $('#yellow_card').modal();
+}
+
+function red_card_form() {
+    $('#red_card').modal();
+}
+
+function substitution_form() {
+    $('#substitution').modal();
+}
 function scored(id_team, id_player, minute, id_game) {
 	
 	$.post('../Ajax/GamesAjax.php', {   id_team : $(id_team).val(), 
@@ -109,12 +115,47 @@ function scored(id_team, id_player, minute, id_game) {
 										id_game : id_game,
 										action : "scored" },
 										function(result) {
-								        	alert(result);
 								        });
+	window.location.reload();
+}
+function yellow_card(id_team, id_player, minute, id_game) {
+	
+	$.post('../Ajax/GamesAjax.php', {   id_team : $(id_team).val(), 
+										id_player : $(id_player).val(),
+										minute : $(minute).val(),
+										id_game : id_game,
+										action : "yellow_card" },
+										function(result) {
+								        });
+	window.location.reload();
+}
+
+function red_card(id_team, id_player, minute, id_game) {
+	
+	$.post('../Ajax/GamesAjax.php', {   id_team : $(id_team).val(), 
+										id_player : $(id_player).val(),
+										minute : $(minute).val(),
+										id_game : id_game,
+										action : "red_card" },
+										function(result) {
+								        });
+	window.location.reload();
+}
+function substitution(id_team, id_player, id_second_player, minute, id_game) {
+	
+	$.post('../Ajax/GamesAjax.php', {   id_team : $(id_team).val(), 
+										id_player : $(id_player).val(),
+										id_second_player : $(id_second_player).val(),
+										minute : $(minute).val(),
+										id_game : id_game,
+										action : "substitution" },
+										function(result) {
+								        });
+	window.location.reload();
 }
 function showTeamPlayers(selected_element, target_element) {
 	$(target_element).attr('disabled', false);
-	var team_name = $(selected_element + ":selected").html();
+	var team_name = $(selected_element + " option:selected").html();
 	$.post('../Ajax/GamesAjax.php', { team_name : team_name, 
         								action : "showPlayers"},
         function(result) {
@@ -123,5 +164,8 @@ function showTeamPlayers(selected_element, target_element) {
         		options += '<option value="' + $(this).attr('id_player') + '">' + $(this).attr('player_number') + ' ' + $(this).attr('player_name') + '</option>';
         	});
         	$(target_element).html(options);
+        	$('#substitution_second_team_players').html(options);
+        	$('#substitution_second_team_players').attr('disabled', false);
+
         }, "json");
 }

@@ -48,10 +48,11 @@ class GamesAjax {
 	private $id_player;
 	private $minute;
 	private $id_game;
+	private $id_second_player;
 	
 	public function __construct($action = null, $team_name = null, $team_owner_id = null, $team_guest_id = null, $team_owner_start = null, 
 								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null, $id_team = null,
-								$id_player = null, $minute = null, $id_game = null ) {
+								$id_player = null, $minute = null, $id_game = null, $id_second_player = null ) {
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamsModel = new TeamsModel();
@@ -74,10 +75,14 @@ class GamesAjax {
 		if ($id_player != null) $this->id_player = $id_player;
 		if ($minute != null) $this->minute = $minute;
 		if ($id_game != null) $this->id_game = $id_game;
+		if ($id_second_player != null) $this->id_second_player = $id_second_player;
 		
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
 		if ($this->action == "addGame") $this->addGame();
 		if ($this->action == "scored") $this->scored();
+		if ($this->action == "yellow_card") $this->yellow_card();
+		if ($this->action == "red_card") $this->red_card();
+		if ($this->action == "substitution") $this->substitution();
 		
 	}
 	/**
@@ -118,9 +123,27 @@ class GamesAjax {
 		$this->teamGamePlayersModel->updateScoreByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
 		$this->gamesModel->updateScoreByGameId($this->id_game, $this->id_team);
 	}
+	/**
+	 * Получение игроком жёлтой карточки
+	 */
+	private function yellow_card() {
+		$this->teamGamePlayersModel->updateYellowCardByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
+	}
+	/**
+	 * Получение игроком красной карточки
+	 */
+	private function red_card() {
+		$this->teamGamePlayersModel->updateRedCardByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
+	}
+	/**
+	 * Замена игрока
+	 */
+	private function substitution() {
+		$this->teamGamePlayersModel->updateSubstitutionByGameId($this->id_game, $this->id_team, $this->id_player, $this->id_second_player, $this->minute);
+	}
 }
 
 $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_owner_id'], $_POST['team_guest_id'], $_POST['team_owner_start'], 
 							$_POST['team_guest_start'], $_POST['tour'], $_POST['id_referee'], $_POST['date'], $_POST['stadium_name'], $_POST['id_team'], 
-							$_POST['id_player'], $_POST['minute'], $_POST['id_game']);
+							$_POST['id_player'], $_POST['minute'], $_POST['id_game'], $_POST['id_second_player']);
 ?>

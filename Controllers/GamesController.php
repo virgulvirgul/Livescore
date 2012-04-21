@@ -137,6 +137,7 @@ class GamesController {
 		}
 		echo "</table></center>";
 	}
+	
 	public function getOneGameContent() {
 		$id_game = $_GET['id_game'];
 		if($this->gamesModel->getScoreGuestByGameId($id_game) == '?') $this->gamesModel->setScores($id_game);
@@ -205,12 +206,12 @@ class GamesController {
 		echo "</table></center><br>";
 		
 		echo "<center><form>
-		<input type='button' onclick='scored_form()' class='button' style='width:200px' value='Забит гол'><br><br>
-		<input type='button' onclick='yellow_card_form()' class='button' style='width:200px' value='Жёлтая карточка'><br><br>
-		<input type='button' onclick='red_card_form()' class='button' style='width:200px' value='Красная карточка'><br><br>
-		<input type='button' onclick='substitution_form()' class='button' style='width:200px' value='Замена'><br><br>
-		<input type='button' onclick='time_out_form()' class='button' style='width:200px' value='Перерыв'><br><br>
-		<input type='button' onclick='end_of_match_form()' class='button' style='width:200px' value='Конец матча'>
+		<input type='button' onclick='scored_form();' class='button' style='width:200px' value='Забит гол'><br><br>
+		<input type='button' onclick='yellow_card_form();' class='button' style='width:200px' value='Жёлтая карточка'><br><br>
+		<input type='button' onclick='red_card_form();' class='button' style='width:200px' value='Красная карточка'><br><br>
+		<input type='button' onclick='substitution_form();' class='button' style='width:200px' value='Замена'><br><br>
+		<input type='button' onclick='time_out_form();' class='button' style='width:200px' value='Перерыв'><br><br>
+		<input type='button' onclick='end_of_match_form();' class='button' style='width:200px' value='Конец матча'>
 		
 		</form></center>";
 		
@@ -220,20 +221,80 @@ class GamesController {
 		$team_owner_name = $this->teamsModel->getTeamNameByTeamId($id_team_owner);
 		$team_guest_name = $this->teamsModel->getTeamNameByTeamId($id_team_guest);
 		
-		echo "<!-- Модальное меню для забитого голв-->
-                                <div style='display:none' id='scored'>	
-                                <form id='scored_form' action=''>
-                                  <h6>Команда</h6><br><select onchange='showTeamPlayers(team_select, team_players)' style='width:300px;' id='team_select'><option selected disabled>Выберите команду...</option>";
-		echo "<option value='".$id_team_owner."'>".$team_owner_name."</option><option value='".$id_team_guest."'>".$team_guest_name."</option>";		
-        echo "</select><br><br>
-        <h6>Игрок</h6><br><select disabled style='width:300px;' id='team_players'></select><br><br>
-        <h6>Минута</h6><br>
-        <input type='text' style='width:300px;' id='scored_minute'><br><br><br>
-        <input type='button' class='button' onclick='scored(team_select, team_players, scored_minute, ".$_GET['id_game'].")' value='Принять'>
-                                    
-                                </form>	
-                                </div>
-      			 <!-- Конец модального меню для забитого гола-->";
+echo "<!-- Модальное меню для забитого гола-->
+        <div style='display:none' id='scored'>	
+        	<form id='scored_form'  onsubmit='return false;'>
+        		<h6>Команда</h6><br>
+					<select id='team_select' name='team_select' onchange='showTeamPlayers(\"#team_select\", \"#team_players\");' style='width:300px;'>
+						<option selected disabled>Выберите команду...</option>";
+				  echo "<option value='".$id_team_owner."'>".$team_owner_name."</option>
+						<option value='".$id_team_guest."'>".$team_guest_name."</option>";		
+        	  echo "</select><br><br>
+        		<h6>Игрок</h6><br>
+        			<select disabled style='width:300px;' id='team_players'></select><br><br>
+       			<h6>Минута</h6><br>
+        			<input type='text' style='width:300px;' id='scored_minute'><br><br><br>
+        			<input type='button' class='button' onclick='scored(team_select, team_players, scored_minute, ".$_GET['id_game'].")' value='Принять'>
+        	</form>
+        </div>
+        
+      	<!-- Конец модального меню для забитого гола-->";
+        
+ echo "<!-- Модальное меню для жёлтой карточки-->
+        <div style='display:none' id='yellow_card'>
+        		<form id='yellow_card_form'  onsubmit='return false;' name='yellow_card_from'>
+        			<h6>Команда</h6><br>
+        				<select id='yellow_card_team_select' name='yellow_card_team_select' onchange='showTeamPlayers(\"#yellow_card_team_select\", \"#yellow_card_team_players\");' style='width:300px;'>
+        					<option selected disabled>Выберите команду...</option>";
+        			  echo "<option value='".$id_team_owner."'>".$team_owner_name."</option>
+       						<option value='".$id_team_guest."'>".$team_guest_name."</option>";
+        		  echo "</select><br><br>
+        			<h6>Игрок</h6><br>
+        				<select disabled style='width:300px;' id='yellow_card_team_players'></select><br><br>
+        			<h6>Минута</h6><br>
+        				<input type='text' style='width:300px;' id='yellow_card_minute'><br><br><br>
+        				<input type='button' class='button' onclick='yellow_card(yellow_card_team_select, yellow_card_team_players, yellow_card_minute, ".$_GET['id_game'].")' value='Принять'>
+        		</form>
+        </div>
+        <!-- Конец модального меню для жёлтой карточки-->";
+
+echo "<!-- Модальное меню для красной карточки-->
+        <div style='display:none' id='red_card'>
+        	<form id='red_card_form' onsubmit='return false;'>
+        		<h6>Команда</h6><br>
+        		  <select id='red_card_team_select' name='red_card_team_select' onchange='showTeamPlayers(\"#red_card_team_select\", \"#red_card_team_players\");' style='width:300px;'>
+        			  <option selected disabled>Выберите команду...</option>";
+        		echo "<option value='".$id_team_owner."'>".$team_owner_name."</option>
+        			  <option value='".$id_team_guest."'>".$team_guest_name."</option>";
+        	echo "</select><br><br>
+        		<h6>Игрок</h6><br>
+        		  <select disabled style='width:300px;' id='red_card_team_players'></select><br><br>
+        		  <h6>Минута</h6><br>
+        		  <input type='text' style='width:300px;' id='red_card_minute'><br><br><br>
+        		  <input type='button' class='button' onclick='red_card(red_card_team_select, red_card_team_players, red_card_minute, ".$_GET['id_game'].")' value='Принять'>
+        		  </form>
+        </div>
+       <!-- Конец модального меню для красной карточки-->";
+        	
+echo "<!-- Модальное меню для замены-->
+        	<div style='display:none' id='substitution'>
+        		<form id='substitution_form' onsubmit='return false;'>
+        			<h6>Команда</h6><br>
+        				<select id='substitution_team_select' name='substitution_team_select' onchange='showTeamPlayers(\"#substitution_team_select\", \"#substitution_team_players\");' style='width:300px;'>
+        					<option selected disabled>Выберите команду...</option>";
+        				echo "<option value='".$id_team_owner."'>".$team_owner_name."</option>
+        					<option value='".$id_team_guest."'>".$team_guest_name."</option>";
+        		echo "</select><br><br>
+        			<h6>Заменяемый игрок</h6><br>
+        				<select disabled style='width:300px;' id='substitution_team_players'></select><br><br>
+        			<h6>Замена</h6><br>
+        				<select disabled style='width:300px;' id='substitution_second_team_players'></select><br><br>
+        		<h6>Минута</h6><br>
+        				<input type='text' style='width:300px;' id='substitution_minute'><br><br><br>
+        				<input type='button' class='button' onclick='substitution(substitution_team_select, substitution_team_players, substitution_second_team_players, substitution_minute, ".$_GET['id_game'].")' value='Принять'>
+        		</form>
+        	</div>
+        	<!-- Конец модального меню для замены-->";
 	}
 }
 ?>

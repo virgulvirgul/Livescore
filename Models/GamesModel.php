@@ -217,9 +217,15 @@ class GamesModel {
 	 * @param id команды $id_team
 	 */
 	public function updateScoreByGameId($id_game, $id_team) {
-		$exec_query = "UPDATE games SET score_guest = score_guest + 1 WHERE id_game = {$id_game} AND id_team_guest = {$id_team}";
-		$exec_query1 = "UPDATE games SET score_owner = score_owner + 1 WHERE id_game = {$id_game} AND id_team_owner = {$id_team}";
-		$this->getExec($exec_query1, "Невозможно изменить значение голов", __FUNCTION__);
+		$query = "SELECT id_game FROM games WHERE id_team_guest = {$id_team} AND id_game = {$id_game}";
+		
+		if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
+			$exec_query = "UPDATE games SET score_guest = score_guest + 1 WHERE id_game = {$id_game} AND id_team_guest = {$id_team}";
+		}
+		else {
+			$exec_query = "UPDATE games SET score_owner = score_owner + 1 WHERE id_game = {$id_game} AND id_team_owner = {$id_team}";
+			
+		}
 		
 		$this->getExec($exec_query, "Невозможно изменить значение голов", __FUNCTION__);
 	}

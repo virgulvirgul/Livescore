@@ -37,14 +37,55 @@ class TeamGamePlayersModel {
 	/**
 	 * При голе пишим кто забил ($id_player) и на какой минуте($minute)
 	 * @param id игры $id_game
+	 * @param id команды $id_game
 	 * @param id игрока $id_player
 	 * @param минута $minute
 	 */
 	public function updateScoreByGameId($id_game, $id_team, $id_player, $minute) {
 		$exec_query = "UPDATE team_game_players
-						SET score = CONCAT(score, '".$id_player.", ".$minute.",') 
+						SET score = CONCAT(score, '".$id_player.",".$minute.",') 
 							WHERE id_game = {$id_game} AND id_team = {$id_team}";
 		return $this->getExec($exec_query, "Невозможно записать гол", __FUNCTION__);
+	}
+	/**
+	 * При получении игроком жёлтой карточки обновляем полу yellow_card
+	 * @param id игры $id_game
+	 * @param id команды $id_game
+	 * @param id игрока $id_player
+	 * @param минута $minute
+	 */
+	public function updateYellowCardByGameId($id_game, $id_team, $id_player, $minute) {
+		$exec_query = "UPDATE team_game_players
+						SET yellow_card = CONCAT(yellow_card, '".$id_player.",".$minute.",')
+							WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getExec($exec_query, "Невозможно записать жёлтую карточку", __FUNCTION__);
+	}
+	/**
+	 * При получении игроком красной карточки обновляем полу red_card
+	 * @param id игры $id_game
+	 * @param id команды $id_game
+	 * @param id игрока $id_player
+	 * @param минута $minute
+	 */
+	public function updateRedCardByGameId($id_game, $id_team, $id_player, $minute) {
+		$exec_query = "UPDATE team_game_players
+						SET red_card = CONCAT(red_card, '".$id_player.",".$minute.",')
+							WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getExec($exec_query, "Невозможно записать красную карточку", __FUNCTION__);
+	}
+	/**
+	 * Замена игрока
+	 * @param id игры $id_game
+	 * @param id команды $id_game
+	 * @param id заменяемого игрока $id_player
+	 * @param id выходящего на поле игрока $id_player
+	 * @param минута $minute
+	 */
+	public function updateSubstitutionByGameId($id_game, $id_team, $id_player, $id_second_player, $minute) {
+		$exec_query = "UPDATE team_game_players
+						SET substitution = CONCAT(red_card, '".$id_player.",".$id_second_player.",".$minute.",')
+							WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getExec($exec_query, "Невозможно записать замену", __FUNCTION__);
 	}
 	/**
 	*
