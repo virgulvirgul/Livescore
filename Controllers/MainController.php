@@ -58,7 +58,55 @@ class MainController {
 		
 		echo "<center><table style='border:0;'>";
 		$i = 0;
-		foreach ($this->gamesModel->getAllNearestGames() as $number=>$row_date) {
+		$dates = array();
+		foreach ($this->gamesModel->getAllNearestDates() as $row) {
+			$dates[] = $row['date'];
+		}
+		foreach ($dates as $date) {
+			$allDate = $date;
+			$year = substr($allDate, 0, 4);
+			$month = substr($allDate, 5, 2);
+			$day = substr($allDate, 8, 2);
+			$hour = substr($allDate, 11, 2);
+			$minute = substr($allDate, 14, 2);
+			$date = date('d F, l',mktime($hour,$minute,0,$month, $day, $year));
+			$hour = date('H : i',mktime($hour,$minute));
+			$month_for_sql = date('n',mktime(0, 0, 0, $month));
+			$day_for_sql = date('j',mktime(0, 0, 0, 0, $day));
+				
+			foreach ($this->gamesModel->getChampionshipIdByDate($year, $month_for_sql, $day_for_sql) as $row) {
+				$championship_name = $this->championshipsModel->getChampionshipNameById($row['id_championship']);
+				$country_name = $this->countriesModel->getCountryNameById($this->championshipsModel->getIdCoutryByChampionshipId($row['id_championship']));
+				echo "<tr id='tr_header'><td colspan='4'><u>".$country_name."</u> - ".$championship_name."<div align='right'>".$date."</div></td></tr>";
+			
+			
+			foreach ($this->gamesModel->getAllGamesByDateAndChampioshipId($year, $month_for_sql, $day_for_sql, $row['id_championship']) as $row) {
+				$i++;
+				$team_owner_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_owner']);
+				$team_guest_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_guest']);
+				$hour = substr($row['date'], 0, 2);
+				$minute = substr($row['date'], 3, 2);
+				$hour = date('H : i',mktime($hour,$minute));
+				if ($i % 2 == 0) $backgroundColor = '#5475ED';
+				else $backgroundColor = '';
+				
+				$team_owner_score = $this->gamesModel->getScoreOwnerByGameId($row['id_game']);
+				$team_guest_score = $this->gamesModel->getScoreGuestByGameId($row['id_game']);
+				
+				echo "<tr>
+				<td style='background-color:".$backgroundColor.";' width='25px'>";
+				
+				//.$hour."</td>
+				echo "<td style='background-color:".$backgroundColor.";' align='right' width='100px'><div align='right'>".$team_owner_name."</div>
+				<td style='background-color:".$backgroundColor.";' width='20px'>
+				<div align='center'><a href='index.php?id_game=".$row['id_game']."'> ".$team_owner_score." - ".$team_guest_score." </a> </div></td>
+				<td style='background-color:".$backgroundColor.";' width='100px'><div align='left'>".$team_guest_name."</div></td></td>
+				</tr>";
+			}
+			}
+				
+		}
+		/*foreach ($this->gamesModel->getAllNearestGames() as $number=>$row_date) {
 			$allDate = $row_date['date'];
 			$year = substr($allDate, 0, 4);
 			$month = substr($allDate, 5, 2);
@@ -93,7 +141,7 @@ class MainController {
 				<td style='background-color:".$backgroundColor.";' width='100px'><div align='left'>".$team_guest_name."</div></td></td>
 				</tr>";
 			}
-		}
+		}*/
 		echo "</table></center>";
 	}
 	/**

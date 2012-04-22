@@ -115,7 +115,6 @@ class GamesController {
 			$month_for_sql = date('n',mktime(0, 0, 0, $month));
 			
 			$day_for_sql = date('j',mktime(0, 0, 0, 0, $day));
-			
 			echo "<tr id='tr_header'><td colspan='4'>".$date."</td></tr>";
 				
 			foreach ($this->gamesModel->getAllGamesByDate($year, $month_for_sql, $day_for_sql) as $row) {

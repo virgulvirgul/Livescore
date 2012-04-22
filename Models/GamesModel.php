@@ -48,9 +48,9 @@ class GamesModel {
 	 * Получаем все ближайшие даты
 	 */
 	public function getAllNearestDates() {
-		$query = "SELECT date
+		$query = "SELECT DISTINCT DATE(date) as date
 					FROM games
-						WHERE DATEDIFF(date, SYSDATE()) = 0 ORDER BY date";
+						WHERE DATEDIFF(date, SYSDATE()) = 0 OR DATEDIFF(date, SYSDATE()) = 1 ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить все ближайшие даты", __FUNCTION__);
 	}
 	/**
@@ -85,6 +85,29 @@ class GamesModel {
 					FROM games
 						WHERE YEAR(date) like '".$year."' AND MONTH(date) like '".$month."'
 							AND DAY(date) like '".$day."' ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
+	}
+	/**
+	 * Получаем id чемпионатов по дате
+	 * @param год $year
+	 * @param месяц $month
+	 * @param день $day
+	 */
+	public function getChampionshipIdByDate($year, $month, $day) {
+		$query = "SELECT DISTINCT id_championship
+					FROM games
+						WHERE YEAR(date) like '".$year."' AND MONTH(date) like '".$month."'
+							AND DAY(date) like '".$day."' ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
+	}
+	/**
+	 * Получаем сыгранное на данный момент количество минут
+	 * @param id игры $id_game
+	 */
+	public function getMinutesByGameId($id_game) {
+		$query = "SELECT date - NOW() as date
+					FROM games
+						WHERE id_game = {$id_game}";
 		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
 	}
 	/**
