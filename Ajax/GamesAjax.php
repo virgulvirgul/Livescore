@@ -83,6 +83,10 @@ class GamesAjax {
 		if ($this->action == "yellow_card") $this->yellow_card();
 		if ($this->action == "red_card") $this->red_card();
 		if ($this->action == "substitution") $this->substitution();
+		if ($this->action == "break") $this->match_break();
+		if ($this->action == "break_end") $this->match_break_end();
+		if ($this->action == "finished") $this->finished();
+		
 		
 	}
 	/**
@@ -140,6 +144,24 @@ class GamesAjax {
 	 */
 	private function substitution() {
 		$this->teamGamePlayersModel->updateSubstitutionByGameId($this->id_game, $this->id_team, $this->id_player, $this->id_second_player, $this->minute);
+	}
+	/**
+	 * Обраотка перерывы
+	 */
+	private function match_break() {
+		$this->gamesModel->updateBreakByGameId($this->id_game);
+	}
+	/**
+	 * Обработка перерыва
+	 */
+	private function match_break_end() {
+		$this->gamesModel->updateBreakEndByGameId($this->id_game);
+	}
+	/**
+	 * Обработка конца матча
+	 */
+	private function finished() {
+		$this->gamesModel->updateFinishedByGameId($this->id_game);
 	}
 }
 

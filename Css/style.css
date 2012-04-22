@@ -96,7 +96,7 @@ font-weight: normal;
 color: #FFFFFF;
 text-align: left;
 padding: 130px 0 0 120px;
-background: url('../Images/site_images/ball.ico') no-repeat 0 0px;
+background: url('../Images/site_images/pro_evolution_soccer.png') no-repeat 0 0px;
 
 }
 
@@ -499,12 +499,6 @@ td a{
 	color: black;
 	text-decoration: none;
 	width: 100%;
-}
-td img {
-	width: 20px;
-	height: 20px;
-	text-align: center;
-	padding-left: 40%;
 }
 th {
 text-align: right;

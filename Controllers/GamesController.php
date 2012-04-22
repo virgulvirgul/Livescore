@@ -151,7 +151,6 @@ class GamesController {
 		
 		echo "<h2>".$team_owner_name." <span id='score_owner'> ".$team_owner_score." </span> - <span id='score_guest'> ".$team_guest_score." </span> ".$team_guest_name." </h2><br><br>";
 		echo "<center><table>";
-		
 		echo "<tr id='tr_header'><td colspan='3' width='300px'>".$team_owner_name."</td><td width='300px' colspan='3'>".$team_guest_name."</td></tr>";
 		echo "<tr id='tr_header'><td colspan='6'><center>Стартовый состав</center></td></tr>";
 		echo "<tr id='tr_header'>
@@ -203,18 +202,46 @@ class GamesController {
 					echo "<td>".$player_guest_number."</td><td class='cont'>".$player_guest_name."</td><td>".$player_guest_position."</td></tr>";
 			}
 		}
-		echo "</table></center><br>";
+		echo "<tr id='tr_header'><td colspan='6'><center>Голы</center></td></tr>";
+		echo "<tr><td colspan='3'>";
+			$this->getGoals($id_game, $id_team_owner);
+		echo "</td><td colspan='3'>";
+			$this->getGoals($id_game, $id_team_guest);
+		echo "</td></tr>";
 		
+		echo "<tr id='tr_header'><td colspan='6'><center>Жёлтые карточки</center></td></tr>";
+		echo "<tr><td colspan='3'>";
+			$this->getCards('yellow', $id_game, $id_team_owner);
+		echo "</td><td colspan='3'>";
+			$this->getCards('yellow', $id_game, $id_team_guest);
+		echo "</td></tr>";
+		
+		echo "<tr id='tr_header'><td colspan='6'><center>Красные карточки</center></td></tr>";
+		echo "<tr><td colspan='3'>";
+			$this->getCards('red', $id_game, $id_team_owner);
+		echo "</td><td colspan='3'>";
+			$this->getCards('red', $id_game, $id_team_guest);
+		echo "</td></tr>";
+				
+		echo "<tr id='tr_header'><td colspan='6'><center>Замены</center></td></tr>";
+		echo "<tr><td colspan='3'>";
+			$this->getSubstitutions($id_game, $id_team_owner);
+		echo "</td><td colspan='3'>";
+			$this->getSubstitutions($id_game, $id_team_guest);
+		echo "</td></tr>";
+		echo "</table></center><br>";
+		if ($this->gamesModel->getFinishedByGameId($id_game) == 0) {
 		echo "<center><form>
-		<input type='button' onclick='scored_form();' class='button' style='width:200px' value='Забит гол'><br><br>
-		<input type='button' onclick='yellow_card_form();' class='button' style='width:200px' value='Жёлтая карточка'><br><br>
-		<input type='button' onclick='red_card_form();' class='button' style='width:200px' value='Красная карточка'><br><br>
-		<input type='button' onclick='substitution_form();' class='button' style='width:200px' value='Замена'><br><br>
-		<input type='button' onclick='time_out_form();' class='button' style='width:200px' value='Перерыв'><br><br>
-		<input type='button' onclick='end_of_match_form();' class='button' style='width:200px' value='Конец матча'>
+		<div id='show_time_out_end_button'></div>
+		<input type='button' id='scored_button' onclick='scored_form();' class='button' style='width:200px' value='Забит гол'><br><br>
+		<input type='button' id='yellow_card_button' onclick='yellow_card_form();' class='button' style='width:200px' value='Жёлтая карточка'><br><br>
+		<input type='button' id='red_card_button' onclick='red_card_form();' class='button' style='width:200px' value='Красная карточка'><br><br>
+		<input type='button' id='substitution_button' onclick='substitution_form();' class='button' style='width:200px' value='Замена'><br><br>
+		<div id='time_out_button_remove'><input type='button' id='time_out_button' onclick='time_out(".$_GET['id_game'].");' class='button' style='width:200px' value='Перерыв'><br><br></div>
+		<input type='button' id='end_of_match_button' onclick='end_of_match(".$_GET['id_game'].");' class='button' style='width:200px' value='Конец матча'>
 		
 		</form></center>";
-		
+		}
 		$id_game = $_GET['id_game'];
 		$id_team_owner = $this->gamesModel->getTeamOwnerIdByGameId($id_game);
 		$id_team_guest = $this->gamesModel->getTeamGuestIdByGameId($id_game);
@@ -295,6 +322,77 @@ echo "<!-- Модальное меню для замены-->
         		</form>
         	</div>
         	<!-- Конец модального меню для замены-->";
+	}
+	/**
+	 * Получаем список голов команды
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	private function getGoals($id_game, $id_team) {
+		$goals = explode(',', $this->teamGamePlayersModel->getScoreByGameAndTeamId($id_game, $id_team));
+		for ($i = 0; $i < count($goals); $i++) {
+			if ($i % 2 != 0) {
+				$minute = $goals[$i];
+				echo $minute.'\'<br>';
+			}
+			else
+				if ($i % 2 == 0 && $goals[$i] != "") {
+				$player_goal_id = $goals[$i];
+				echo "<img style='height:10px;width:8px;' float='left' src='".$this->SITE_IMAGES."goal.gif'>&nbsp".$this->playersModel->getPlayerNameById($player_goal_id)."&nbsp";
+			}
+		}
+	}
+	/**
+	 * Получаем карточки команды
+	 * @param 'yellow', 'red' $card
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	private function getCards($card, $id_game, $id_team) {
+		if ($card == 'yellow') {
+			$cards = explode(',', $this->teamGamePlayersModel->getYellowCardByGameAndTeamId($id_game, $id_team));
+		}
+		else {
+			$cards = explode(',', $this->teamGamePlayersModel->getRedCardByGameAndTeamId($id_game, $id_team));
+				
+		}
+		for ($i = 0; $i < count($cards); $i++) {
+			if ($i % 2 != 0) {
+				$minute = $cards[$i];
+				echo $minute.'\'<br>';
+			}
+			else
+				if ($i % 2 == 0 && $cards[$i] != "") {
+				$player_card_id = $cards[$i];
+				echo "<img style='height:10px;width:8px;' float='left' src='".$this->SITE_IMAGES."".$card."_card.gif'>&nbsp".$this->playersModel->getPlayerNameById($player_card_id)."&nbsp";
+			}
+		}
+	}
+	/**
+	 * Получаем замены команды
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	private function getSubstitutions($id_game, $id_team) {
+		$substitution = explode(',', $this->teamGamePlayersModel->getSubstitutionByGameAndTeamId($id_game, $id_team));
+
+		for ($i = 0; $i < count($substitution); $i++) {
+			
+			if (($i == 0 || $i % 3 == 0) && $substitution[$i] != "") {
+				$player_first_id = $substitution[$i];
+				echo $this->playersModel->getPlayerNameById($player_first_id)."&nbsp<img style='height:15px;width:15px;' src='".$this->SITE_IMAGES."substitution.gif'>&nbsp";
+			}
+			else {
+				if ($i % 3 == 1 && $substitution[$i] != ""){
+					$player_second_id = $substitution[$i];
+					echo $this->playersModel->getPlayerNameById($player_second_id)."&nbsp";
+				}
+			}
+			if ($i % 3 == 2 ){
+					$minute = $substitution[$i];
+					echo $minute.'\'<br>';
+				}
+		}
 	}
 }
 ?>

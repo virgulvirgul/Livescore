@@ -76,20 +76,20 @@ class StadiumsAjax {
 		}
 	}
 }
+
+
 for ($i = 0; $i <= $_POST['hid']; $i++) {
 	if(is_uploaded_file($_FILES["stadiumImage".$i]["tmp_name"]))
 		// Если файл загружен успешно, перемещаем его
 		// из временной директории в конечную
+		echo $_POST['stadiumName'.$i]. $_POST['stadiumCapacity'.$i].
+		$_FILES["stadiumImage".$i]["name"]. $_POST['id_team'];
 		if (move_uploaded_file($_FILES["stadiumImage".$i]["tmp_name"], "../Images/stadiums/".$_FILES["stadiumImage".$i]["name"])) {
 			$stadiumsModel = new StadiumsModel();
 			
 			$stadiumsModel->addStadium($_POST['stadiumName'.$i], $_POST['stadiumCapacity'.$i],
 						$_FILES["stadiumImage".$i]["name"], $_POST['id_team']);
 		}
-}
-	
-{
-	
 }
 
 //$stadiumsAjax = new StadiumsAjax($_POST['action'], $_POST['id_stadium'], $_POST['stadium_name'],

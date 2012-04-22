@@ -112,6 +112,8 @@ class CreateDBStructure {
 										tour tinyint(2) NOT NULL, 
 										id_referee int(8) NOT NULL,
 										id_stadium int(8) NOT NULL,
+										break tinyint(1) DEFAULT 0,
+										finished tinyint(1) DEFAULT 0,
 										more_info varchar(200) DEFAULT '')";
 		if ($this->pdo1->query($games)) $this->successToCreate("games");
 		else throw new PDOException($this->unnableToCreate("games"));

@@ -24,7 +24,7 @@ $(document).ready(function () {
             	$('#stadium').html($(result.stadium).attr('stadium_name'));
             	$("#stadium").tooltip({
         			txt: '<center>Вместительность - '+ $(result.stadium).attr('stadium_capacity') +'</center><br><img height="300px" width="300px" src="../Images/stadiums/' + $(result.stadium).attr('stadium_image') + '">'                
-                });
+                 });
             }, "json");
     });
     
@@ -107,6 +107,47 @@ function red_card_form() {
 function substitution_form() {
     $('#substitution').modal();
 }
+function time_out(id_game) {
+	$('#scored_button').hide();
+	$('#yellow_card_button').hide();
+	$('#red_card_button').hide();
+	$('#substitution_button').hide();
+	$('#end_of_match_button').hide();
+	$('#time_out_button_remove').remove();
+	$("#show_time_out_end_button").html(
+	"<input type='button' id='time_out_end_button' onclick='time_out_end("+id_game+");' " +
+	"class='button' style='width:200px' value='Конец перерыва'><br><br>");
+	$.post('../Ajax/GamesAjax.php', {   id_game : id_game, 
+										action : "break" },
+									function(result) {
+									});
+	
+}
+function end_of_match(id_game) {
+	$('#scored_button').remove();
+	$('#yellow_card_button').remove();
+	$('#red_card_button').remove();
+	$('#substitution_button').remove();
+	$('#end_of_match_button').remove();
+	$('#time_out_button_remove').remove();
+	$.post('../Ajax/GamesAjax.php', {   id_game : id_game, 
+										action : "finished" },
+									function(result) {
+									});
+}
+function time_out_end(id_game) {
+	$("#show_time_out_end_button").remove();
+	$('#scored_button').show();
+	$('#yellow_card_button').show();
+	$('#red_card_button').show();
+	$('#substitution_button').show();
+	$('#end_of_match_button').show();
+	$.post('../Ajax/GamesAjax.php', {   id_game : id_game, 
+										action : "break_end" },
+									function(result) {
+									});
+}
+
 function scored(id_team, id_player, minute, id_game) {
 	
 	$.post('../Ajax/GamesAjax.php', {   id_team : $(id_team).val(), 

@@ -10,7 +10,9 @@
  *	id_championship	int(6)			Нет	Нет		 	 	 	 	 	 	 
  *	tour	tinyint(2)			Да	NULL		 	 	 	 	 	 	 
  *	id_referee	int(8)			Нет	Нет		 	 	 	 	 	 	 
- *	id_stadium	int(8)			Нет	Нет		 	 	 	 	 	 	 
+ *	id_stadium	int(8)			Нет	Нет		 	 
+ *	break 
+ *	finished	 	 	 	 	 
  *	more_info
  *
  */
@@ -27,10 +29,29 @@ class GamesModel {
 	 * @param id чемпионата $id_championship
 	 */
 	public function getGamesByChampionshipId($id_championship) {
-		$query = "SELECT id_game, date, id_team_owner, id_team_guest, score_owner, score_guest, tour, id_referee, id_stadium, more_info
+		$query = "SELECT id_game, date, id_team_owner, id_team_guest, score_owner, score_guest,
+						 tour, id_referee, id_stadium, break, finished, more_info
 					FROM games 
 						WHERE id_championship  = {$id_championship} ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить все игры по ID чемпионата ", __FUNCTION__);
+	}
+	/**
+	 * Получаем все ближайшие матчи
+	 */
+	public function getAllNearestGames() {
+		$query = "SELECT DISTINCT DATE(date) as date, id_team_owner
+					FROM games
+						WHERE DATEDIFF(date, SYSDATE()) = 0 ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить все ближайшие матчи", __FUNCTION__);
+	}
+	/**
+	 * Получаем все ближайшие даты
+	 */
+	public function getAllNearestDates() {
+		$query = "SELECT date
+					FROM games
+						WHERE DATEDIFF(date, SYSDATE()) = 0 ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить все ближайшие даты", __FUNCTION__);
 	}
 	/**
 	 * Получаем дату игры по её id
@@ -59,10 +80,25 @@ class GamesModel {
 	 * @param день $day
 	 */
 	public function getAllGamesByDate($year, $month, $day) {
-		$query = "SELECT id_game, TIME(date) as date, id_team_owner, id_team_guest, score_owner, score_guest, tour, id_referee, id_stadium, more_info
+		$query = "SELECT id_game, TIME(date) as date, id_team_owner, id_team_guest, score_owner,
+					 score_guest, tour, id_referee, id_stadium, break, finished, more_info
 					FROM games
 						WHERE YEAR(date) like '".$year."' AND MONTH(date) like '".$month."'
 							AND DAY(date) like '".$day."' ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
+	}
+	/**
+	 * Получаем все матчи по дате
+	 * @param год $year
+	 * @param месяц $month
+	 * @param день $day
+	 */
+	public function getAllGamesByDateAndChampioshipId($year, $month, $day, $id_championship) {
+		$query = "SELECT id_game, TIME(date) as date, id_team_owner, id_team_guest, score_owner,
+		score_guest, tour, id_referee, id_stadium, break, finished, more_info
+		FROM games
+		WHERE YEAR(date) like '".$year."' AND MONTH(date) like '".$month."'
+		AND DAY(date) like '".$day."' AND id_championship = {$id_championship} ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
 	}
 	/**
@@ -228,6 +264,56 @@ class GamesModel {
 		}
 		
 		$this->getExec($exec_query, "Невозможно изменить значение голов", __FUNCTION__);
+	}
+	/**
+	 * Если в данный момент идёт перерыв то получаем 1, в противном случае 0
+	 * @param id игры $id_game
+	 */
+	public function getBreakByGameId($id_game) {
+		$query = "SELECT break
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить перерыв", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Если матч закончен получаем 1 в противном случае получаем 0
+	 * @param id игры $id_game
+	 */
+	public function getFinishedByGameId($id_game) {
+		$query = "SELECT finished
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить конец матча", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Если начался перерыв то пишим 1 в break
+	 * @param id игры $id_game
+	 */
+	public function updateBreakByGameId($id_game) {
+		$exec_query = "UPDATE games
+						SET break = 1
+							WHERE id_game = {$id_game}";
+		return $this->getExec($exec_query, "Невозможно записать начало перерыва", __FUNCTION__);
+	}
+	/**
+	 * Если закончился перерыв то пишим 0 в break
+	 * @param id игры $id_game
+	 */
+	public function updateBreakEndByGameId($id_game) {
+		$exec_query = "UPDATE games
+						SET break = 0
+							WHERE id_game = {$id_game}";
+		return $this->getExec($exec_query, "Невозможно записать конец перерыва", __FUNCTION__);
+	}
+	/**
+	 * Если закончился матч то пишим 1 в finished
+	 * @param id игры $id_game
+	 */
+	public function updateFinishedByGameId($id_game) {
+		$exec_query = "UPDATE games
+						SET finished = 1
+							WHERE id_game = {$id_game}";
+		return $this->getExec($exec_query, "Невозможно записать конец матча", __FUNCTION__);
 	}
 	/**
 	*

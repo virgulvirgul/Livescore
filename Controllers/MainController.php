@@ -20,11 +20,19 @@ class MainController {
 	private $countriesModel;
 	private $teamPlayersModel;
 	private $usersModel;
+	private $gamesModel;
+	private $teamsModel;
+	private $championshipsModel;
+	
 	public function __construct() {
 		$this->continentsModel = new ContinentsModel();
 		$this->countriesModel = new CountriesModel();
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->usersModel = new UsersModel();
+		$this->gamesModel = new GamesModel();
+		$this->teamsModel = new TeamsModel();
+		$this->championshipsModel = new ChampionshipsModel();
+		
 	}
 	/**
 	 * 
@@ -46,7 +54,47 @@ class MainController {
 	 * Содержимое главной страницы
 	 */
 	public function getIndexContent() {
-		echo "<h2>Ближайшие матчи</h2>";
+		echo "<h2>Ближайшие матчи</h2><br><br>";
+		
+		echo "<center><table style='border:0;'>";
+		$i = 0;
+		foreach ($this->gamesModel->getAllNearestGames() as $number=>$row_date) {
+			$allDate = $row_date['date'];
+			$year = substr($allDate, 0, 4);
+			$month = substr($allDate, 5, 2);
+			$day = substr($allDate, 8, 2);
+			$hour = substr($allDate, 11, 2);
+			$minute = substr($allDate, 14, 2);
+			$date = date('d F, l',mktime($hour,$minute,0,$month, $day, $year));
+				
+			$hour = date('H : i',mktime($hour,$minute));
+				
+			$month_for_sql = date('n',mktime(0, 0, 0, $month));
+				
+			$day_for_sql = date('j',mktime(0, 0, 0, 0, $day));
+			echo $allDate."<br>";
+			$championship_name = $this->championshipsModel->getChampionshipNameById($this->teamsModel->getChampionshipIdByTeamId($row_date['id_team_owner']));
+			$country_name = $this->countriesModel->getCountryNameById($this->championshipsModel->getIdCoutryByChampionshipId($this->teamsModel->getChampionshipIdByTeamId($row_date['id_team_owner'])));
+			
+			echo "<tr id='tr_header'><td colspan='4'><u>".$country_name."</u> - ".$championship_name."<div align='right'>".$date."</div></td></tr>";
+			foreach ($this->gamesModel->getAllGamesByDateAndChampioshipId($year, $month_for_sql, $day_for_sql, $this->teamsModel->getChampionshipIdByTeamId($row_date['id_team_owner'])) as $row) {
+				$i++;
+				$team_owner_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_owner']);
+				$team_guest_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_guest']);
+				$hour = substr($row['date'], 0, 2);
+				$minute = substr($row['date'], 3, 2);
+				$hour = date('H : i',mktime($hour,$minute));
+				if ($i % 2 == 0) $backgroundColor = '#5475ED';
+				else $backgroundColor = '';
+				echo "<tr>
+				<td style='background-color:".$backgroundColor.";' width='25px'>".$hour."</td>
+				<td style='background-color:".$backgroundColor.";' align='right' width='100px'><div align='right'>".$team_owner_name."</div>
+				<td style='background-color:".$backgroundColor.";' width='20px'><div align='center'><a href='index.php?id_game=".$row['id_game']."'> ? - ?</a> </div></td>
+				<td style='background-color:".$backgroundColor.";' width='100px'><div align='left'>".$team_guest_name."</div></td></td>
+				</tr>";
+			}
+		}
+		echo "</table></center>";
 	}
 	/**
 	 * 
