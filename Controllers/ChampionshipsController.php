@@ -37,7 +37,6 @@ class ChampionshipsController {
 					<table><tr id='tr_header'><td width='1px'>№</td><td>Чемпионат</td>";
 				foreach($this->championshipsModel->getChampionshipsByCountryId($id_country)
 				as $number=>$row) {
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 					echo "<tr id='tr_number{$number}'>
 					<td width='1px'><a id='aNumber{$number}'>".($number+1)."</a></td>
 					<td id='selected{$number}' height='40px'>
@@ -65,10 +64,11 @@ class ChampionshipsController {
 	public function getOneChampionshipContent() {
 		if (isset($_GET['id_championship']) && !isset($_GET['option'])) {
 			$this->getChampionshipEmblem();
-			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=closest_matches'>Ближайшие матчи</a><br>";
 			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=teams_list'>Список команд</a><br>";
 			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=add_game'>Добавить матч</a><br>";
 			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_games'>Список матчей</a><br>";
+			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_archive_games'>Архив матчей</a><br>";
+				
 		}
 	} 
 	/**

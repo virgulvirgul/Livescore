@@ -54,6 +54,38 @@ class GamesModel {
 		return $this->getQuery($query, "Невозможно получить все ближайшие даты", __FUNCTION__);
 	}
 	/**
+	 * Получаем список лет (для архива)
+	 */
+	public function getGamesYears() {
+		$query = "SELECT DISTINCT YEAR(date) as date
+					FROM games";
+		return $this->getQuery($query, "Невозможно получить список лет ", __FUNCTION__);
+	}
+	/**
+	 * Получаем список месяцев по году (для архива)
+	 * @param год $year
+	 */
+	public function getMonthesByYear($year) {
+		$query = "SELECT DISTINCT MONTH(date) as date
+					FROM games
+						WHERE YEAR(date) = '".$year."'";
+		return $this->getQuery($query, "Невозможно получить список месяцев по году ", __FUNCTION__);
+	}
+	/**
+	 * Получаем список игр по году и месяцу
+	 * @param год $year
+	 * @param месяц $month
+	 * @param id чемпионата $id_championship
+	 */
+	public function getGamesByYearMonthChampionshipId($year, $month, $id_championship) {
+		$query = "SELECT id_game, date, id_team_owner, id_team_guest, score_owner, score_guest,
+						 tour, id_referee, id_stadium, break, finished, more_info
+					FROM games
+						WHERE YEAR(date) = '".$year."' AND MONTH(date) = '".$month."'
+							AND id_championship = {$id_championship} ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить список игр по месяцу году и чемпионату", __FUNCTION__);
+	}
+	/**
 	 * Получаем дату игры по её id
 	 * @param id игры $id_game
 	 */
@@ -105,10 +137,10 @@ class GamesModel {
 	 * @param id игры $id_game
 	 */
 	public function getMinutesByGameId($id_game) {
-		$query = "SELECT date - NOW() as date
+		$query = "SELECT time_to_sec(TIMEDIFF(NOW(), date)) / 60 as date
 					FROM games
 						WHERE id_game = {$id_game}";
-		return $this->getQuery($query, "Невозможно получить все игры по дате", __FUNCTION__);
+		return $this->getQuery($query, "Невозможно получить сыгранное на данный момент количество минут", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
 	 * Получаем все матчи по дате

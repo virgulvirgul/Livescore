@@ -94,9 +94,32 @@ class MainController {
 				$team_guest_score = $this->gamesModel->getScoreGuestByGameId($row['id_game']);
 				
 				echo "<tr>
-				<td style='background-color:".$backgroundColor.";' width='25px'>";
-				
-				//.$hour."</td>
+				<td style='background-color:".$backgroundColor.";' width='5px'>";
+				if ($this->gamesModel->getFinishedByGameId($row['id_game']) == 1 ||
+						$this->gamesModel->getMinutesByGameId($row['id_game']) > 130) {
+					$hour = 'FT';
+				}
+				else if ($this->gamesModel->getBreakByGameId($row['id_game']) == 1) {
+					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbspHT";
+				}
+				else if ($this->gamesModel->getMinutesByGameId($row['id_game']) < 130  &&
+						($this->gamesModel->getMinutesByGameId($row['id_game']) > 0)) {
+					if($this->gamesModel->getScoreGuestByGameId($row['id_game']) == '?') {
+						$this->gamesModel->setScores($row['id_game']);
+					}
+					$minute = round($this->gamesModel->getMinutesByGameId($row['id_game']));
+					if ($minute >= 45 && $minute < 60) {
+						$minute = 45;
+					}
+					if ($minute >= 60 && $minute < 105) {
+						$minute = round($this->gamesModel->getMinutesByGameId($row['id_game'])) - 15;
+					}
+					if ($minute >= 105) {
+						$minute = "90";
+					}
+					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbsp".$minute."'";
+				}
+				echo $hour."</td>";
 				echo "<td style='background-color:".$backgroundColor.";' align='right' width='100px'><div align='right'>".$team_owner_name."</div>
 				<td style='background-color:".$backgroundColor.";' width='20px'>
 				<div align='center'><a href='index.php?id_game=".$row['id_game']."'> ".$team_owner_score." - ".$team_guest_score." </a> </div></td>
@@ -173,6 +196,7 @@ class MainController {
 		if (isset($_GET['option']) && $_GET['option']=='add_game') new GamesController();
 		if (isset($_GET['option']) && $_GET['option']=='show_games') new GamesController();
 		if (isset($_GET['id_game'])) new GamesController();
+		if (isset($_GET['option']) && $_GET['option']=='show_archive_games') new GamesController();
 		
 		if (isset($_GET['id_team'])) new TeamPlayersController();
 		if (isset($_GET['messages'])) new MessagesController('messages');

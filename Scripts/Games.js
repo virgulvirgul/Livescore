@@ -210,3 +210,31 @@ function showTeamPlayers(selected_element, target_element) {
 
         }, "json");
 }
+
+
+
+function show_monthes(year, target) {
+	var selectedYear = $(year + ' :selected').html();
+	$(target).attr('disabled', false);
+	$.post('../Ajax/GamesAjax.php', { year : selectedYear, 
+									  action : "showMonthes"},
+									function(result) {
+										var options = '';
+										$(result.monthes).each(function() {
+											options += '<option value="' + $(this).attr('month') + '">' + $(this).attr('month_name') + '</option>';
+									});
+				$(target).html("<option selected disabled>Выберите месяц...</option>" + options);
+				}, "json");
+}
+
+function show_games(year, month, id_championship, div) {
+	var selectedYear = $(year + ' :selected').html();
+	var selectedMonth = $(month + ' :selected').val();
+	$.post('../Ajax/GamesAjax.php', { 	year : selectedYear, 
+										month : selectedMonth,
+										id_championship : id_championship,
+		  								action : "showArchive"},
+		  								function(result) {
+		  									$(div).html(result);
+		  								});
+}

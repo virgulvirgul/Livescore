@@ -49,10 +49,13 @@ class GamesAjax {
 	private $minute;
 	private $id_game;
 	private $id_second_player;
-	
+	private $year;
+	private $month;
+	private $id_championship;
 	public function __construct($action = null, $team_name = null, $team_owner_id = null, $team_guest_id = null, $team_owner_start = null, 
 								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null, $id_team = null,
-								$id_player = null, $minute = null, $id_game = null, $id_second_player = null ) {
+								$id_player = null, $minute = null, $id_game = null, $id_second_player = null, $year = null,
+								$month = null, $id_championship = null) {
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamsModel = new TeamsModel();
@@ -76,6 +79,9 @@ class GamesAjax {
 		if ($minute != null) $this->minute = $minute;
 		if ($id_game != null) $this->id_game = $id_game;
 		if ($id_second_player != null) $this->id_second_player = $id_second_player;
+		if ($year != null) $this->year = $year;
+		if ($month != null) $this->month = $month;
+		if ($id_championship != null) $this->id_championship = $id_championship;
 		
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
 		if ($this->action == "addGame") $this->addGame();
@@ -86,6 +92,8 @@ class GamesAjax {
 		if ($this->action == "break") $this->match_break();
 		if ($this->action == "break_end") $this->match_break_end();
 		if ($this->action == "finished") $this->finished();
+		if ($this->action == "showMonthes") $this->showMonthes();
+		if ($this->action == "showArchive") $this->showArchive();
 		
 		
 	}
@@ -163,9 +171,101 @@ class GamesAjax {
 	private function finished() {
 		$this->gamesModel->updateFinishedByGameId($this->id_game);
 	}
+	private function showMonthes() {
+		$monthes = array();
+		$allDate = $row_date['date'];
+		$year = substr($allDate, 0, 4);
+		$month = substr($allDate, 5, 2);
+		$day = substr($allDate, 8, 2);
+		$hour = substr($allDate, 11, 2);
+		$minute = substr($allDate, 14, 2);
+		$date = date('d F, l',mktime($hour,$minute,0,$month, $day, $year));
+			
+		foreach($this->gamesModel->getMonthesByYear($this->year) as $row) {
+			$monthes[] = array('month_name' => date('F',mktime(0,0,0,$row['date'])), 'month' => $row['date']);
+		}
+		$result = array('monthes' => $monthes);
+		print json_encode($result);
+	}
+	
+	private function showArchive() {
+		$id_championship = $this->id_championship;
+		
+		
+		echo "<br><br><center><table style='border:0;'>";
+		$i = 0;
+		foreach ($this->gamesModel->getGamesByYearMonthChampionshipId($this->year, $this->month, $id_championship) as $number=>$row_date) {
+			$allDate = $row_date['date'];
+			$year = substr($allDate, 0, 4);
+			$month = substr($allDate, 5, 2);
+			$day = substr($allDate, 8, 2);
+			$hour = substr($allDate, 11, 2);
+			$minute = substr($allDate, 14, 2);
+			$date = date('d F, l',mktime($hour,$minute,0,$month, $day, $year));
+			
+			$hour = date('H : i',mktime($hour,$minute));
+			
+			
+			$month_for_sql = date('n',mktime(0, 0, 0, $month));
+			
+			$day_for_sql = date('j',mktime(0, 0, 0, 0, $day));
+			echo "<tr id='tr_header'><td colspan='4'>".$date."</td></tr>";
+				
+			foreach ($this->gamesModel->getAllGamesByDateAndChampioshipId($year, $month_for_sql, $day_for_sql, $id_championship) as $row) {
+				$i++;
+				$team_owner_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_owner']);
+				$team_guest_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_guest']);
+				$team_owner_score = $this->gamesModel->getScoreOwnerByGameId($row['id_game']);
+				$team_guest_score = $this->gamesModel->getScoreGuestByGameId($row['id_game']);
+				$hour = substr($row['date'], 0, 2);
+				$minute = substr($row['date'], 3, 2);
+				$hour = date('H : i',mktime($hour,$minute));
+				if ($i % 2 == 0) $backgroundColor = '#5475ED';
+					else $backgroundColor = '';
+				echo "<tr>";
+				
+				echo "<tr>
+				<td style='background-color:".$backgroundColor.";' width='5px'>";
+				if ($this->gamesModel->getFinishedByGameId($row['id_game']) == 1 ||
+						$this->gamesModel->getMinutesByGameId($row['id_game']) > 130) {
+					$hour = 'FT';
+				}
+				else if ($this->gamesModel->getBreakByGameId($row['id_game']) == 1) {
+					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbspHT";
+				}
+				else if ($this->gamesModel->getMinutesByGameId($row['id_game']) < 130  &&
+						($this->gamesModel->getMinutesByGameId($row['id_game']) > 0)) {
+					if($this->gamesModel->getScoreGuestByGameId($row['id_game']) == '?') {
+						$this->gamesModel->setScores($row['id_game']);
+					}
+					$minute = round($this->gamesModel->getMinutesByGameId($row['id_game']));
+					if ($minute >= 45 && $minute < 60) {
+						$minute = 45;
+					}
+					if ($minute >= 60 && $minute < 105) {
+						$minute = round($this->gamesModel->getMinutesByGameId($row['id_game'])) - 15;
+					}
+					if ($minute >= 105) {
+						$minute = "90";
+					}
+					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbsp".$minute."'";
+				}
+				echo $hour."</td>";
+				
+				echo "
+				<td style='background-color:".$backgroundColor.";' align='right' width='100px'><div align='right'>".$team_owner_name."</div>
+				<td style='background-color:".$backgroundColor.";' width='20px'>
+				<div align='center'><a href='index.php?id_game=".$row['id_game']."'> ".$team_owner_score." - ".$team_guest_score." </a> </div></td>
+				<td style='background-color:".$backgroundColor.";' width='100px'><div align='left'>".$team_guest_name."</div></td></td>
+					</tr>";
+			}
+		}
+		echo "</table></center>";
+	}
 }
 
 $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_owner_id'], $_POST['team_guest_id'], $_POST['team_owner_start'], 
 							$_POST['team_guest_start'], $_POST['tour'], $_POST['id_referee'], $_POST['date'], $_POST['stadium_name'], $_POST['id_team'], 
-							$_POST['id_player'], $_POST['minute'], $_POST['id_game'], $_POST['id_second_player']);
+							$_POST['id_player'], $_POST['minute'], $_POST['id_game'], $_POST['id_second_player'], $_POST['year'], $_POST['month'],
+							 $_POST['id_championship']);
 ?>

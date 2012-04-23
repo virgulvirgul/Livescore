@@ -30,6 +30,8 @@ class GamesController {
 		if (isset($_GET['option']) && $_GET['option'] == 'add_game') $this->getAddGameContent();
 		if (isset($_GET['option']) && $_GET['option'] == 'show_games') $this->getShowGamesContent();
 		if (isset($_GET['id_game'])) $this->getOneGameContent();
+		if (isset($_GET['option']) && $_GET['option'] == 'show_archive_games') $this->getGamesArchive();
+		
 		
 	}
 	/**
@@ -100,7 +102,7 @@ class GamesController {
 		echo '<h2>Список матчей</h2><br><br>';
 		echo "<center><table style='border:0;'>";
 		$i = 0;
-		foreach ($this->gamesModel->getAllDatesByChampionshipId($id_championship) as $number=>$row_date) {
+		foreach ($this->gamesModel->getAllNearestDates() as $number=>$row_date) {
 			$allDate = $row_date['date'];
 			$year = substr($allDate, 0, 4);
 			$month = substr($allDate, 5, 2);
@@ -117,19 +119,51 @@ class GamesController {
 			$day_for_sql = date('j',mktime(0, 0, 0, 0, $day));
 			echo "<tr id='tr_header'><td colspan='4'>".$date."</td></tr>";
 				
-			foreach ($this->gamesModel->getAllGamesByDate($year, $month_for_sql, $day_for_sql) as $row) {
+			foreach ($this->gamesModel->getAllGamesByDateAndChampioshipId($year, $month_for_sql, $day_for_sql, $id_championship) as $row) {
 				$i++;
 				$team_owner_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_owner']);
 				$team_guest_name = $this->teamsModel->getTeamNameByTeamId($row['id_team_guest']);
+				$team_owner_score = $this->gamesModel->getScoreOwnerByGameId($row['id_game']);
+				$team_guest_score = $this->gamesModel->getScoreGuestByGameId($row['id_game']);
 				$hour = substr($row['date'], 0, 2);
 				$minute = substr($row['date'], 3, 2);
 				$hour = date('H : i',mktime($hour,$minute));
 				if ($i % 2 == 0) $backgroundColor = '#5475ED';
 					else $backgroundColor = '';
+				echo "<tr>";
+				
 				echo "<tr>
-				<td style='background-color:".$backgroundColor.";' width='25px'>".$hour."</td>
+				<td style='background-color:".$backgroundColor.";' width='5px'>";
+				if ($this->gamesModel->getFinishedByGameId($row['id_game']) == 1 ||
+						$this->gamesModel->getMinutesByGameId($row['id_game']) > 130) {
+					$hour = 'FT';
+				}
+				else if ($this->gamesModel->getBreakByGameId($row['id_game']) == 1) {
+					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbspHT";
+				}
+				else if ($this->gamesModel->getMinutesByGameId($row['id_game']) < 130  &&
+						($this->gamesModel->getMinutesByGameId($row['id_game']) > 0)) {
+					if($this->gamesModel->getScoreGuestByGameId($row['id_game']) == '?') {
+						$this->gamesModel->setScores($row['id_game']);
+					}
+					$minute = round($this->gamesModel->getMinutesByGameId($row['id_game']));
+					if ($minute >= 45 && $minute < 60) {
+						$minute = 45;
+					}
+					if ($minute >= 60 && $minute < 105) {
+						$minute = round($this->gamesModel->getMinutesByGameId($row['id_game'])) - 15;
+					}
+					if ($minute >= 105) {
+						$minute = "90";
+					}
+					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbsp".$minute."'";
+				}
+				echo $hour."</td>";
+				
+				echo "
 				<td style='background-color:".$backgroundColor.";' align='right' width='100px'><div align='right'>".$team_owner_name."</div>
-				<td style='background-color:".$backgroundColor.";' width='20px'><div align='center'><a href='index.php?id_game=".$row['id_game']."'> ? - ?</a> </div></td>
+				<td style='background-color:".$backgroundColor.";' width='20px'>
+				<div align='center'><a href='index.php?id_game=".$row['id_game']."'> ".$team_owner_score." - ".$team_guest_score." </a> </div></td>
 				<td style='background-color:".$backgroundColor.";' width='100px'><div align='left'>".$team_guest_name."</div></td></td>
 					</tr>";
 			}
@@ -322,6 +356,32 @@ echo "<!-- Модальное меню для замены-->
         	</div>
         	<!-- Конец модального меню для замены-->";
 	}
+	
+	/**
+	 * Получаем архив игр
+	 */
+	public function getGamesArchive() {
+		echo "<h2>Архив игр</h2><br><br>";
+		echo "<h5>Выберите год</h5><br>";
+		echo "<select style='width:300px;' onchange='show_monthes(\"#year\", \"#monthes\");' id='year'><option selected disabled>Выберите год...</option>";
+		
+		foreach ($this->gamesModel->getGamesYears() as $row_year) {
+			echo "<option>".$row_year['date']."</option>";
+		}
+		echo "</select><br><br>";
+		echo "<h5>Выберите месяц</h5><br>";
+		
+		echo "<select style='width:300px;' disabled id='monthes' onchange='show_games(\"#year\", \"#monthes\", ".$_GET['id_championship'].", \"#show_games_div\");'><option selected disabled>Выберите месяц...</option>";
+		
+		//foreach ($this->gamesModel->getMonthesByYear($year) as $row_month) {
+		//	echo "<option>".$row_year['date']."</option>";
+		//}
+		echo "</select>";
+		
+		echo "<div id='show_games_div'></div>";
+	}
+	
+	
 	/**
 	 * Получаем список голов команды
 	 * @param id игры $id_game

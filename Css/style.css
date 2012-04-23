@@ -39,7 +39,7 @@ height: auto;
 
 a:link, a:visited {
 #color: #005AA1;
-#text-decoration: underline;
+text-decoration: none;
 font-weight: bold;
 }
 
