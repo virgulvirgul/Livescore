@@ -387,7 +387,7 @@ echo "<!-- Модальное меню для замены-->
 	 * @param id игры $id_game
 	 * @param id команды $id_team
 	 */
-	private function getGoals($id_game, $id_team) {
+	public function getGoals($id_game, $id_team) {
 		$goals = explode(',', $this->teamGamePlayersModel->getScoreByGameAndTeamId($id_game, $id_team));
 		for ($i = 0; $i < count($goals); $i++) {
 			if ($i % 2 != 0) {
@@ -407,7 +407,7 @@ echo "<!-- Модальное меню для замены-->
 	 * @param id игры $id_game
 	 * @param id команды $id_team
 	 */
-	private function getCards($card, $id_game, $id_team) {
+	public function getCards($card, $id_game, $id_team) {
 		if ($card == 'yellow') {
 			$cards = explode(',', $this->teamGamePlayersModel->getYellowCardByGameAndTeamId($id_game, $id_team));
 		}
@@ -432,7 +432,7 @@ echo "<!-- Модальное меню для замены-->
 	 * @param id игры $id_game
 	 * @param id команды $id_team
 	 */
-	private function getSubstitutions($id_game, $id_team) {
+	public function getSubstitutions($id_game, $id_team) {
 		$substitution = explode(',', $this->teamGamePlayersModel->getSubstitutionByGameAndTeamId($id_game, $id_team));
 
 		for ($i = 0; $i < count($substitution); $i++) {

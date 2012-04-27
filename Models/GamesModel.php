@@ -25,6 +25,17 @@ class GamesModel {
 		$this->pdo = Config::getInstance()->getPDO();
 	}
 	/**
+	 * Получааем данные по игре по id
+	 * @param id игры $id_game
+	 */
+	public function getGameByGameId($id_game) {
+		$query = "SELECT id_game, date, id_team_owner, id_team_guest, score_owner, score_guest,
+						tour, id_referee, id_stadium, break, finished, more_info, id_championship
+					FROM games
+						WHERE id_game  = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить иру по id ", __FUNCTION__);
+	}
+	/**
 	 * Получаем все игры по id чемпионата
 	 * @param id чемпионата $id_championship
 	 */
@@ -78,8 +89,7 @@ class GamesModel {
 	 * @param id чемпионата $id_championship
 	 */
 	public function getGamesByYearMonthChampionshipId($year, $month, $id_championship) {
-		$query = "SELECT id_game, date, id_team_owner, id_team_guest, score_owner, score_guest,
-						 tour, id_referee, id_stadium, break, finished, more_info
+		$query = "SELECT DISTINCT DATE(date) as date
 					FROM games
 						WHERE YEAR(date) = '".$year."' AND MONTH(date) = '".$month."'
 							AND id_championship = {$id_championship} ORDER BY date";

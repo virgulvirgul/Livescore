@@ -52,6 +52,10 @@ class GamesAjax {
 	private $year;
 	private $month;
 	private $id_championship;
+	
+	private $COUNTRY_IMAGES = '../Images/countries_flags/';
+	private $SITE_IMAGES = '../Images/site_images/';
+	private $STADIUMS_IMAGES = '../Images/stadiums/';
 	public function __construct($action = null, $team_name = null, $team_owner_id = null, $team_guest_id = null, $team_owner_start = null, 
 								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null, $id_team = null,
 								$id_player = null, $minute = null, $id_game = null, $id_second_player = null, $year = null,
