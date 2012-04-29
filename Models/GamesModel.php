@@ -36,6 +36,20 @@ class GamesModel {
 		return $this->getQuery($query, "Невозможно получить иру по id ", __FUNCTION__);
 	}
 	/**
+	 * Получаем предыдущие встречи между командами
+	 * @param id команды хозяев $id_team_owner
+	 * @param id команды гостей $id_team_guest
+	 */
+	public function getPreviousMeetingsByTeamOwnerAndGuestId($id_team_owner, $id_team_guest) {
+		$query = "SELECT id_game, DATE(date) as date, id_team_owner, id_team_guest, score_owner, score_guest,
+						tour, id_referee, id_stadium, break, finished, more_info, id_championship
+					FROM games
+						WHERE (id_team_owner  = {$id_team_owner} AND id_team_guest = {$id_team_guest})
+							OR (id_team_owner  = {$id_team_guest} AND id_team_guest = {$id_team_owner})
+						ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить предыдущие встречи по id команд", __FUNCTION__);
+	}
+	/**
 	 * Получаем все игры по id чемпионата
 	 * @param id чемпионата $id_championship
 	 */
