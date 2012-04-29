@@ -39,7 +39,7 @@ $previous_meetings_array = $result['previous_meetings_array'];
 
 $referee = $result['referee'];
 $stadium = $result['stadium'];
-
+$tour = $result['tour'];
 echo "<center><table>";
 	foreach ($teams as $row_teams) {
 		$team_owner_name = $row_teams['team_owner_name'];
@@ -150,11 +150,15 @@ echo "</div>";
 
 echo "<div id='addition_info_table' style='display:none'>";
 echo "<center><table>";
+echo "<tr id='tr_header'><td>Тур</td></tr>";
 
+echo "<tr><td>".$tour['tour']."</td></tr>";
 echo "<tr id='tr_header'><td>Судья</td></tr>";
 
 echo "<tr><td>".$referee['referee_name']."</td></tr>";
-echo $stadium['stadium_image'];
+echo "<tr id='tr_header'><td>Стадион</td></tr>";
+
+echo "<tr><td>".$stadium['stadium_name']." (".$stadium['stadium_capacity'].")</td></tr><tr><td>".$stadium['stadium_image']."</td></tr>";
 echo "</table></center>";
 
 

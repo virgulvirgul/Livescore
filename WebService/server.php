@@ -116,7 +116,7 @@ function getStatistics($id_game) {
 													"team_guest_score" => $row_prev['score_guest'], "id_game" => $row_prev['id_game'],
 												"team_owner_name" => $team_owner_name_, "team_guest_name" => $team_guest_name_);
 		}
-		
+		$tour = array("tour" => $row['tour']);
 		$referee = array("referee_name" => $refereesModel->getRefereeNameById($gamesModel->getRefereeIdByGameId($row['id_game'])));
 		$stadium_image = "<img height='200px' width='200px'  src='http://localhost/Livescore/Images/stadiums/".$stadiumsModel->getStadiumImageByStadiumId($gamesModel->getRefereeIdByGameId($row['id_game']))."'";
 		$stadium = array("stadium_name" => $stadiumsModel->getStadiumNameById($gamesModel->getStadiumIdByGameId($row['id_game'])),
@@ -130,7 +130,7 @@ function getStatistics($id_game) {
 			"red_cards_guest_array" => $red_cards_guest_array,
 			"subs_guest_array" => $subs_guest_array, "subs_owner_array" => $subs_owner_array, "lines_up_team_guest" => $lines_up_team_guest,
 			"lines_up_team_owner" => $lines_up_team_owner, "previous_meetings_array" => $previous_meetings_array, "referee" => $referee,
-			"stadium" => $stadium);
+			"stadium" => $stadium, "tour" => $tour);
 }
 /**
  * Получаем карточки команды
