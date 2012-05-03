@@ -70,8 +70,13 @@ function addReferee(id_country, referee_name, referee_birth, formName) {
 		if (referee_name_.val() == "")  
 			{
 				$("#errorChanging").remove();
-				referee_name_.before("<span id='errorChanging'>&nbsp;Введите имя !</span>");
+				referee_name_.before("<span id='errorChanging'>&nbsp;Введите имя !<br></span>");
 			}
+		else if (referee_birth_.val() == "")  
+		{
+			$("#errorChanging").remove();
+			referee_birth_.before("<span id='errorChanging'>&nbsp;Введите дату рождения !<br></span>");
+		}
 		else {
 
 			$.post('../Ajax/RefereesAjax.php', { id_country : id_country, 

@@ -87,6 +87,15 @@ class GamesModel {
 		return $this->getQuery($query, "Невозможно получить список лет ", __FUNCTION__);
 	}
 	/**
+	 * Получаем список лет (для архива)
+	 * @param id чемпионата $id_championship
+	 */
+	public function getGamesYearsByChampionshipId($id_championship) {
+		$query = "SELECT DISTINCT YEAR(date) as date
+					FROM games WHERE id_championship = {$id_championship}";
+		return $this->getQuery($query, "Невозможно получить список лет по id чемпионата", __FUNCTION__);
+	}
+	/**
 	 * Получаем список месяцев по году (для архива)
 	 * @param год $year
 	 */
@@ -95,6 +104,17 @@ class GamesModel {
 					FROM games
 						WHERE YEAR(date) = '".$year."'";
 		return $this->getQuery($query, "Невозможно получить список месяцев по году ", __FUNCTION__);
+	}
+	/**
+	 * Получаем список месяцев по году (для архива) и id чемпионата
+	 * @param год $year
+	 * @param id чемпионата $id_championship
+	 */
+	public function getMonthesByYearAndChampionshipId($year, $id_championship) {
+		$query = "SELECT DISTINCT MONTH(date) as date
+					FROM games
+						WHERE YEAR(date) = '".$year."' AND id_championship = {$id_championship}";
+		return $this->getQuery($query, "Невозможно получить список месяцев по году и id чемпионата", __FUNCTION__);
 	}
 	/**
 	 * Получаем список игр по году и месяцу

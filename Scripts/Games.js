@@ -213,10 +213,11 @@ function showTeamPlayers(selected_element, target_element) {
 
 
 
-function show_monthes(year, target) {
+function show_monthes(year, target, id_championship) {
 	var selectedYear = $(year + ' :selected').html();
 	$(target).attr('disabled', false);
 	$.post('../Ajax/GamesAjax.php', { year : selectedYear, 
+										id_championship : id_championship,
 									  action : "showMonthes"},
 									function(result) {
 										var options = '';

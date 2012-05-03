@@ -93,12 +93,23 @@ class FillTables {
 		$championshipsInt = array('Champions League', 'Europe League',	'Super Cup');
 		$champ_countries_int = array('European Cups');
 		
+		$championships2 = array('Liga BBVA');
+		$champ_countries2 = array('Spain');
+		
 		for ($i = 0; $i < count($championships); $i++ ) {
 			$query = "SELECT id_country FROM countries WHERE name like '{$champ_countries[0]}'";
 			$row = $this->pdo->query($query)->fetch();
 			$insert_query = "INSERT INTO championships(name, id_country)
 								VALUES('{$championships[$i]}', '{$row['id_country']}')";
 			if (! $this->pdo->exec($insert_query)) throw new PDOException($this->unnableToInsert("championships"));
+		}
+		
+		for ($i = 0; $i < count($championships2); $i++ ) {
+			$query = "SELECT id_country FROM countries WHERE name like '{$champ_countries2[0]}'";
+			$row = $this->pdo->query($query)->fetch();
+			$insert_query = "INSERT INTO championships(name, id_country)
+			VALUES('{$championships2[$i]}', '{$row['id_country']}')";
+			if (! $this->pdo->exec($insert_query)) throw new PDOException($this->unnableToInsert("championships2"));
 		}
 		
 		for ($i = 0; $i < count($championshipsInt); $i++ ) {
@@ -119,11 +130,27 @@ class FillTables {
 				'Swansea', 'Bolton', 'Blackburn', 'Sunderland', 'Wolves',  'Everton',
 				'West Brom', 'Wigan', 'QPR');
 		$teams_england_name_championship = array('Premier League');
+		
+		$teams_spain_name = array('Real Madrid', 'Barcelona', 'Valencia', 'Levante', 'Espanyol',
+				'Athletic Club', 'Atlético de Madrid', 'Málaga', 'Osasuna', 'Getafe', 'Sevilla',
+				'Rayo Vallecano', 'Mallorca', 'Granada', 'Real Sociedad', 'Betis',  'Villarreal',
+				'Racing', 'Sporting', 'Zaragoza');
+		$teams_spain_name_championship = array('Liga BBVA');
+		
 		for ($i = 0; $i < count($teams_england_name); $i++) {
 			$query = "SELECT id_championship FROM championships WHERE name like '{$teams_england_name_championship[0]}'";
 			$row = $this->pdo->query($query)->fetch();
 			$insert_query = "INSERT INTO teams(name, id_championship)
 									VALUES('{$teams_england_name[$i]}', '{$row['id_championship']}')";
+			if (! $this->pdo->exec($insert_query)) throw new PDOException($this->unnableToInsert("teams"));
+		}
+		$this->successToInsert("teams");
+		
+		for ($i = 0; $i < count($teams_spain_name); $i++) {
+			$query = "SELECT id_championship FROM championships WHERE name like '{$teams_spain_name_championship[0]}'";
+			$row = $this->pdo->query($query)->fetch();
+			$insert_query = "INSERT INTO teams(name, id_championship)
+			VALUES('{$teams_spain_name[$i]}', '{$row['id_championship']}')";
 			if (! $this->pdo->exec($insert_query)) throw new PDOException($this->unnableToInsert("teams"));
 		}
 		$this->successToInsert("teams");

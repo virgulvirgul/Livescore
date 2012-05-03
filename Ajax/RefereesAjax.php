@@ -75,7 +75,7 @@ class RefereesAjax {
 	 * Удаляем судью
 	 */
 	private function deleteReferee() {
-		 echo $this->refereesModel->deleteRefereeById($this>id_referee);
+		 echo $this->refereesModel->deleteRefereeById($this->id_referee);
 	}
 }
 

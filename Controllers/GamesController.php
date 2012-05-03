@@ -363,9 +363,9 @@ echo "<!-- Модальное меню для замены-->
 	public function getGamesArchive() {
 		echo "<h2>Архив игр</h2><br><br>";
 		echo "<h5>Выберите год</h5><br>";
-		echo "<select style='width:300px;' onchange='show_monthes(\"#year\", \"#monthes\");' id='year'><option selected disabled>Выберите год...</option>";
+		echo "<select style='width:300px;' onchange='show_monthes(\"#year\", \"#monthes\" , ".$_GET['id_championship'].");' id='year'><option selected disabled>Выберите год...</option>";
 		
-		foreach ($this->gamesModel->getGamesYears() as $row_year) {
+		foreach ($this->gamesModel->getGamesYearsByChampionshipId($_GET['id_championship']) as $row_year) {
 			echo "<option>".$row_year['date']."</option>";
 		}
 		echo "</select><br><br>";

@@ -185,7 +185,7 @@ class GamesAjax {
 		$minute = substr($allDate, 14, 2);
 		$date = date('d F, l',mktime($hour,$minute,0,$month, $day, $year));
 			
-		foreach($this->gamesModel->getMonthesByYear($this->year) as $row) {
+		foreach($this->gamesModel->getMonthesByYearAndChampionshipId($this->year, $this->id_championship) as $row) {
 			$monthes[] = array('month_name' => date('F',mktime(0,0,0,$row['date'])), 'month' => $row['date']);
 		}
 		$result = array('monthes' => $monthes);
