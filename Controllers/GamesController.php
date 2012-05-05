@@ -193,12 +193,9 @@ class GamesController {
 		
 		$team_owner_players_id_array = explode(',', $this->teamGamePlayersModel->getPlayersIdByGameAndTeamId($id_game, $id_team_owner));
 		$team_guest_players_id_array = explode(',', $this->teamGamePlayersModel->getPlayersIdByGameAndTeamId($id_game, $id_team_guest));
-		
 		if (count($team_owner_players_id_array) >= count($team_guest_players_id_array)) {
 			for ($i = 0; $i < count($team_owner_players_id_array); $i++) {
-				
-			
-				
+								
 				$id_player = $team_owner_players_id_array[$i];
 				$player_number = $this->teamPlayersModel->getTeamPlayersPlayerNumberByPlayerId($id_player);
 				$player_position = $this->teamPlayersModel->getTeamPlayersPlayerPositionByPlayerId($id_player);
@@ -225,6 +222,7 @@ class GamesController {
 					$player_number = $this->teamPlayersModel->getTeamPlayersPlayerNumberByPlayerId($id_player);
 					$player_position = $this->teamPlayersModel->getTeamPlayersPlayerPositionByPlayerId($id_player);
 					$player_name = $this->playersModel->getPlayerNameById($id_player);
+						
 					echo "<tr><td>".$player_number."</td><td class='cont'>".$player_name."</td><td>".$player_position."</td>";
 				}
 				else echo "<tr><td></td><td></td><td></td>";
@@ -294,7 +292,9 @@ echo "<!-- Модальное меню для забитого гола-->
         			<select disabled style='width:300px;' id='team_players'></select><br><br>
        			<h6>Минута</h6><br>
         			<input type='text' style='width:300px;' id='scored_minute'><br><br><br>
-        			<input type='button' class='button' onclick='scored(team_select, team_players, scored_minute, ".$_GET['id_game'].")' value='Принять'>
+        			<div align='left'><input type='checkbox' name='own_goal'>&nbsp<span style='font-weight:bold;float:center;font-size:1.2em;color:#D0F500;' align='center'>Автогол</span></label><br><br><br>
+        			<input type='checkbox' name='penalty'>&nbsp<span style='font-weight:bold;float:center;font-size:1.2em;color:#D0F500;' align='center'>С пенальти</span></label><br><br><br>
+        			</div><input type='button' class='button' onclick='scored(team_select, team_players, scored_minute, ".$_GET['id_game'].", own_goal, penalty)' value='Принять'>
         	</form>
         </div>
         
@@ -392,7 +392,7 @@ echo "<!-- Модальное меню для замены-->
 		for ($i = 0; $i < count($goals); $i++) {
 			if ($i % 2 != 0) {
 				$minute = $goals[$i];
-				echo $minute.'\'<br>';
+				echo $minute.'<br>';
 			}
 			else
 				if ($i % 2 == 0 && $goals[$i] != "") {
@@ -418,7 +418,7 @@ echo "<!-- Модальное меню для замены-->
 		for ($i = 0; $i < count($cards); $i++) {
 			if ($i % 2 != 0) {
 				$minute = $cards[$i];
-				echo $minute.'\'<br>';
+				echo $minute.'<br>';
 			}
 			else
 				if ($i % 2 == 0 && $cards[$i] != "") {
@@ -449,7 +449,7 @@ echo "<!-- Модальное меню для замены-->
 			}
 			if ($i % 3 == 2 ){
 					$minute = $substitution[$i];
-					echo $minute.'\'<br>';
+					echo $minute.'<br>';
 				}
 		}
 	}

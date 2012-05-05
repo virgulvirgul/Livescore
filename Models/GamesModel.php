@@ -186,6 +186,24 @@ class GamesModel {
 						WHERE id_game = {$id_game}";
 		return $this->getQuery($query, "Невозможно получить сыгранное на данный момент количество минут", __FUNCTION__)->fetchColumn(0);
 	}
+	
+	/**
+	 * Получаем id другой команды
+	 * @param id команды $id_team
+	 * @param id игры $id_game
+	 */
+	public function getAnotherTeamByTeamAndGameId($id_team, $id_game) {
+		$query = "SELECT id_team_guest FROM games WHERE id_team_owner = {$id_team} AND id_game = {$id_game}";
+		
+		if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
+			return $this->getQuery($query, "Невозможно получить id команды", __FUNCTION__)->fetchColumn(0);
+		}
+		else {
+			$query = "SELECT id_team_owner FROM games WHERE id_team_guest = {$id_team} AND id_game = {$id_game}";
+			return $this->getQuery($query, "Невозможно получить id команды", __FUNCTION__)->fetchColumn(0);
+		}
+	}
+	
 	/**
 	 * Получаем все матчи по дате
 	 * @param год $year
@@ -363,6 +381,23 @@ class GamesModel {
 		}
 		
 		$this->getExec($exec_query, "Невозможно изменить значение голов", __FUNCTION__);
+	}
+	/**
+	 * При автоголе меняем значение голов у другой команды на +1
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function updateOwnGoalScoreByGameId($id_game, $id_team) {
+		$query = "SELECT id_game FROM games WHERE id_team_guest = {$id_team} AND id_game = {$id_game}";
+	
+		if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() == 0) {
+			$exec_query = "UPDATE games SET score_guest = score_guest + 1 WHERE id_game = {$id_game} AND id_team_owner = {$id_team}";
+		}
+		else {
+			$exec_query = "UPDATE games SET score_owner = score_owner + 1 WHERE id_game = {$id_game} AND id_team_guest = {$id_team}";
+		}
+	
+		$this->getExec($exec_query, "Невозможно изменить значение автогола", __FUNCTION__);
 	}
 	/**
 	 * Если в данный момент идёт перерыв то получаем 1, в противном случае 0

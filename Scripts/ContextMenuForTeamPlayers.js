@@ -271,7 +271,7 @@ $(document).ready(function() {
              return false;
          }
          if (playerName.val() != "" && playerNumber != "" && playerBirth != "" && playerPosition != "Выберите амплуа...") {
-             $.post('../Ajax/TeamPlayersAjax.php', {id_team: id_team,
+        	 $.post('../Ajax/TeamPlayersAjax.php', {id_team: id_team,
             	 							 action : "add", 
                                              name : playerName.val(),
                                              player_number : playerNumber.val(),

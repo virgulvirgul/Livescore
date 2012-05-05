@@ -148,12 +148,16 @@ function time_out_end(id_game) {
 									});
 }
 
-function scored(id_team, id_player, minute, id_game) {
-	
+function scored(id_team, id_player, minute, id_game, own_goal, penalty) {
+	var flag_own_goal = 0;
+	var minute_string = $(minute).val();
+	if ($(own_goal).attr('checked') != null) flag_own_goal = 1;
+	if ($(penalty).attr('checked') != null) minute_string += "'' (pen.)";
 	$.post('../Ajax/GamesAjax.php', {   id_team : $(id_team).val(), 
 										id_player : $(id_player).val(),
-										minute : $(minute).val(),
+										minute : minute_string,
 										id_game : id_game,
+										own_goal : flag_own_goal,
 										action : "scored" },
 										function(result) {
 								        });

@@ -52,14 +52,14 @@ class GamesAjax {
 	private $year;
 	private $month;
 	private $id_championship;
-	
+	private $own_goal;
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
 	private $SITE_IMAGES = '../Images/site_images/';
 	private $STADIUMS_IMAGES = '../Images/stadiums/';
 	public function __construct($action = null, $team_name = null, $team_owner_id = null, $team_guest_id = null, $team_owner_start = null, 
 								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null, $id_team = null,
 								$id_player = null, $minute = null, $id_game = null, $id_second_player = null, $year = null,
-								$month = null, $id_championship = null) {
+								$month = null, $id_championship = null, $own_goal = null) {
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamsModel = new TeamsModel();
@@ -86,7 +86,7 @@ class GamesAjax {
 		if ($year != null) $this->year = $year;
 		if ($month != null) $this->month = $month;
 		if ($id_championship != null) $this->id_championship = $id_championship;
-		
+		if ($own_goal != null) $this->own_goal = $own_goal;
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
 		if ($this->action == "addGame") $this->addGame();
 		if ($this->action == "scored") $this->scored();
@@ -136,26 +136,33 @@ class GamesAjax {
 	 * Обрабатываем забитый гол.
 	 */
 	private function scored() {
-		$this->teamGamePlayersModel->updateScoreByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
-		$this->gamesModel->updateScoreByGameId($this->id_game, $this->id_team);
+		if($this->own_goal == 1) {
+			$this->gamesModel->updateOwnGoalScoreByGameId($this->id_game, $this->id_team);
+			$this->teamGamePlayersModel->updateScoreByGameId($this->id_game, 
+				$this->gamesModel->getAnotherTeamByTeamAndGameId($this->id_team, $this->id_game), $this->id_player, $this->minute."'' (own goal)");
+		}
+		else {
+			$this->teamGamePlayersModel->updateScoreByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute."''");
+			$this->gamesModel->updateScoreByGameId($this->id_game, $this->id_team);
+		}
 	}
 	/**
 	 * Получение игроком жёлтой карточки
 	 */
 	private function yellow_card() {
-		$this->teamGamePlayersModel->updateYellowCardByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
+		$this->teamGamePlayersModel->updateYellowCardByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute."''");
 	}
 	/**
 	 * Получение игроком красной карточки
 	 */
 	private function red_card() {
-		$this->teamGamePlayersModel->updateRedCardByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute);
+		$this->teamGamePlayersModel->updateRedCardByGameId($this->id_game, $this->id_team, $this->id_player, $this->minute."''");
 	}
 	/**
 	 * Замена игрока
 	 */
 	private function substitution() {
-		$this->teamGamePlayersModel->updateSubstitutionByGameId($this->id_game, $this->id_team, $this->id_player, $this->id_second_player, $this->minute);
+		$this->teamGamePlayersModel->updateSubstitutionByGameId($this->id_game, $this->id_team, $this->id_player, $this->id_second_player, $this->minute."''");
 	}
 	/**
 	 * Обраотка перерывы
@@ -271,5 +278,5 @@ class GamesAjax {
 $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_owner_id'], $_POST['team_guest_id'], $_POST['team_owner_start'], 
 							$_POST['team_guest_start'], $_POST['tour'], $_POST['id_referee'], $_POST['date'], $_POST['stadium_name'], $_POST['id_team'], 
 							$_POST['id_player'], $_POST['minute'], $_POST['id_game'], $_POST['id_second_player'], $_POST['year'], $_POST['month'],
-							 $_POST['id_championship']);
+							 $_POST['id_championship'], $_POST['own_goal']);
 ?>
