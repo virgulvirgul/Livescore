@@ -32,6 +32,14 @@ $red_cards_guest_array = $result['red_cards_guest_array'];
 $subs_owner_array = $result['subs_owner_array'];
 $subs_guest_array = $result['subs_guest_array'];
 
+$penalty_shootout_flag = $result['penalty_shootout_flag'];
+$penalty_shootout_owner_array = $result['penalty_shootout_owner_array'];
+$penalty_shootout_guest_array = $result['penalty_shootout_guest_array'];
+$penalty_score_owner_array = $result['penalty_score_owner_array'];
+$penalty_score_guest_array = $result['penalty_score_guest_array'];
+
+
+
 $lines_up_team_owner = $result['lines_up_team_owner'];
 $lines_up_team_guest = $result['lines_up_team_guest'];
 
@@ -94,6 +102,20 @@ foreach ($subs_owner_array as $row) {
 }
 foreach ($subs_guest_array as $row) {
 	if ($row['team_substitution_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row['team_substitution_minute']."'&nbsp&nbsp&nbsp".$row['team_first_player_name']."&nbsp<img style='height:10px;width:8px;' float='left' src='css/images/substitution.gif'>&nbsp".$row['team_second_player_name']."</div></td></tr>";
+}
+
+if ($penalty_shootout_flag == 1) {
+	echo "<tr id='tr_header'><td colspan='2'><center>Серия пенальти [".$penalty_score_owner_array." - ".$penalty_score_guest_array."]</td></tr>";
+	echo "<td>";
+		foreach ($penalty_shootout_owner_array as $row) {
+			echo $row['player_name']."&nbsp".$row['scored']."<br>";
+		}
+	echo "</td>";
+	echo "</td><td>";
+		foreach ($penalty_shootout_guest_array as $row) {
+			echo $row['player_name']."&nbsp".$row['scored']."<br>";
+		}
+	echo "</td></tr>";
 }
 echo "</table></center>";
 echo "</div>";

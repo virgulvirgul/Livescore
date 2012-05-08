@@ -450,6 +450,63 @@ class GamesModel {
 		return $this->getExec($exec_query, "Невозможно записать конец матча", __FUNCTION__);
 	}
 	/**
+	 * Получаем была ли серия пенальти (1 - была, 0 - не была)
+	 * @param id игры $id_game
+	 */
+	public function getPenaltyShootoutByGameId($id_game) {
+		$query = "SELECT penalty_shootout
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить серию пенальти", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем кол-во забитых пенальти хозяевами по id игры
+	 * @param id игры $id_game
+	 */
+	public function getPenaltyShootoutOwnerScoreByGameId($id_game) {
+		$query = "SELECT penalty_shootout_owner_score
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить кол-во забитых пенальти хозяевами по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем кол-во забитых пенальти гостями по id игры
+	 * @param id игры $id_game
+	 */
+	public function getPenaltyShootoutGuestScoreByGameId($id_game) {
+		$query = "SELECT penalty_shootout_guest_score
+						FROM games
+							WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить кол-во забитых пенальти гостями по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Если началась серия пенальти ставим 1 в столбец penalty_shootout
+	 * @param id игры  $id_game
+	 */
+	public function setPealtyShootoutByGameId($id_game) {
+		$exec_query = "UPDATE games
+							SET penalty_shootout = 1
+								WHERE id_game = {$id_game}";
+		return $this->getExec($exec_query, "Невозможно записать начало серии пенальти", __FUNCTION__);
+	}
+	/**
+	 * При забитом пенальти меняем значения на +1
+	 * @param id команды $id_team
+	 * @param id игры $id_game
+	 */
+	public function updatePenaltyScoredByTeamAndGameId($id_team, $id_game) {
+		$query = "SELECT id_game FROM games WHERE id_team_guest = {$id_team} AND id_game = {$id_game}";
+		
+		if ($this->getQuery($query, "Ошибка в ", __FUNCTION__)->rowCount() > 0) {
+			$exec_query = "UPDATE games SET penalty_shootout_guest_score = penalty_shootout_guest_score + 1 WHERE id_game = {$id_game} AND id_team_guest = {$id_team}";
+		}
+		else {
+			$exec_query = "UPDATE games SET penalty_shootout_owner_score = penalty_shootout_owner_score + 1 WHERE id_game = {$id_game} AND id_team_owner = {$id_team}";
+		}
+		
+		$this->getExec($exec_query, "Невозможно изменить значение пенальти", __FUNCTION__);
+	}
+	/**
 	*
 	* Выполняем запрос
 	* @param запрос $query

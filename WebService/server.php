@@ -55,14 +55,6 @@ function getStatistics($id_game) {
 						'player_guest_name' => $player_guest_name);
 			}
 		
-		
-		
-		
-		
-		
-		
-		
-		
 		$goals = explode(',', $teamGamePlayersModel->getScoreByGameAndTeamId($row['id_game'], $row['id_team_owner']));
 		$minute = 0;
 		for ($i = 0; $i < count($goals); $i++) {
@@ -107,6 +99,12 @@ function getStatistics($id_game) {
 		$subs_owner_array = getSubstitutions($row['id_game'], $row['id_team_owner']);
 		$subs_guest_array = getSubstitutions($row['id_game'], $row['id_team_guest']);
 		
+		$penalty_shootout_flag = $gamesModel->getPenaltyShootoutByGameId($row['id_game']);
+		$penalty_shootout_owner_array = getPenaltyShootout($row['id_game'], $row['id_team_owner']);
+		$penalty_shootout_guest_array = getPenaltyShootout($row['id_game'], $row['id_team_guest']);
+		$penalty_score_owner_array = $gamesModel->getPenaltyShootoutOwnerScoreByGameId($row['id_game']);
+		$penalty_score_guest_array = $gamesModel->getPenaltyShootoutGuestScoreByGameId($row['id_game']);
+		
 		foreach ($gamesModel->getPreviousMeetingsByTeamOwnerAndGuestId($row['id_team_owner'], $row['id_team_guest']) as $row_prev) {
 			
 			$team_owner_name_ = $teamsModel->getTeamNameByTeamId($row_prev['id_team_owner']);
@@ -130,7 +128,10 @@ function getStatistics($id_game) {
 			"red_cards_guest_array" => $red_cards_guest_array,
 			"subs_guest_array" => $subs_guest_array, "subs_owner_array" => $subs_owner_array, "lines_up_team_guest" => $lines_up_team_guest,
 			"lines_up_team_owner" => $lines_up_team_owner, "previous_meetings_array" => $previous_meetings_array, "referee" => $referee,
-			"stadium" => $stadium, "tour" => $tour);
+			"stadium" => $stadium, "tour" => $tour, "penalty_shootout_flag" => $penalty_shootout_flag,
+			"penalty_shootout_owner_array" => $penalty_shootout_owner_array,
+			"penalty_shootout_guest_array" => $penalty_shootout_guest_array,
+			"penalty_score_owner_array" => $penalty_score_owner_array, "penalty_score_guest_array" => $penalty_score_guest_array);
 }
 /**
  * Получаем карточки команды
@@ -193,6 +194,34 @@ function getSubstitutions($id_game, $id_team) {
 	}
 	return $substitution_array;
 }
+
+/**
+ * Получаем список пенальти команды
+ * @param id игры $id_game
+ * @param id команды $id_team
+ */
+function getPenaltyShootout($id_game, $id_team) {
+	$teamGamePlayersModel = new TeamGamePlayersModel();
+	$playersModel = new PlayersModel();
+	
+	$penalty = explode(',', $teamGamePlayersModel->getPenaltyShootoutByGameAndTeamId($id_game, $id_team));
+	for ($i = 0; $i < count($penalty); $i++) {
+		if ($i % 2 != 0) {
+			$scored = $penalty[$i];
+			if ($scored == 1) $scored = "<img src='http://localhost/Livescore/Images/site_images/goal.gif'>";
+			else $scored = "<img height='10px' src='http://localhost/Livescore/Images/site_images/not_goal.gif'>";
+			$penalty_array[] = array("scored" => $scored,
+					"player_name" => $playersModel->getPlayerNameById($player_penalty_id));
+		}
+		else
+			if ($i % 2 == 0 && $penalty[$i] != "") {
+			$player_penalty_id = $penalty[$i];
+		}
+	}
+	return $penalty_array;
+}
+
+
 function getNearestMatches() {
 	$continentsModel = new ContinentsModel();
 	$countriesModel = new CountriesModel();

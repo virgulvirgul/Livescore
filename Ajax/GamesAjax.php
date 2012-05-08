@@ -98,6 +98,9 @@ class GamesAjax {
 		if ($this->action == "finished") $this->finished();
 		if ($this->action == "showMonthes") $this->showMonthes();
 		if ($this->action == "showArchive") $this->showArchive();
+		if ($this->action == "penalty_shootout_start") $this->penalty_shootout_start();
+		if ($this->action == "penalty_scored") $this->penalty_scored();
+		if ($this->action == "penalty_not_scored") $this->penalty_not_scored();
 		
 		
 	}
@@ -199,6 +202,16 @@ class GamesAjax {
 		print json_encode($result);
 	}
 	
+	private function penalty_shootout_start() {
+		$this->gamesModel->setPealtyShootoutByGameId($this->id_game);
+	}
+	private function penalty_scored() {
+		$this->gamesModel->updatePenaltyScoredByTeamAndGameId($this->id_team, $this->id_game);
+		$this->teamGamePlayersModel->updatePenaltyScoredByGameId($this->id_game, $this->id_team, $this->id_player);
+	}
+	private function penalty_not_scored() {
+		$this->teamGamePlayersModel->updatePenaltyNotScoredByGameId($this->id_game, $this->id_team, $this->id_player);
+	}
 	private function showArchive() {
 		$id_championship = $this->id_championship;
 		

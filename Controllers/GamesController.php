@@ -260,15 +260,28 @@ class GamesController {
 		echo "</td><td colspan='3'>";
 			$this->getSubstitutions($id_game, $id_team_guest);
 		echo "</td></tr>";
+		
+		if($this->gamesModel->getPenaltyShootoutByGameId($id_game) == 1) {
+			echo "<tr id='tr_header'><td colspan='6'><center>Серия пенальти
+			[".$this->gamesModel->getPenaltyShootoutOwnerScoreByGameId($id_game)." - ".$this->gamesModel->getPenaltyShootoutGuestScoreByGameId($id_game)."]</center></td></tr>";
+			echo "</td><td colspan='3'>";
+				$this->getPenaltyShootout($id_game, $id_team_owner);
+			echo "</td>";
+			echo "</td><td colspan='3'>";
+				$this->getPenaltyShootout($id_game, $id_team_guest);
+			echo "</td></tr>";
+		}
 		echo "</table></center><br>";
 		if ($this->gamesModel->getFinishedByGameId($id_game) == 0) {
 		echo "<center><form>
-		<div id='show_time_out_end_button'></div>
+		<input type='button' style='display:none;' id='time_out_end_button' onclick='time_out_end(".$_GET['id_game'].");'
+		class='button' style='width:200px' value='Конец перерыва'><br><br>
 		<input type='button' id='scored_button' onclick='scored_form();' class='button' style='width:200px' value='Забит гол'><br><br>
 		<input type='button' id='yellow_card_button' onclick='yellow_card_form();' class='button' style='width:200px' value='Жёлтая карточка'><br><br>
 		<input type='button' id='red_card_button' onclick='red_card_form();' class='button' style='width:200px' value='Красная карточка'><br><br>
 		<input type='button' id='substitution_button' onclick='substitution_form();' class='button' style='width:200px' value='Замена'><br><br>
-		<div id='time_out_button_remove'><input type='button' id='time_out_button' onclick='time_out(".$_GET['id_game'].");' class='button' style='width:200px' value='Перерыв'><br><br></div>
+		<input type='button' id='time_out_button' onclick='time_out(".$_GET['id_game'].");' class='button' style='width:200px' value='Перерыв'><br><br>
+		<input type='button' id='penalty_shootout_button' onclick='penalty_shootout_form(".$_GET['id_game'].");' class='button' style='width:200px' value='Серия пенальти'><br><br>
 		<input type='button' id='end_of_match_button' onclick='end_of_match(".$_GET['id_game'].");' class='button' style='width:200px' value='Конец матча'>
 		
 		</form></center>";
@@ -355,6 +368,25 @@ echo "<!-- Модальное меню для замены-->
         		</form>
         	</div>
         	<!-- Конец модального меню для замены-->";
+        		
+echo "<!-- Модальное меню для серии пенальти-->
+        	<div style='display:none' id='penalty_shootout'>
+        		<form id='scored_form'  onsubmit='return false;'>
+        		<h6>Команда</h6><br>
+        		<select id='penalty_team_select' name='team_select' onchange='showTeamPlayers(\"#penalty_team_select\", \"#penalty_team_players\");' style='width:300px;'>
+        		<option selected disabled>Выберите команду...</option>";
+        echo "<option value='".$id_team_owner."'>".$team_owner_name."</option>
+        		<option value='".$id_team_guest."'>".$team_guest_name."</option>";
+        echo "</select><br><br>
+        		<h6>Игрок</h6><br>
+        		<select disabled style='width:300px;' id='penalty_team_players'></select><br><br><br>
+        		<input type='button' class='button' onclick='penalty_scored(penalty_team_select, penalty_team_players, ".$_GET['id_game'].")' value='Забил'>
+        		<input type='button' class='button' onclick='penalty_not_scored(penalty_team_select, penalty_team_players, ".$_GET['id_game'].")' value='Не забил'><br><br>
+        		<input type='button' class='button' onclick='end_of_penalty_shootout(".$_GET['id_game'].")' value='Конец матча'>
+        		</form>
+        		</div>
+        		
+        <!-- Конец модального меню для серии пенальти-->";	
 	}
 	
 	/**
@@ -451,6 +483,26 @@ echo "<!-- Модальное меню для замены-->
 					$minute = $substitution[$i];
 					echo $minute.'<br>';
 				}
+		}
+	}
+	/**
+	 * Получаем список пенальти команды
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function getPenaltyShootout($id_game, $id_team) {
+		$penalty = explode(',', $this->teamGamePlayersModel->getPenaltyShootoutByGameAndTeamId($id_game, $id_team));
+		for ($i = 0; $i < count($penalty); $i++) {
+			if ($i % 2 != 0) {
+				$scored = $penalty[$i];
+				if ($scored == 1) echo "<img src='".$this->SITE_IMAGES."goal.gif'><br>";
+				else echo "<img height='10px' src='".$this->SITE_IMAGES."not_goal.gif'><br>";
+			}
+			else
+				if ($i % 2 == 0 && $penalty[$i] != "") {
+				$player_penalty_id = $penalty[$i];
+				echo $this->playersModel->getPlayerNameById($player_penalty_id)."&nbsp";
+			}
 		}
 	}
 }

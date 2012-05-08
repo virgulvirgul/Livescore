@@ -96,7 +96,8 @@ class CreateDBStructure {
 								yellow_card varchar(200) DEFAULT '', 
 								substitution varchar(200) DEFAULT '', 
 								score varchar(100) DEFAULT '',
-								id_game int(8) NOT NULL)";
+								id_game int(8) NOT NULL,
+								penalty_shootout varchar(200) DEFAULT '')";
 		if ($this->pdo1->query($team_game_players)) $this->successToCreate("team_game_players");
 		else throw new PDOException($this->unnableToCreate("team_game_players"));
 	}
@@ -114,6 +115,9 @@ class CreateDBStructure {
 										id_stadium int(8) NOT NULL,
 										break tinyint(1) DEFAULT 0,
 										finished tinyint(1) DEFAULT 0,
+										penalty_shootout tinyint(1) DEFAULT 0,
+										penalty_shootout_owner_score int(2) DEFAULT 0,
+										penalty_shootout_guest_score int(2) DEFAULT 0,
 										more_info varchar(200) DEFAULT '')";
 		if ($this->pdo1->query($games)) $this->successToCreate("games");
 		else throw new PDOException($this->unnableToCreate("games"));

@@ -92,6 +92,42 @@ class TeamGamePlayersModel {
 		return $this->getExec($exec_query, "Невозможно записать гол", __FUNCTION__);
 	}
 	/**
+	 * Получаем пенальти
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function getPenaltyShootoutByGameAndTeamId($id_game, $id_team) {
+		$query = "SELECT penalty_shootout
+					FROM team_game_players
+						WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить пенальти", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Если пенальти забито то пишим id игрока и 1(забито)
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 * @param id игрока $id_player
+	 */
+	public function updatePenaltyScoredByGameId($id_game, $id_team, $id_player) {
+		$exec_query = "UPDATE team_game_players
+							SET penalty_shootout = CONCAT(penalty_shootout, '".$id_player.",1,')
+								WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getExec($exec_query, "Невозможно записать забитое пенальти", __FUNCTION__);
+	}
+	/**
+	 * Если пенальти не забито то пишим id игрока и 0(не забито)
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 * @param id игрока $id_player
+	 */
+	public function updatePenaltyNotScoredByGameId($id_game, $id_team, $id_player) {
+		$exec_query = "UPDATE team_game_players
+							SET penalty_shootout = CONCAT(penalty_shootout, '".$id_player.",0,')
+								WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getExec($exec_query, "Невозможно записать не забитое пенальти", __FUNCTION__);
+	}
+	
+	/**
 	 * При получении игроком жёлтой карточки обновляем полу yellow_card
 	 * @param id игры $id_game
 	 * @param id команды $id_game
