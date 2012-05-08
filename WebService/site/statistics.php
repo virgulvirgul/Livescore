@@ -23,6 +23,9 @@ $result = $client->getStatistics($_GET['id_game']);
 
 $teams = $result['teams_array'];
 $goals = $result['goals_array'];
+$goals_owner = $goals['goals_array_owner'];
+$goals_guest = $goals['goals_array_guest'];
+
 
 $yellow_cards_owner_array = $result['yellow_cards_owner_array'];
 $yellow_cards_guest_array = $result['yellow_cards_guest_array'];
@@ -69,28 +72,62 @@ echo "<div id='statistics_table'>";
 
 echo "<center><table border='1'>";
 echo "<tr id='tr_header'><td width='300px'><center>".$team_owner_name."</td><td width='300px'><center>".$team_guest_name."</td></tr>";
+	foreach ($goals_owner as $row_goals) {
+		$minutes_owner[] = (int)$row_goals['team_owner_goal_minute'];
+		$names_owner[] = $row_goals['team_owner_goal_player_name'];
+	}
+	foreach ($goals_guest as $row_goals) {
+		$minutes_guest[] = (int)$row_goals['team_guest_goal_minute'];
+		$names_guest[] = $row_goals['team_guest_goal_player_name'];
+	}
+	if (count($minutes_owner) >= count($minutes_guest)) {
+		for($i = 0; $i < count($minutes_owner); $i++) {
+			if ($minutes_owner[$i] < $minutes_guest[$i]) {
+				echo "<tr><td>".$minutes_owner[$i]."&nbsp&nbsp&nbsp".$names_owner[$i]."&nbsp<img src='css/images/goal.gif'></td><td></td></tr>";
+				echo "<tr><td></td><td><div align='left'>".$minutes_guest[$i]."&nbsp&nbsp&nbsp".$names_guest[$i]."&nbsp<img src='css/images/goal.gif'></div></td></tr>";
+				
+			}
+			else {
+				echo "<tr><td></td><td><div align='left'>".$minutes_guest[$i]."&nbsp&nbsp&nbsp".$names_guest[$i]."&nbsp<img src='css/images/goal.gif'></div></td></tr>";
+				echo "<tr><td>".$minutes_owner[$i]."&nbsp&nbsp&nbsp".$names_owner[$i]."&nbsp<img src='css/images/goal.gif'></td><td></td></tr>";
+				
+			}
+		} 
+	}
+		else {
+			for($i = 0; $i < count($minutes_guest); $i++) {
+				echo $minutes_owner[$i];
+				if ($minutes_owner[$i] < $minutes_guest[$i]) {
+					echo "<tr><td>".$minutes_owner[$i]."&nbsp&nbsp&nbsp".$names_owner[$i]."&nbsp<img src='css/images/goal.gif'></td><td></td></tr>";
+					echo "<tr><td></td><td><div align='left'>".$minutes_guest[$i]."&nbsp&nbsp&nbsp".$names_guest[$i]."&nbsp<img src='css/images/goal.gif'></div></td></tr>";
+			
+				}
+				else {
+					echo "<tr><td></td><td><div align='left'>".$minutes_guest[$i]."&nbsp&nbsp&nbsp".$names_guest[$i]."&nbsp<img src='css/images/goal.gif'></div></td></tr>";
+					echo "<tr><td>".$minutes_owner[$i]."&nbsp&nbsp&nbsp".$names_owner[$i]."&nbsp<img src='css/images/goal.gif'></td><td></td></tr>";
+			
+				}
+			}
+	}
+	// for($i = 0; $i < count$minutes_guest)
 
-foreach ($goals as $row_goals) {
-	if ($row_goals['team_owner_goal_minute'] != "") echo "<tr><td>".$row_goals['team_owner_goal_minute']."'&nbsp&nbsp&nbsp".$row_goals['team_owner_goal_player_name']."&nbsp<img src='css/images/goal.gif'></td><td></td></tr>";
-	if ($row_goals['team_guest_goal_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row_goals['team_guest_goal_minute']."'&nbsp&nbsp&nbsp".$row_goals['team_guest_goal_player_name']."&nbsp<img src='css/images/goal.gif'></div></td></tr>";
-}
 
 echo "<tr id='tr_header'><td colspan='2'>Карточки</td></tr>";
 
 foreach ($yellow_cards_owner_array as $row) {
-	if ($row['team_card_minute'] != "") echo "<tr><td>".$row['team_card_minute']."'&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/yellow_card.gif'></td><td></td></tr>";
+	if ($row['team_card_minute'] != "") echo "<tr><td>".$row['team_card_minute']."&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/yellow_card.gif'></td><td></td></tr>";
 }
 
 foreach ($yellow_cards_guest_array as $row) {
-	if ($row['team_card_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row['team_card_minute']."'&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/yellow_card.gif'></div></td></tr>";
+	if ($row['team_card_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row['team_card_minute']."&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/yellow_card.gif'></div></td></tr>";
 }
 
 foreach ($red_cards_owner_array as $row) {
-	if ($row['team_card_minute'] != "") echo "<tr><td>".$row['team_card_minute']."'&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/red_card.gif'></td><td></td></tr>";
+	if ($row['team_card_minute'] != "") echo "<tr><td>".$row['team_card_minute']."&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/red_card.gif'></td><td></td></tr>";
 }
 
 foreach ($red_cards_guest_array as $row) {
-	if ($row['team_card_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row['team_card_minute']."'&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/red_card.gif'></div></td></tr>";
+	if ($row['team_card_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row['team_card_minute']."&nbsp&nbsp&nbsp".$row['team_card_player_name']."&nbsp<img src='css/images/red_card.gif'></div></td></tr>";
 }
 
 //if ($row_goals['team_guest_goal_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row_goals['team_guest_goal_minute']."'&nbsp&nbsp&nbsp".$row_goals['team_guest_goal_player_name']."&nbsp<img src='css/images/goal.gif'></div></td></tr>";
@@ -98,10 +135,10 @@ foreach ($red_cards_guest_array as $row) {
 echo "<tr id='tr_header'><td colspan='2'>Замены</td></tr>";
 
 foreach ($subs_owner_array as $row) {
-	if ($row['team_substitution_minute'] != "") echo "<tr><td>".$row['team_substitution_minute']."'&nbsp&nbsp&nbsp".$row['team_first_player_name']."&nbsp<img style='height:10px;width:8px;' float='left' src='css/images/substitution.gif'>&nbsp".$row['team_second_player_name']."</td><td></td></tr>";
+	if ($row['team_substitution_minute'] != "") echo "<tr><td>".$row['team_substitution_minute']."&nbsp&nbsp&nbsp".$row['team_first_player_name']."&nbsp<img style='height:10px;width:8px;' float='left' src='css/images/substitution.gif'>&nbsp".$row['team_second_player_name']."</td><td></td></tr>";
 }
 foreach ($subs_guest_array as $row) {
-	if ($row['team_substitution_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row['team_substitution_minute']."'&nbsp&nbsp&nbsp".$row['team_first_player_name']."&nbsp<img style='height:10px;width:8px;' float='left' src='css/images/substitution.gif'>&nbsp".$row['team_second_player_name']."</div></td></tr>";
+	if ($row['team_substitution_minute'] != "") echo "<tr><td></td><td><div align='left'>".$row['team_substitution_minute']."&nbsp&nbsp&nbsp".$row['team_first_player_name']."&nbsp<img style='height:10px;width:8px;' float='left' src='css/images/substitution.gif'>&nbsp".$row['team_second_player_name']."</div></td></tr>";
 }
 
 if ($penalty_shootout_flag == 1) {

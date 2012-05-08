@@ -61,15 +61,13 @@ function getStatistics($id_game) {
 			if ($i % 2 != 0) {
 				$minute = $goals[$i];
 			//	$goals_array[] = array("team_owner_goal_minute" => $minute);
-				$goals_array[] = array("team_owner_goal_minute" => $minute, 
+				$goals_array_owner[] = array("team_owner_goal_minute" => $minute, 
 						"team_owner_goal_player_name" => $playersModel->getPlayerNameById($player_goal_id));
-				echo $minute.'\'<br>';
+				echo $minute.'<br>';
 			}
 			else
 				if ($i % 2 == 0 && $goals[$i] != "") {
 				$player_goal_id = $goals[$i];
-				
-				//echo "<img style='height:10px;width:8px;' float='left' src='".$this->SITE_IMAGES."goal.gif'>&nbsp".$this->playersModel->getPlayerNameById($player_goal_id)."&nbsp";
 			}
 		}
 		
@@ -78,10 +76,9 @@ function getStatistics($id_game) {
 		for ($i = 0; $i < count($goals_guest); $i++) {
 			if ($i % 2 != 0) {
 				$minute = $goals_guest[$i];
-				//	$goals_array[] = array("team_owner_goal_minute" => $minute);
-				$goals_array[] = array("team_guest_goal_minute" => $minute, 
+				$goals_array_guest[] = array("team_guest_goal_minute" => $minute, 
 						"team_guest_goal_player_name" => $playersModel->getPlayerNameById($player_goal_id));
-				echo $minute.'\'<br>';
+				echo $minute.'<br>';
 			}
 			else
 				if ($i % 2 == 0 && $goals_guest[$i] != "") {
@@ -90,6 +87,7 @@ function getStatistics($id_game) {
 				//echo "<img style='height:10px;width:8px;' float='left' src='".$this->SITE_IMAGES."goal.gif'>&nbsp".$this->playersModel->getPlayerNameById($player_goal_id)."&nbsp";
 			}
 		}
+		$goals_array = array("goals_array_owner" => $goals_array_owner, "goals_array_guest" => $goals_array_guest);
 		$yellow_cards_owner_array = getCards('yellow', $row['id_game'], $row['id_team_owner']);
 		$yellow_cards_guest_array = getCards('yellow', $row['id_game'], $row['id_team_guest']);
 		
@@ -269,14 +267,13 @@ function getNearestMatches() {
 				$team_owner_score = $gamesModel->getScoreOwnerByGameId($row['id_game']);
 				$team_guest_score = $gamesModel->getScoreGuestByGameId($row['id_game']);
 	
-				if ($gamesModel->getFinishedByGameId($row['id_game']) == 1 ||
-						$gamesModel->getMinutesByGameId($row['id_game']) > 130) {
+				if ($gamesModel->getFinishedByGameId($row['id_game']) == 1) {
 					$hour = 'FT';
 				}
 				else if ($gamesModel->getBreakByGameId($row['id_game']) == 1) {
 					$hour = "<img src='css/images/flash.gif'>&nbspHT";
 				}
-				else if ($gamesModel->getMinutesByGameId($row['id_game']) < 130  &&
+				else if (
 						($gamesModel->getMinutesByGameId($row['id_game']) > 0)) {
 					if($gamesModel->getScoreGuestByGameId($row['id_game']) == '?') {
 						$gamesModel->setScores($row['id_game']);
@@ -288,8 +285,14 @@ function getNearestMatches() {
 					if ($minute >= 60 && $minute < 105) {
 						$minute = round($gamesModel->getMinutesByGameId($row['id_game'])) - 15;
 					}
-					if ($minute >= 105) {
+					if ($minute >= 105 && $minute <= 110) {
 						$minute = "90";
+					}
+					if ($minute >= 110 && $minute <= 135) {
+						$minute = round($gamesModel->getMinutesByGameId($row['id_game'])) - 15;
+					}
+					if ($minute >= 135) {
+						$hour = "<img src='css/images/flash.gif'>&nbspPen";
 					}
 					$hour = "<img src='css/images/flash.gif'>&nbsp".$minute."'";
 				}

@@ -134,14 +134,13 @@ class GamesController {
 				
 				echo "<tr>
 				<td style='background-color:".$backgroundColor.";' width='5px'>";
-				if ($this->gamesModel->getFinishedByGameId($row['id_game']) == 1 ||
-						$this->gamesModel->getMinutesByGameId($row['id_game']) > 130) {
+				if ($this->gamesModel->getFinishedByGameId($row['id_game']) == 1) {
 					$hour = 'FT';
 				}
 				else if ($this->gamesModel->getBreakByGameId($row['id_game']) == 1) {
 					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbspHT";
 				}
-				else if ($this->gamesModel->getMinutesByGameId($row['id_game']) < 130  &&
+				else if (
 						($this->gamesModel->getMinutesByGameId($row['id_game']) > 0)) {
 					if($this->gamesModel->getScoreGuestByGameId($row['id_game']) == '?') {
 						$this->gamesModel->setScores($row['id_game']);
@@ -153,8 +152,14 @@ class GamesController {
 					if ($minute >= 60 && $minute < 105) {
 						$minute = round($this->gamesModel->getMinutesByGameId($row['id_game'])) - 15;
 					}
-					if ($minute >= 105) {
+					if ($minute >= 105 && $minute <= 110) {
 						$minute = "90";
+					}
+					if ($minute >= 110 && $minute <= 135) {
+						$minute = round($this->gamesModel->getMinutesByGameId($row['id_game'])) - 15;
+					}
+					if ($minute >= 135) {
+						$minute = 'Pen';
 					}
 					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbsp".$minute."'";
 				}
