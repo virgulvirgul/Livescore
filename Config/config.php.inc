@@ -26,5 +26,6 @@ class Config {
 	public function getPDO() {
 		return $this->pdo;
 	}
+	public function ololo{}
 }
 ?>
