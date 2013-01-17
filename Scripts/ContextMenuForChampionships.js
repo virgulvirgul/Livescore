@@ -63,7 +63,7 @@ $(document).ready(function() {
 	}
 	
 function deleteChamp(id_champ, number) {
-	if (confirm('Вы уверены что хотите удалить чемпионат ?') == true) {
+	if (confirm('Вы уверены что хотите удалить чемпионат ?')) {
 		$.post('../Ajax/ChampionshipsAjax.php', { id_championship : id_champ, 
 										action : "delete"});
 		window.location.reload();

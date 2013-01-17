@@ -72,10 +72,11 @@ class GamesModel {
 	/**
 	 * Получаем все ближайшие даты
 	 */
-	public function getAllNearestDates() {
+	public function getAllNearestDatesByIdChampionship($id_championship) {
 		$query = "SELECT DISTINCT DATE(date) as date
-					FROM games
-						WHERE DATEDIFF(date, SYSDATE()) = 0 OR DATEDIFF(date, SYSDATE()) = 1 ORDER BY date";
+					FROM games 
+						WHERE ( DATEDIFF(date, SYSDATE()) = 0 OR DATEDIFF(date, SYSDATE()) = 1 )
+							AND id_championship  = {$id_championship}  ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить все ближайшие даты", __FUNCTION__);
 	}
 	/**

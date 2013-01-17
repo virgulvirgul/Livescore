@@ -102,7 +102,7 @@ class GamesController {
 		echo '<h2>Список матчей</h2><br><br>';
 		echo "<center><table style='border:0;'>";
 		$i = 0;
-		foreach ($this->gamesModel->getAllNearestDates() as $number=>$row_date) {
+		foreach ($this->gamesModel->getAllNearestDatesByIdChampionship($id_championship) as $number=>$row_date) {
 			$allDate = $row_date['date'];
 			$year = substr($allDate, 0, 4);
 			$month = substr($allDate, 5, 2);
@@ -176,6 +176,9 @@ class GamesController {
 		echo "</table></center>";
 	}
 	
+	/**
+	 * Обработка игры
+	 */
 	public function getOneGameContent() {
 		$id_game = $_GET['id_game'];
 		if($this->gamesModel->getScoreGuestByGameId($id_game) == '?') $this->gamesModel->setScores($id_game);

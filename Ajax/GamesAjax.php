@@ -87,6 +87,8 @@ class GamesAjax {
 		if ($month != null) $this->month = $month;
 		if ($id_championship != null) $this->id_championship = $id_championship;
 		if ($own_goal != null) $this->own_goal = $own_goal;
+		
+		
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
 		if ($this->action == "addGame") $this->addGame();
 		if ($this->action == "scored") $this->scored();
@@ -125,7 +127,9 @@ class GamesAjax {
 		$result = array('players' => $players, 'stadium' => $stadium);
 		print json_encode($result);
 	}
-	
+	/**
+	 * Добавление игры
+	 */
 	private function addGame() {
 		$id_championship = $this->teamsModel->getChampionshipIdByTeamId($this->team_owner_id);
 		$id_stadium = $this->stadiumsModel->getStadiumIdByName($this->stadium_name);
