@@ -62,17 +62,27 @@ class ChampionshipsController {
 	 *  Получаем список доступных действий для выбранного чемпионата
 	 */
 	public function getOneChampionshipContent() {
-		if (isset($_GET['id_championship']) && !isset($_GET['option'])) {
+		
+		if ($this->championshipsModel->getChampionshipNameById($_GET['id_championship']) == "Champions League") {
 			$this->getChampionshipEmblem();
-			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=teams_list'>Список команд</a><br>";
-			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=add_game'>Добавить матч</a><br>";
-			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_games'>Список матчей</a><br>";
-			echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_archive_games'>Архив матчей</a><br>";
-				
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=champ_preselection'>Отборочный тур</a><br>";
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=champ_group_round'>Групповой раунд</a><br>";
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=champ_play_off'>Плей-офф</a><br>";
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=champ_show_archive_games'>Архив матчей</a><br>";
 		}
-	} 
+		else {
+			if (isset($_GET['id_championship']) && !isset($_GET['option'])) {
+				$this->getChampionshipEmblem();
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=teams_list'>Список команд</a><br>";
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=add_game'>Добавить матч</a><br>";
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_games'>Список матчей</a><br>";
+				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_archive_games'>Архив матчей</a><br>";
+
+			}
+		}
+	}
 	/**
-	 * 
+	 *
 	 * Получаем картинку страны и текущего чемпионата
 	 */
 	public function getChampionshipEmblem() {
