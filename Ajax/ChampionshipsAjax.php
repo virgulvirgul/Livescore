@@ -33,7 +33,7 @@ class ChampionshipsAjax {
      * Изменяем имя чемпионата
      */
     private function editChampionship() {
-        if ($this->championshipsModel->checkDuplicateChampionship($this->name) == true) {
+        if ($this->championshipsModel->checkDuplicateChampionship($this->name)) {
             echo "error";
         }
         else $this->championshipsModel->updateChampionship($this->id_championship, $this->name);
@@ -51,7 +51,7 @@ class ChampionshipsAjax {
      * Добавляем чемпионат
      */
     private function addChampionship() {
-        if ($this->championshipsModel->checkDuplicateChampionship($this->name) == true) {
+        if ($this->championshipsModel->checkDuplicateChampionship($this->name)) {
             echo "error";
         }
         else { 

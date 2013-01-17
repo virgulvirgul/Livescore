@@ -51,7 +51,9 @@ class TeamsModel {
 	public function getTeamsByChampionshipId($id_championship) {
 		$query = "SELECT name, id_team, id_championship 
 					FROM teams 
-						WHERE id_championship like '{$id_championship}' ORDER BY id_team";
+						WHERE id_championship like '%{$id_championship};%'
+							OR id_championship like '{$id_championship}'
+								OR id_championship like '%;{$id_championship}' ORDER BY id_team";
 		return $this->getQuery($query, "Невозможно получить команды по id чемпионата ", __FUNCTION__);
 	}
 	/**
