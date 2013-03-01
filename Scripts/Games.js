@@ -307,7 +307,7 @@ function scored(id_team, id_player, minute, id_game, own_goal, penalty) {
 		action : "scored"
 	}, function(result) {
 	});
-	//window.location.reload();
+	window.location.reload();
 }
 function yellow_card(id_team, id_player, minute, id_game) {
 
