@@ -54,7 +54,13 @@ class CreateDBStructure {
 	public function createTableTeams() {
 		$teams = "CREATE TABLE IF NOT EXISTS teams (
 					id_team int(8) primary key auto_increment,
-					name varchar(100), id_championship varchar(10))";
+					name varchar(100), id_championship varchar(10), 
+					games tinyint(2) DEFAULT 0,
+					win tinyint(2) DEFAULT 0,
+					draw tinyint(2) DEFAULT 0,
+					lose tinyint(2) DEFAULT 0,
+					goal_diff tinyint(2) DEFAULT 0,
+					points tinyint(3) DEFAULT 0)";
 		if ($this->pdo1->query($teams)) $this->successToCreate("teams");
 		else throw new PDOException($this->unnableToCreate("teams"));
 	}

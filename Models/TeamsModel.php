@@ -90,6 +90,72 @@ class TeamsModel {
 		return $this->getQuery($query, "Невозможно получить id чемпионата по id команды", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
+	 * Получаем количество сыгранных игр командой по id команды
+	 * @param id команды $id_team
+	 * @return string
+	 */
+	public function getGamesByIdTeam($id_team) {
+		$query = "SELECT games
+					FROM teams
+						WHERE id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить количество игр по id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем количество выйгранных игр командой по id команды
+	 * @param id команды $id_team
+	 * @return int
+	 */
+	public function getWinByIdTeam($id_team) {
+		$query = "SELECT win
+					FROM teams
+						WHERE id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить количество выйгранных игр по id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем количество проигранных игр командой по id команды
+	 * @param id команды $id_team
+	 * @return int
+	 */
+	public function getLoseByIdTeam($id_team) {
+		$query = "SELECT lose
+					FROM teams
+						WHERE id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить количество проигранных игр по id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем количество ничьих по id команды
+	 * @param id команды $id_team
+	 * @return int
+	 */
+	public function getDrawByIdTeam($id_team) {
+		$query = "SELECT draw
+					FROM teams
+						WHERE id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить количество ничьих по id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем разницу мячей команды по id команды
+	 * @param id команды $id_team
+	 * @return int
+	 */
+	public function getGoalDiffByIdTeam($id_team) {
+		$query = "SELECT goal_diff
+					FROM teams
+						WHERE id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить разницу мячей команды по id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем количество очков команды по id команды
+	 * @param id команды $id_team
+	 * @return int
+	 */
+	public function getPointsByIdTeam($id_team) {
+		$query = "SELECT points
+					FROM teams
+						WHERE id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить количество очков команды по id команды", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
 	 * 
 	 * Добавляем команду
 	 * @param имя новой команды $name
@@ -123,6 +189,30 @@ class TeamsModel {
                         SET name='".$name."' 
                             WHERE id_team = {$id_team}";
         return $this->getExec($exec_query, "Невозможно обновить имя команды", __FUNCTION__);
+	}
+	/**
+	 * Обновляем статистику
+	 * @param Передаём разницу мячей в матче $goal_diff
+	 * @param unknown $id_team
+	 * @return number
+	 */
+	public function updateStatisticsByTeamId($goal_diff, $id_team) {
+		if ($goal_diff > 0) $win = 1; else $win = 0;
+		if ($goal_diff == 0) $draw = 1; else $draw = 0;
+		if ($goal_diff < 0) $lose = 1; else $lose = 0;
+		
+		if ($win == 1) $points = 3;
+		if ($draw == 1) $points = 1;
+		if ($lose == 1) $points = 0;
+		
+		$exec_query = "UPDATE teams
+                        SET games = games + 1,
+                        	lose = lose + {$lose},
+                        	draw = draw + {$draw},
+                        	goal_diff = goal_diff + {$goal_diff},
+                        	points = points + {$points}
+		                        WHERE id_team = {$id_team}";
+		                        return $this->getExec($exec_query, "Невозможно обновить статистику", __FUNCTION__);
 	}
     /**
      * Удаление команды

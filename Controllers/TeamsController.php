@@ -32,7 +32,7 @@ class TeamsController {
 			}
 			else {
 				echo "<center><h3>Список команд</h3>
-							<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td><td>Стадион</td>";
+							<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td><td>Стадион</td><td width='1px'>И</td><td width='1px'>В</td><td width='1px'>П</td><td width='1px'>Н</td><td width='1px'>Рм</td><td width='1px'>О</td>";
 				foreach($this->teamsModel->getTeamsByChampionshipId($id_championship)
 				as $number=>$row) {
 					echo "<tr><td width='1px'>".($number+1)."</td>
@@ -110,13 +110,19 @@ class TeamsController {
                                 </div>
                      <!-- Модальное меню для стадиона-->
 					<td><span class='addStadium{$number}'>NONE</span></td>";
+					echo "<td>".$this->teamsModel->getGamesByIdTeam($row['id_team'])."</td>
+						<td>".$this->teamsModel->getWinByIdTeam($row['id_team'])."</td>
+							<td>".$this->teamsModel->getLoseByIdTeam($row['id_team'])."</td>
+							<td>".$this->teamsModel->getDrawByIdTeam($row['id_team'])."</td>
+							<td>".$this->teamsModel->getGoalDiffByIdTeam($row['id_team'])."</td>
+							<td>".$this->teamsModel->getPointsByIdTeam($row['id_team'])."</td>";
 					echo "</tr>";
 				}
 				echo "</table></center>";
+				
 				$this->addTeam();
 			}
 		}
-
 	}
 	
 	/**
