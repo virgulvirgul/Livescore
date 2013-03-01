@@ -224,7 +224,7 @@ function time_out(id_game) {
 	});
 
 }
-function end_of_match(id_game) {
+function end_of_match(id_game, id_team_owner, id_team_guest, team_owner_goal_diff, team_guest_goal_diff) {
 	$('#scored_button').remove();
 	$('#yellow_card_button').remove();
 	$('#red_card_button').remove();
@@ -234,6 +234,10 @@ function end_of_match(id_game) {
 	$('#penalty_shootout_button').remove();
 	$.post('../Ajax/GamesAjax.php', {
 		id_game : id_game,
+		team_owner_id : id_team_owner, 
+		team_guest_id : id_team_guest,
+		team_owner_goal_diff : team_owner_goal_diff,
+		team_guest_goal_diff : team_guest_goal_diff,
 		action : "finished"
 	}, function(result) {
 	});

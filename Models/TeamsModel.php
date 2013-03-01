@@ -191,7 +191,7 @@ class TeamsModel {
         return $this->getExec($exec_query, "Невозможно обновить имя команды", __FUNCTION__);
 	}
 	/**
-	 * Обновляем статистику
+	 * Обновляем статистику (взависимости от разницы мячей в матче, заполняем поля)
 	 * @param Передаём разницу мячей в матче $goal_diff
 	 * @param unknown $id_team
 	 * @return number
@@ -207,6 +207,7 @@ class TeamsModel {
 		
 		$exec_query = "UPDATE teams
                         SET games = games + 1,
+                        	win = win + {$win},
                         	lose = lose + {$lose},
                         	draw = draw + {$draw},
                         	goal_diff = goal_diff + {$goal_diff},

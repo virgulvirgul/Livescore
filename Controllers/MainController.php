@@ -55,11 +55,10 @@ class MainController {
 	 */
 	public function getIndexContent() {
 		echo "<h2>Ближайшие матчи</h2><br><br>";
-		
 		echo "<center><table style='border:0;'>";
 		$i = 0;
 		$dates = array();
-		foreach ($this->gamesModel->getAllNearestDates() as $row) {
+		foreach ($this->gamesModel->getAllNearestGames() as $row) {
 			$dates[] = $row['date'];
 		}
 		foreach ($dates as $date) {

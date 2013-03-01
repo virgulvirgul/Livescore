@@ -53,13 +53,15 @@ class GamesAjax {
 	private $month;
 	private $id_championship;
 	private $own_goal;
+	private $team_owner_goal_diff;
+	private $team_guest_goal_diff;
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
 	private $SITE_IMAGES = '../Images/site_images/';
 	private $STADIUMS_IMAGES = '../Images/stadiums/';
 	public function __construct($action = null, $team_name = null, $team_owner_id = null, $team_guest_id = null, $team_owner_start = null, 
 								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null, $id_team = null,
 								$id_player = null, $minute = null, $id_game = null, $id_second_player = null, $year = null,
-								$month = null, $id_championship = null, $own_goal = null) {
+								$month = null, $id_championship = null, $own_goal = null, $team_owner_goal_diff = null, $team_guest_goal_diff = null) {
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamsModel = new TeamsModel();
@@ -87,6 +89,8 @@ class GamesAjax {
 		if ($month != null) $this->month = $month;
 		if ($id_championship != null) $this->id_championship = $id_championship;
 		if ($own_goal != null) $this->own_goal = $own_goal;
+		if ($team_owner_goal_diff != null) $this->team_owner_goal_diff = $team_owner_goal_diff;
+		if ($team_guest_goal_diff != null) $this->team_guest_goal_diff = $team_guest_goal_diff;
 		
 		
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
@@ -187,6 +191,8 @@ class GamesAjax {
 	 * Обработка конца матча
 	 */
 	private function finished() {
+		$this->teamsModel->updateStatisticsByTeamId($this->team_owner_goal_diff, $this->team_owner_id);
+		$this->teamsModel->updateStatisticsByTeamId($this->team_guest_goal_diff, $this->team_guest_id);
 		$this->gamesModel->updateFinishedByGameId($this->id_game);
 	}
 	private function showMonthes() {
@@ -295,5 +301,5 @@ class GamesAjax {
 $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_owner_id'], $_POST['team_guest_id'], $_POST['team_owner_start'], 
 							$_POST['team_guest_start'], $_POST['tour'], $_POST['id_referee'], $_POST['date'], $_POST['stadium_name'], $_POST['id_team'], 
 							$_POST['id_player'], $_POST['minute'], $_POST['id_game'], $_POST['id_second_player'], $_POST['year'], $_POST['month'],
-							 $_POST['id_championship'], $_POST['own_goal']);
+							 $_POST['id_championship'], $_POST['own_goal'], $_POST['team_owner_goal_diff'], $_POST['team_guest_goal_diff']);
 ?>
