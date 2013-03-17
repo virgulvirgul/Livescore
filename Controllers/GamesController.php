@@ -202,8 +202,22 @@ class GamesController {
 		$team_guest_score = $this->gamesModel->getScoreGuestByGameId($id_game);
 		
 		echo "<h2>".$team_owner_name." <span id='score_owner'> ".$team_owner_score." </span> - <span id='score_guest'> ".$team_guest_score." </span> ".$team_guest_name." </h2><br><br>";
-		echo "<center><table>";
-		echo "<tr id='tr_header'><td colspan='3' width='300px'>".$team_owner_name."</td><td width='300px' colspan='3'>".$team_guest_name."</td></tr>";
+		echo "<table align='left' style='width:1px'>
+				<tr id='tr_header'><td>Тур</td></tr>
+				<tr><td>ds</td></tr>
+				<tr id='tr_header'><td>Судья</td></tr>
+				<tr><td>ds</td></tr>
+				<tr id='tr_header'><td>Стадион</td></tr>
+				<tr><td>ds</td></tr>
+				<tr id='tr_header'><td>Прогноз</td></tr>
+				<tr><td>ds</td></tr>
+				<tr id='tr_header'><td>Позиции в лиге</td></tr>
+				<tr><td>ds</td></tr>
+				<tr id='tr_header'><td>Коэффициенты</td></tr>
+				<tr><td>ds</td></tr>
+				</table>";
+		echo "<table style='width:80%;'>";
+		echo "<tr id='tr_header'><td colspan='3' >".$team_owner_name."</td><td colspan='3'>".$team_guest_name."</td></tr>";
 		echo "<tr id='tr_header'><td colspan='6'><center>Стартовый состав</center></td></tr>";
 		echo "<tr id='tr_header'>
 		<td>№</td><td>Имя</td><td><div id='amplua'>Амплуа<sup style='color:#D0F500;'>*</sup></div></td>
@@ -306,7 +320,7 @@ class GamesController {
 		
 		<input type='button' id='end_of_match_button' onclick='end_of_match(".$_GET['id_game'].", ".$id_team_owner .", ".$id_team_guest.", ".$team_owner_goal_diff.", ".$team_guest_goal_diff.");' class='button' style='width:200px' value='Конец матча'><br><br>
 		<input type='button' id='postponed' onclick='postponed_game(".$_GET['id_game'].");' class='button' style='width:200px' value='Отложить'><br><br>
-		</form></center>";
+		</form>";
 		}
 		$id_game = $_GET['id_game'];
 		$id_team_owner = $this->gamesModel->getTeamOwnerIdByGameId($id_game);
