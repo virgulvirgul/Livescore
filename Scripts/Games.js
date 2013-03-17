@@ -22,8 +22,8 @@ $(document)
 												false);
 										var team_name = $(
 												'#team_owner :selected').html();
-										$
-												.post(
+										$('#team_owner_name').html(team_name);
+												$.post(
 														'../Ajax/GamesAjax.php',
 														{
 															team_name : team_name,
@@ -95,8 +95,8 @@ $(document)
 												false);
 										var team_name = $(
 												'#team_guest :selected').html();
-										$
-												.post(
+										$('#team_guest_name').html(team_name);
+												$.post(
 														'../Ajax/GamesAjax.php',
 														{
 															team_name : team_name,
@@ -138,7 +138,7 @@ $(document)
 				});
 
 function addGame(team_owner, team_guest, team_owner_start, team_guest_start,
-		tour, referee, date, stadium) {
+		tour, referee, date, forecast_owner, forecast_guest, announcement, stadium) {
 	if ($(team_owner).val() == 'Выберите команду...') {
 		$("#errorChanging").remove();
 		$(team_owner).before(
@@ -176,6 +176,8 @@ function addGame(team_owner, team_guest, team_owner_start, team_guest_start,
 			tour : $(tour).val(),
 			id_referee : $(referee).val(),
 			date : $(date).val(),
+			forecast : $(forecast_owner).val() + ':' + $(forecast_guest).val(),
+			announcement : $(announcement).val(),
 			stadium_name : $(stadium).html(),
 			action : "addGame"
 		}, function(result) {

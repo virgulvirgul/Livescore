@@ -330,11 +330,11 @@ class GamesModel {
 	 * @param дополнительная информация $more_info
 	 */
 	public function addGame($date, $id_team_owner, $id_team_guest, $id_championship, $tour, $id_referee,
-								$id_stadium, $more_info) {
+								$id_stadium, $forecast, $announcement, $more_info) {
 		$exec_query = "INSERT INTO games(id_game, date, id_team_owner, id_team_guest, id_championship, tour,
-					id_referee, id_stadium, more_info) 
+					id_referee, id_stadium, forecast, announcement, more_info) 
 						VALUES(NULL, '".$date."', {$id_team_owner}, {$id_team_guest},
-								{$id_championship}, '".$tour."', {$id_referee}, {$id_stadium}, '".$more_info."')";
+								{$id_championship}, '".$tour."', {$id_referee}, {$id_stadium}, '".$forecast."', '".$announcement."', '".$more_info."')";
 		return $this->getExec($exec_query, "Невозможно добавить игру", __FUNCTION__);
 	}
 	/**

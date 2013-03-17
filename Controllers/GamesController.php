@@ -84,12 +84,23 @@ class GamesController {
 		echo "<tr id='tr_header'><td colspan='2'><center>Дата и время проведения</center></td></tr>";
 		echo "<tr><td colspan='2'><center><input id='date' style='width:200px;' type='text'></center></td></tr>";
 		
+		echo "<tr id='tr_header'><td colspan='2'><center>Прогноз матча</center></td></tr>";
+		echo "<tr><td colspan='2'><center><span id='team_owner_name'></span>&nbsp&nbsp
+				<input id='forecast_owner' style='width:30px;' type='text' value='0'>&nbsp;:&nbsp;
+				<input id='forecast_guest' style='width:30px;' type='text' value='0'>&nbsp&nbsp<span id='team_guest_name'></span>
+				</center>
+				</td></tr>";
+		
+		echo "<tr id='tr_header'><td colspan='2'><center>Анонс матча</center></td></tr>";
+		echo "<tr><td colspan='2'><center><textarea id='announcement' rows='10' cols='50'></textarea></center></td></tr>";
+		
 		echo "<tr id='tr_header'><td colspan='2'><center>Стадион</center></td></tr>";
 		
 		echo "<tr><td colspan='2'><center><div id='stadium'></div></center></td></tr>";
 		
 		echo "</table><br><br>
-		<input class='button' onclick='addGame(team_owner, team_guest, team_owner_start, team_guest_start, tour, referee, date, stadium);' type='button' value='Добавить'>
+		<input class='button' onclick='addGame(team_owner, team_guest, team_owner_start, team_guest_start, tour, referee, date,
+												 forecast_owner, forecast_guest, announcement, stadium);' type='button' value='Добавить'>
 		</form></center>";
 	}
 	/**

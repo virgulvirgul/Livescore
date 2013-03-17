@@ -48,7 +48,7 @@ class ChampionshipsController {
       						</ul>
     					</div>	
 					<!-- Конец меню для чемпионатов -->
-							<span class='championship{$number}'><a href='index.php?id_championship=".$row['id_championship']."''>".$row['name']."</a></span>
+							<span class='championship{$number}'><a href='index.php?id_championship=".$row['id_championship']."&option=teams_list''>".$row['name']."</a></span>
 							</td>";
 					
 				}
@@ -63,7 +63,7 @@ class ChampionshipsController {
 	 */
 	public function getOneChampionshipContent() {
 		
-		if ($this->championshipsModel->getChampionshipNameById($_GET['id_championship']) == "Champions League") {
+		/*if ($this->championshipsModel->getChampionshipNameById($_GET['id_championship']) == "Champions League") {
 			$this->getChampionshipEmblem();
 				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=champ_preselection'>Отборочный тур</a><br>";
 				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=champ_group_round'>Групповой раунд</a><br>";
@@ -77,9 +77,8 @@ class ChampionshipsController {
 				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=add_game'>Добавить матч</a><br>";
 				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_games'>Список матчей</a><br>";
 				echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_archive_games'>Архив матчей</a><br>";
-
 			}
-		}
+		}*/
 	}
 	/**
 	 *

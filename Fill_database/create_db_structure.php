@@ -121,9 +121,12 @@ class CreateDBStructure {
 										id_stadium int(8) NOT NULL,
 										break tinyint(1) DEFAULT 0,
 										finished tinyint(1) DEFAULT 0,
+										postponed tinyint(1) DEFAULT 0,
 										penalty_shootout tinyint(1) DEFAULT 0,
 										penalty_shootout_owner_score int(2) DEFAULT 0,
 										penalty_shootout_guest_score int(2) DEFAULT 0,
+										forecast varchar(5) DEFAULT '',
+										announcement tinytext DEFAULT '',
 										more_info varchar(200) DEFAULT '')";
 		if ($this->pdo1->query($games)) $this->successToCreate("games");
 		else throw new PDOException($this->unnableToCreate("games"));
