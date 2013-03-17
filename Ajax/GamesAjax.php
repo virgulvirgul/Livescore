@@ -111,7 +111,7 @@ class GamesAjax {
 		if ($this->action == "penalty_shootout_start") $this->penalty_shootout_start();
 		if ($this->action == "penalty_scored") $this->penalty_scored();
 		if ($this->action == "penalty_not_scored") $this->penalty_not_scored();
-		
+		if ($this->action == "postponed") $this->posponed_game();
 		
 	}
 	/**
@@ -199,6 +199,9 @@ class GamesAjax {
 		$this->teamsModel->updateStatisticsByTeamId($this->team_guest_goal_diff, $this->team_guest_id);
 		$this->gamesModel->updateFinishedByGameId($this->id_game);
 	}
+	private function posponed_game() {
+		$this->gamesModel->updatePostponedByGameId($this->id_game);
+	}
 	private function showMonthes() {
 		$monthes = array();
 		$allDate = $row_date['date'];
@@ -264,9 +267,12 @@ class GamesAjax {
 				
 				echo "<tr>
 				<td style='background-color:".$backgroundColor.";' width='5px'>";
-				if ($this->gamesModel->getFinishedByGameId($row['id_game']) == 1 ||
-						$this->gamesModel->getMinutesByGameId($row['id_game']) > 130) {
+				if (($this->gamesModel->getFinishedByGameId($row['id_game']) == 1 ||
+						$this->gamesModel->getMinutesByGameId($row['id_game']) > 130) && $this->gamesModel->getPostponedByGameId($row['id_game']) == 0) {
 					$hour = 'FT';
+				}
+				else if ($this->gamesModel->getPostponedByGameId($row['id_game']) == 1) {
+					$hour = 'Postp';
 				}
 				else if ($this->gamesModel->getBreakByGameId($row['id_game']) == 1) {
 					$hour = "<img src='".$this->SITE_IMAGES."flash.gif'>&nbspHT";

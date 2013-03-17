@@ -421,6 +421,16 @@ class GamesModel {
 		return $this->getQuery($query, "Невозможно получить конец матча", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
+	 * Если матч закончен получаем 1 в противном случае получаем 0
+	 * @param id игры $id_game
+	 */
+	public function getPostponedByGameId($id_game) {
+		$query = "SELECT postponed
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить отложить матч", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
 	 * Если начался перерыв то пишим 1 в break
 	 * @param id игры $id_game
 	 */
@@ -449,6 +459,16 @@ class GamesModel {
 						SET finished = 1
 							WHERE id_game = {$id_game}";
 		return $this->getExec($exec_query, "Невозможно записать конец матча", __FUNCTION__);
+	}
+	/**
+	 * Если матч отложен то пишим 1 в postponed
+	 * @param id игры $id_game
+	 */
+	public function updatePostponedByGameId($id_game) {
+		$exec_query = "UPDATE games
+						SET postponed = 1
+							WHERE id_game = {$id_game}";
+		return $this->getExec($exec_query, "Невозможно записать отложить матч", __FUNCTION__);
 	}
 	/**
 	 * Получаем была ли серия пенальти (1 - была, 0 - не была)

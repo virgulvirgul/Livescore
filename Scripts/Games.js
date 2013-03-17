@@ -244,6 +244,22 @@ function end_of_match(id_game, id_team_owner, id_team_guest, team_owner_goal_dif
 	}, function(result) {
 	});
 }
+
+function postponed_game(id_game) {
+	$('#scored_button').remove();
+	$('#yellow_card_button').remove();
+	$('#red_card_button').remove();
+	$('#substitution_button').remove();
+	$('#end_of_match_button').remove();
+	$('#time_out_button').remove();
+	$('#penalty_shootout_button').remove();
+	$('#postponed').remove();
+	$.post('../Ajax/GamesAjax.php', {
+		id_game : id_game,
+		action : "postponed"
+	}, function(result) {
+	});
+}
 function end_of_penalty_shootout(id_game) {
 	$('#scored_button').remove();
 	$('#yellow_card_button').remove();
