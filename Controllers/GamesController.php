@@ -201,14 +201,21 @@ class GamesController {
 		$team_owner_score = $this->gamesModel->getScoreOwnerByGameId($id_game);
 		$team_guest_score = $this->gamesModel->getScoreGuestByGameId($id_game);
 		
+		$tour = $this->gamesModel->getTourByGameId($id_game);
+		$referee = $this->refereesModel->getRefereeNameById($this->gamesModel->getRefereeIdByGameId($id_game));
+		$stadium_name = $this->stadiumsModel->getStadiumNameById($this->gamesModel->getStadiumIdByGameId($id_game));
+		$stadium_image = $this->STADIUMS_IMAGES.$this->stadiumsModel->getStadiumImageByStadiumId($this->gamesModel->getStadiumIdByGameId($id_game));
+
+		
+		
 		echo "<h2>".$team_owner_name." <span id='score_owner'> ".$team_owner_score." </span> - <span id='score_guest'> ".$team_guest_score." </span> ".$team_guest_name." </h2><br><br>";
-		echo "<table align='left' style='width:1px'>
+		echo "<table align='left' style='width:20%'>
 				<tr id='tr_header'><td>Тур</td></tr>
-				<tr><td>ds</td></tr>
+				<tr><td>".$tour."</td></tr>
 				<tr id='tr_header'><td>Судья</td></tr>
-				<tr><td>ds</td></tr>
+				<tr><td>".$referee."</td></tr>
 				<tr id='tr_header'><td>Стадион</td></tr>
-				<tr><td>ds</td></tr>
+				<tr><td>".$stadium_name."</td></tr>
 				<tr id='tr_header'><td>Прогноз</td></tr>
 				<tr><td>ds</td></tr>
 				<tr id='tr_header'><td>Позиции в лиге</td></tr>

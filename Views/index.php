@@ -2,7 +2,9 @@
 session_start();
 require_once '../Controllers/MainController.php';
 require_once '../Controllers/MessagesController.php';
+
 $mainController = new MainController();
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
