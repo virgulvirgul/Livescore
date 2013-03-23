@@ -137,8 +137,27 @@ $(document)
 									});
 				});
 
+/**
+ * При выборе тактики хозяев вставляем картинку
+ */
+$('#tactic_owner')
+.change(
+		function() {
+			var image = $('#tactic_owner :selected').html();
+			$('#tactic_owner_image').html("<img style='width:300px; height:400px;' src='../Images/tactics/"+image+".jpg'>");
+		});
+/**
+ * При выборе тактики гостей вставляем картинку
+ */
+$('#tactic_guest')
+.change(
+		function() {
+			var image = $('#tactic_guest :selected').html();
+			$('#tactic_guest_image').html("<img style='width:300px; height:400px;' src='../Images/tactics/"+image+".jpg'>");
+		});
+
 function addGame(team_owner, team_guest, team_owner_start, team_guest_start,
-		tour, referee, date, forecast_owner, forecast_guest, announcement, stadium) {
+		tour, referee, date, forecast_owner, forecast_guest, announcement, stadium, tactic_owner, tactic_guest) {
 	if ($(team_owner).val() == 'Выберите команду...') {
 		$("#errorChanging").remove();
 		$(team_owner).before(
@@ -179,6 +198,8 @@ function addGame(team_owner, team_guest, team_owner_start, team_guest_start,
 			forecast : $(forecast_owner).val() + ':' + $(forecast_guest).val(),
 			announcement : $(announcement).val(),
 			stadium_name : $(stadium).html(),
+			tactic_owner : $(tactic_owner).val(),
+			tactic_guest : $(tactic_guest).val(),
 			action : "addGame"
 		}, function(result) {
 			alert('Игра была успешно добавлена !');

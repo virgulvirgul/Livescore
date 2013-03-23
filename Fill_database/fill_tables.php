@@ -292,6 +292,21 @@ class FillTables {
 		if (! $this->pdo->exec($stadiums)) throw new PDOException($this->unnableToInsert("stadiums"));
 		else $this->successToInsert("stadiums");
 	}
+	
+	public function insertIntoTactics() {
+		$tactics = "INSERT INTO tactics(id_tactic, tactic_name, tactic_image)
+						VALUES ('NULL', '3-4-1-2', '3-4-1-2.jpg'),
+								('NULL', '3-4-3', '3-4-3.jpg'),
+								('NULL', '3-5-2', '3-5-2.jpg'),
+								('NULL', '4-2-1-3', '4-2-1-3.jpg'),
+								('NULL', '4-2-4', '4-2-4.jpg'),
+								('NULL', '4-3-1-2', '4-3-1-2.jpg'),
+								('NULL', '4-3-3', '4-3-3.jpg'),
+								('NULL', '4-4-2', '4-4-2.jpg')";
+		if (! $this->pdo->exec($tactics)) throw new PDOException($this->unnableToInsert("tactics"));
+		else $this->successToInsert("tactics");
+	}
+	
 	private function unnableToInsert($str) {
 		return "<p style='color:red'>Невозможно добавить данные в  таблицу {<span style='color:blue'>".$str."</span>}</p>";
 	}
@@ -314,6 +329,7 @@ $fillTables->insertIntoTeamPlayers();
 $fillTables->updateTeamPlayers();
 $fillTables->insertIntoReferees();
 $fillTables->insertIntoStadiums();
+$fillTables->insertIntoTactics();
 }
 catch (PDOException $e) {
 	echo $e->getMessage();

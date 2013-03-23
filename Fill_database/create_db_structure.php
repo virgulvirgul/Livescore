@@ -103,7 +103,8 @@ class CreateDBStructure {
 								substitution varchar(200) DEFAULT '', 
 								score varchar(100) DEFAULT '',
 								id_game int(8) NOT NULL,
-								penalty_shootout varchar(200) DEFAULT '')";
+								penalty_shootout varchar(200) DEFAULT '',
+								id_tactic int(3))";
 		if ($this->pdo1->query($team_game_players)) $this->successToCreate("team_game_players");
 		else throw new PDOException($this->unnableToCreate("team_game_players"));
 	}
@@ -172,6 +173,17 @@ class CreateDBStructure {
 		if ($this->pdo1->query($referees)) $this->successToCreate("referees");
 		else throw new PDOException($this->unnableToCreate("referees"));
 	}
+	
+	public function createTableTactics() {
+		$privateMessagesInbox = "CREATE TABLE IF NOT EXISTS `tactics` (
+  				`id_tactic` int(3) NOT NULL auto_increment,
+ 				`tactic_name` varchar(10) NOT NULL,
+ 				`tactic_image` varchar(200) NOT NULL,
+  					PRIMARY KEY  (`id_tactic`) )";
+		if ($this->pdo1->query($privateMessagesInbox)) $this->successToCreate("Tactics");
+		else throw new PDOException($this->unnableToCreate("Tactics"));
+	}
+	
 	private function unnableToCreate($str) {
 		return "<p style='color:red'>Невозможно создать таблицу {<span style='color:blue'>".$str."</span>}</p>";
 	}
@@ -197,6 +209,7 @@ $createStructure->createTablePrivateMessagesInbox();
 $createStructure->createTablePrivateMessagesOutbox();
 $createStructure->createTableReferees();
 $createStructure->createTableStadiums();
+$createStructure->createTableTactics();
 }
 catch (PDOException $e) {
 	echo $e->getMessage();

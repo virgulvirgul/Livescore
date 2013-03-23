@@ -57,6 +57,9 @@ class GamesAjax {
 	private $own_goal;
 	private $team_owner_goal_diff;
 	private $team_guest_goal_diff;
+	private $tactic_owner;
+	private $tactic_guest;
+	
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
 	private $SITE_IMAGES = '../Images/site_images/';
 	private $STADIUMS_IMAGES = '../Images/stadiums/';
@@ -64,7 +67,8 @@ class GamesAjax {
 								$team_guest_start = null, $tour = null, $id_referee = null, $date = null, $stadium_name = null, $forecast = null,
 								$announcement = null, $id_team = null,
 								$id_player = null, $minute = null, $id_game = null, $id_second_player = null, $year = null,
-								$month = null, $id_championship = null, $own_goal = null, $team_owner_goal_diff = null, $team_guest_goal_diff = null) {
+								$month = null, $id_championship = null, $own_goal = null, $team_owner_goal_diff = null, $team_guest_goal_diff = null,
+								$tactic_owner = null, $tactic_guest = null) {
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamsModel = new TeamsModel();
@@ -96,6 +100,8 @@ class GamesAjax {
 		if ($team_guest_goal_diff != null) $this->team_guest_goal_diff = $team_guest_goal_diff;
 		if ($forecast != null) $this->forecast = $forecast;
 		if ($announcement != null) $this->announcement = $announcement;
+		if ($tactic_owner != null) $this->tactic_owner = $tactic_owner;
+		if ($tactic_guest != null) $this->tactic_guest = $tactic_guest;
 		
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
 		if ($this->action == "addGame") $this->addGame();
@@ -144,8 +150,8 @@ class GamesAjax {
 		$this->gamesModel->addGame($this->date, $this->team_owner_id, $this->team_guest_id, $id_championship, $this->tour,
 						$this->id_referee, $id_stadium, $this->forecast, $this->announcement, '');
 		$id_game = $this->gamesModel->getLastInsertedGameId();
-		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_owner_start), $this->team_owner_id, $id_game);
-		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_guest_start), $this->team_guest_id, $id_game);
+		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_owner_start), $this->team_owner_id, $id_game, $this->tactic_owner);
+		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_guest_start), $this->team_guest_id, $id_game, $this->tactic_guest);
 	}
 	/**
 	 * Обрабатываем забитый гол.
@@ -312,5 +318,6 @@ $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_o
 							$_POST['team_guest_start'], $_POST['tour'], $_POST['id_referee'], $_POST['date'], $_POST['stadium_name'], $_POST['forecast'],
 							$_POST['announcement'], $_POST['id_team'], 
 							$_POST['id_player'], $_POST['minute'], $_POST['id_game'], $_POST['id_second_player'], $_POST['year'], $_POST['month'],
-							 $_POST['id_championship'], $_POST['own_goal'], $_POST['team_owner_goal_diff'], $_POST['team_guest_goal_diff']);
+							 $_POST['id_championship'], $_POST['own_goal'], $_POST['team_owner_goal_diff'], $_POST['team_guest_goal_diff'],
+							$_POST['tactic_owner'], $_POST['tactic_guest']);
 ?>

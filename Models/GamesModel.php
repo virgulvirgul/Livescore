@@ -317,6 +317,18 @@ class GamesModel {
 	public function getLastInsertedGameId() {
 		return $this->pdo->lastInsertId();
 	}
+	
+	/**
+	 * Получаем прогноз матча
+	 * @param id игры $id_game
+	 */
+	public function getForecastByGameId($id_game) {
+		$query = "SELECT forecast
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить прогноз матча по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	
 	/**
 	 * 
 	 * Добавляем игру

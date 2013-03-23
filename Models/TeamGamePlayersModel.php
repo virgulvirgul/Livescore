@@ -72,9 +72,9 @@ class TeamGamePlayersModel {
 	 * @param массив игроков $id_players
 	 * @param id игры $id_game
 	 */
-	public function addTeamGamePlayers($id_players, $id_team, $id_game) {
-		$exec_query = "INSERT INTO team_game_players(id_team_game_player, id_team, id_players, id_game)
-						VALUES(NULL, {$id_team}, '".$id_players."', '".$id_game."')";
+	public function addTeamGamePlayers($id_players, $id_team, $id_game, $id_tactic) {
+		$exec_query = "INSERT INTO team_game_players(id_team_game_player, id_team, id_players, id_game, id_tactic)
+						VALUES(NULL, {$id_team}, '".$id_players."', '".$id_game."', '".$id_tactic."')";
 		return $this->getExec($exec_query, "Невозможно добавит стартовый состав", __FUNCTION__);
 	}
 	

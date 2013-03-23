@@ -11,10 +11,12 @@ class GamesController {
 	private $teamGamePlayersModel;
 	private $playersModel;
 	private $teamPlayersModel;
+	private $tacticsModel;
 	
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
 	private $SITE_IMAGES = '../Images/site_images/';
 	private $STADIUMS_IMAGES = '../Images/stadiums/';
+	private $TACTICS_IMAGES = '../Images/tactics/';
 	
 	public function __construct() {
 		$this->gamesModel = new GamesModel();
@@ -26,6 +28,7 @@ class GamesController {
 		$this->teamGamePlayersModel = new TeamGamePlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamPlayersModel = new TeamPlayersModel();
+		$this->tacticsModel = new TacticsModel();
 		
 		if (isset($_GET['option']) && $_GET['option'] == 'add_game') $this->getAddGameContent();
 		if (isset($_GET['option']) && $_GET['option'] == 'show_games') $this->getShowGamesContent();
@@ -59,11 +62,33 @@ class GamesController {
 			
 		echo "<tr id='tr_header'><td colspan='2'><center>Стартовый состав</center></td></tr>";
 		
-		echo "<tr><td><select disabled multiple style='width:300px;' id='team_owner_start'>";
+		echo "<tr><td style='vertical-align: top;'><select disabled multiple style='width:300px;' id='team_owner_start'>";
 		echo "</select></td>";
 		
-		echo "<td><select disabled multiple style='width:300px;' id='team_guest_start'>";
+		echo "<td style='vertical-align: top;'><select disabled multiple style='width:300px;' id='team_guest_start'>";
 		echo "</select></td></tr>";
+		
+		echo "<tr id='tr_header'><td colspan='2'><center>Тактика</center></td></tr>";
+		
+		echo "<tr><td style='vertical-align: top;'><select style='width:300px;' id='tactic_owner'><option selected disabled>Выберите тактику...</option>";
+		
+		foreach($this->tacticsModel->getAllTactics()
+				as $number=>$row) {
+			echo "<option value='".$row['id_tactic']."'>".$row['tactic_name']."</option>";
+		}
+		
+		echo "</select><span id='tactic_owner_image'></span></td>";
+		
+		echo "<td style='vertical-align: top;'><select style='width:300px;' id='tactic_guest'><option selected disabled>Выберите тактику...</option>";
+		
+		foreach($this->tacticsModel->getAllTactics()
+				as $number=>$row) {
+			echo "<option value='".$row['id_tactic']."'>".$row['tactic_name']."</option>";
+		}
+		
+		echo "</select><span id='tactic_guest_image'></span></td></tr>";
+		
+		
 		
 		echo "<tr id='tr_header'><td colspan='2'><center>Номер тура</center></td></tr>";
 		echo "<tr><td colspan='2'><center><select style='width:300px;' id='tour'><option selected disabled>Выберите тур...</option>";
@@ -100,7 +125,7 @@ class GamesController {
 		
 		echo "</table><br><br>
 		<input class='button' onclick='addGame(team_owner, team_guest, team_owner_start, team_guest_start, tour, referee, date,
-												 forecast_owner, forecast_guest, announcement, stadium);' type='button' value='Добавить'>
+												 forecast_owner, forecast_guest, announcement, stadium, tactic_owner, tactic_guest);' type='button' value='Добавить'>
 		</form></center>";
 	}
 	/**
@@ -206,24 +231,10 @@ class GamesController {
 		$stadium_name = $this->stadiumsModel->getStadiumNameById($this->gamesModel->getStadiumIdByGameId($id_game));
 		$stadium_image = $this->STADIUMS_IMAGES.$this->stadiumsModel->getStadiumImageByStadiumId($this->gamesModel->getStadiumIdByGameId($id_game));
 
-		
+		$forecast = $this->gamesModel->getForecastByGameId($id_game);
 		
 		echo "<h2>".$team_owner_name." <span id='score_owner'> ".$team_owner_score." </span> - <span id='score_guest'> ".$team_guest_score." </span> ".$team_guest_name." </h2><br><br>";
-		echo "<table align='left' style='width:20%'>
-				<tr id='tr_header'><td>Тур</td></tr>
-				<tr><td>".$tour."</td></tr>
-				<tr id='tr_header'><td>Судья</td></tr>
-				<tr><td>".$referee."</td></tr>
-				<tr id='tr_header'><td>Стадион</td></tr>
-				<tr><td>".$stadium_name."</td></tr>
-				<tr id='tr_header'><td>Прогноз</td></tr>
-				<tr><td>ds</td></tr>
-				<tr id='tr_header'><td>Позиции в лиге</td></tr>
-				<tr><td>ds</td></tr>
-				<tr id='tr_header'><td>Коэффициенты</td></tr>
-				<tr><td>ds</td></tr>
-				</table>";
-		echo "<table style='width:80%;'>";
+		echo "<center><table style='width:80%;'>";
 		echo "<tr id='tr_header'><td colspan='3' >".$team_owner_name."</td><td colspan='3'>".$team_guest_name."</td></tr>";
 		echo "<tr id='tr_header'><td colspan='6'><center>Стартовый состав</center></td></tr>";
 		echo "<tr id='tr_header'>
