@@ -330,6 +330,16 @@ class GamesModel {
 	}
 	
 	/**
+	 * Получаем видео трансляцию матча
+	 * @param id игры $id_game
+	 */
+	public function getVideoBroadcastByGameId($id_game) {
+		$query = "SELECT video_broadcast
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить видео трансляцию матча по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
 	 * 
 	 * Добавляем игру
 	 * @param дата игры $date
@@ -342,11 +352,12 @@ class GamesModel {
 	 * @param дополнительная информация $more_info
 	 */
 	public function addGame($date, $id_team_owner, $id_team_guest, $id_championship, $tour, $id_referee,
-								$id_stadium, $forecast, $announcement, $more_info) {
+								$id_stadium, $forecast, $announcement, $video_broadcast, $more_info) {
 		$exec_query = "INSERT INTO games(id_game, date, id_team_owner, id_team_guest, id_championship, tour,
-					id_referee, id_stadium, forecast, announcement, more_info) 
+					id_referee, id_stadium, forecast, announcement, video_broadcast,  more_info) 
 						VALUES(NULL, '".$date."', {$id_team_owner}, {$id_team_guest},
-								{$id_championship}, '".$tour."', {$id_referee}, {$id_stadium}, '".$forecast."', '".$announcement."', '".$more_info."')";
+								{$id_championship}, '".$tour."', {$id_referee}, {$id_stadium}, '".$forecast."', '".$announcement."', 
+										'".$video_broadcast."', '".$more_info."')";
 		return $this->getExec($exec_query, "Невозможно добавить игру", __FUNCTION__);
 	}
 	/**

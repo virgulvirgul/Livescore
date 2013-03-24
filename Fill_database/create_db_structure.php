@@ -128,6 +128,7 @@ class CreateDBStructure {
 										penalty_shootout_guest_score int(2) DEFAULT 0,
 										forecast varchar(5) DEFAULT '',
 										announcement tinytext DEFAULT '',
+										video_broadcast varchar(200) DEFAULT '',
 										more_info varchar(200) DEFAULT '')";
 		if ($this->pdo1->query($games)) $this->successToCreate("games");
 		else throw new PDOException($this->unnableToCreate("games"));

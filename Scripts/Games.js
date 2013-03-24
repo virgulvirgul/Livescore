@@ -157,7 +157,7 @@ $('#tactic_guest')
 		});
 
 function addGame(team_owner, team_guest, team_owner_start, team_guest_start,
-		tour, referee, date, forecast_owner, forecast_guest, announcement, stadium, tactic_owner, tactic_guest) {
+		tour, referee, date, forecast_owner, forecast_guest, announcement, stadium, tactic_owner, tactic_guest, video_broadcast) {
 	if ($(team_owner).val() == 'Выберите команду...') {
 		$("#errorChanging").remove();
 		$(team_owner).before(
@@ -200,6 +200,7 @@ function addGame(team_owner, team_guest, team_owner_start, team_guest_start,
 			stadium_name : $(stadium).html(),
 			tactic_owner : $(tactic_owner).val(),
 			tactic_guest : $(tactic_guest).val(),
+			video_broadcast : $(video_broadcast).val(),
 			action : "addGame"
 		}, function(result) {
 			alert('Игра была успешно добавлена !');
@@ -232,13 +233,7 @@ function penalty_shootout_form(id_game) {
 	$('#penalty_shootout').modal();
 }
 function time_out(id_game) {
-	$('#scored_button').hide();
-	$('#yellow_card_button').hide();
-	$('#red_card_button').hide();
-	$('#substitution_button').hide();
-	$('#end_of_match_button').hide();
-	$('#time_out_button').hide();
-	$('#penalty_shootout_button').hide();
+	$('#manage_table').hide();
 	$("#time_out_end_button").show();
 	$.post('../Ajax/GamesAjax.php', {
 		id_game : id_game,
@@ -248,13 +243,7 @@ function time_out(id_game) {
 
 }
 function end_of_match(id_game, id_team_owner, id_team_guest, team_owner_goal_diff, team_guest_goal_diff) {
-	$('#scored_button').remove();
-	$('#yellow_card_button').remove();
-	$('#red_card_button').remove();
-	$('#substitution_button').remove();
-	$('#end_of_match_button').remove();
-	$('#time_out_button').remove();
-	$('#penalty_shootout_button').remove();
+	$('#manage_table').remove();
 	$.post('../Ajax/GamesAjax.php', {
 		id_game : id_game,
 		team_owner_id : id_team_owner, 
@@ -267,14 +256,7 @@ function end_of_match(id_game, id_team_owner, id_team_guest, team_owner_goal_dif
 }
 
 function postponed_game(id_game) {
-	$('#scored_button').remove();
-	$('#yellow_card_button').remove();
-	$('#red_card_button').remove();
-	$('#substitution_button').remove();
-	$('#end_of_match_button').remove();
-	$('#time_out_button').remove();
-	$('#penalty_shootout_button').remove();
-	$('#postponed').remove();
+	$('#manage_table').remove();
 	$.post('../Ajax/GamesAjax.php', {
 		id_game : id_game,
 		action : "postponed"
@@ -282,13 +264,7 @@ function postponed_game(id_game) {
 	});
 }
 function end_of_penalty_shootout(id_game) {
-	$('#scored_button').remove();
-	$('#yellow_card_button').remove();
-	$('#red_card_button').remove();
-	$('#substitution_button').remove();
-	$('#end_of_match_button').remove();
-	$('#time_out_button').remove();
-	$('#penalty_shootout_button').remove();
+	$('#manage_table').remove();
 	$.post('../Ajax/GamesAjax.php', {
 		id_game : id_game,
 		action : "finished"
@@ -298,14 +274,7 @@ function end_of_penalty_shootout(id_game) {
 }
 function time_out_end(id_game) {
 	$("#time_out_end_button").hide();
-	$('#scored_button').show();
-	$('#yellow_card_button').show();
-	$('#red_card_button').show();
-	$('#substitution_button').show();
-	$('#end_of_match_button').show();
-	$('#penalty_shootout_button').show();
-
-	$('#time_out_button').show();
+	$('#manage_table').show();
 	$.post('../Ajax/GamesAjax.php', {
 		id_game : id_game,
 		action : "break_end"
