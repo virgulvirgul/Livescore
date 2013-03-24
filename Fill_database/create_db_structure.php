@@ -133,6 +133,35 @@ class CreateDBStructure {
 		if ($this->pdo1->query($games)) $this->successToCreate("games");
 		else throw new PDOException($this->unnableToCreate("games"));
 	}
+	public function createTableGameStatistics() {
+		$gameStatistics= "CREATE TABLE IF NOT EXISTS game_statistics (
+										id_game_statistics int(8) primary key auto_increment,
+										id_game int(8),
+										possession_owner tinyint(2) DEFAULT 50,
+										possesion_guest tinyint(2) DEFAULT 50,
+										shots_owner tinyint(2) DEFAULT 0,
+										shots_guest tinyint(2) DEFAULT 0,
+										shots_on_target_owner tinyint(2) DEFAULT 0,
+										shots_on_target_guest tinyint(2) DEFAULT 0,
+										shots_wide_owner tinyint(2) DEFAULT 0,
+										shots_wide_guest tinyint(2) DEFAULT 0,
+										corners_owner tinyint(2) DEFAULT 0,
+										corners_guest tinyint(2) DEFAULT 0,
+										offside_owner tinyint(2) DEFAULT 0,
+										offside_guest tinyint(2) DEFAULT 0,
+										saves_owner tinyint(2) DEFAULT 0,
+										saves_guest tinyint(2) DEFAULT 0,
+										fouls_owner tinyint(2) DEFAULT 0,
+										fouls_guest tinyint(2) DEFAULT 0,
+										yellow_cards_owner tinyint(2) DEFAULT 0,
+										yellow_cards_guest tinyint(2) DEFAULT 0,
+										red_cards_owner tinyint(2) DEFAULT 0,
+										red_cards_guest tinyint(2) DEFAULT 0)";
+		
+		
+		if ($this->pdo1->query($gameStatistics)) $this->successToCreate("gamesStatistics");
+		else throw new PDOException($this->unnableToCreate("gamesStatistics"));
+	}
 	public function createTableUsers() {
 		$users = "CREATE TABLE IF NOT EXISTS users (
 						id_user tinyint(4) primary key auto_increment,
@@ -211,6 +240,7 @@ $createStructure->createTablePrivateMessagesOutbox();
 $createStructure->createTableReferees();
 $createStructure->createTableStadiums();
 $createStructure->createTableTactics();
+$createStructure->createTableGameStatistics();
 }
 catch (PDOException $e) {
 	echo $e->getMessage();

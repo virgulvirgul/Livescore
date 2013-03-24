@@ -358,6 +358,29 @@ class GamesController {
 		$team_owner_name = $this->teamsModel->getTeamNameByTeamId($id_team_owner);
 		$team_guest_name = $this->teamsModel->getTeamNameByTeamId($id_team_guest);
 		
+		
+		/**
+		 * СТАТИСТИКА МАТЧА
+		 */
+		
+		echo "<br><center>
+				<table style='width:50%'>
+				<tr id='tr_header'><td colspan='3'><center>Статистика</td></tr>
+				<tr><td style='width:40%;'></td><td class='black_td'>".$team_owner_name."</td><td class='black_td'>".$team_guest_name."</td></tr>
+				<tr><td class='black_td'>Владение мячом</td><center><td><center><span id='possession_owner'>25</span>%&nbsp;&nbsp;<input type='button' onclick='possesion_changed(possession_owner, possession_guest);' value='+'></center></td><td ><center><span id='possession_guest'>25</span>%&nbsp;&nbsp;<input type='button' onclick='possesion_changed(possession_guest, possession_owner);' value='+'></center></td></tr>
+				<tr><td class='black_td'>Удары</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Удары в створ</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Удары мимо</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Угловые</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Офсайды</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Сэйвы</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Нарушения</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Жёлтые карточки</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+				<tr><td class='black_td'>Красные карточки</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+						
+				</table>
+				</center>";
+		
 echo "<!-- Модальное меню для забитого гола-->
         <div style='display:none' id='scored'>	
         	<form id='scored_form'  onsubmit='return false;'>

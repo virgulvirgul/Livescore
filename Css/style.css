@@ -464,6 +464,14 @@ font-style: italic;
 	background: #4A4A4A url('../Images/site_images/menu-bg.gif') repeat-x 0 0;
 	color: white;
 }
+.black_td{
+	background-color: inactiveborder;
+border: 2px solid #4A4A4A;
+font-weight: 700;
+font-style: italic;
+background: #4A4A4A url('../Images/site_images/menu-bg.gif') repeat-x 0 0;
+	color: white;
+}
 #tr_header td:HOVER{
 	background-color: white;
 }

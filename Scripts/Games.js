@@ -408,3 +408,19 @@ function show_games(year, month, id_championship, div) {
 		$(div).html(result);
 	});
 }
+
+
+
+function possesion_changed(possesion_plus, possession_minus) {
+	var old_plus = parseInt($(possesion_plus).html());
+	$(possesion_plus).html(old_plus + 1);
+	
+	
+	var old_minus = parseInt($(possession_minus).html());
+	$(possession_minus).html(old_minus - 1);
+}
+
+
+
+
+
