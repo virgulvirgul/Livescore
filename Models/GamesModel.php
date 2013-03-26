@@ -353,11 +353,13 @@ class GamesModel {
 	 */
 	public function addGame($date, $id_team_owner, $id_team_guest, $id_championship, $tour, $id_referee,
 								$id_stadium, $forecast, $announcement, $video_broadcast, $more_info) {
+		$temp_video_broadcast = "<iframe align=\'left\' width=\'530\' height=\'400\' src=\'".$video_broadcast."\' frameborder=\'0\' allowfullscreen></iframe>";
+		//echo "<script>alert('".$temp_video_broadcast."')</script>";
 		$exec_query = "INSERT INTO games(id_game, date, id_team_owner, id_team_guest, id_championship, tour,
 					id_referee, id_stadium, forecast, announcement, video_broadcast,  more_info) 
 						VALUES(NULL, '".$date."', {$id_team_owner}, {$id_team_guest},
 								{$id_championship}, '".$tour."', {$id_referee}, {$id_stadium}, '".$forecast."', '".$announcement."', 
-										'".$video_broadcast."', '".$more_info."')";
+										'".$temp_video_broadcast."', '".$more_info."')";
 		return $this->getExec($exec_query, "Невозможно добавить игру", __FUNCTION__);
 	}
 	/**
