@@ -12,6 +12,7 @@ class GamesController {
 	private $playersModel;
 	private $teamPlayersModel;
 	private $tacticsModel;
+	private $gameStatisticsModel;
 	
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
 	private $SITE_IMAGES = '../Images/site_images/';
@@ -29,6 +30,7 @@ class GamesController {
 		$this->playersModel = new PlayersModel();
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->tacticsModel = new TacticsModel();
+		$this->gameStatisticsModel = new GameStatisticsModel();
 		
 		if (isset($_GET['option']) && $_GET['option'] == 'add_game') $this->getAddGameContent();
 		if (isset($_GET['option']) && $_GET['option'] == 'show_games') $this->getShowGamesContent();
@@ -267,22 +269,51 @@ class GamesController {
 			 * СТАТИСТИКА МАТЧА
 			 */
 			
+			$possesion_owner = $this->gameStatisticsModel->getPossesionOwnerByGameId($id_game);
+			$possesion_guest = $this->gameStatisticsModel->getPossesionGuestByGameId($id_game);
+			
+			$shots_owner = $this->gameStatisticsModel->getShotsOwnerByGameId($id_game);
+			$shots_guest = $this->gameStatisticsModel->getShotsOwnerByGameId($id_game);
+			
+			$shots_on_target_owner = $this->gameStatisticsModel->getShotsOnTargetOwnerByGameId($id_game);
+			$shots_on_target_guest = $this->gameStatisticsModel->getShotsOnTargetGuestByGameId($id_game);
+			
+			$shots_wide_owner = $this->gameStatisticsModel->getShotsWideOwnerByGameId($id_game);
+			$shots_wide_guest = $this->gameStatisticsModel->getShotsWideOwnerByGameId($id_game);
+			
+			$corners_owner = $this->gameStatisticsModel->getCornersOwnerByGameId($id_game);
+			$corners_guest = $this->gameStatisticsModel->getCornersGuestByGameId($id_game);
+			
+			$offsides_owner = $this->gameStatisticsModel->getOffsidesOwnerByGameId($id_game);
+			$offsides_guest = $this->gameStatisticsModel->getOffsidesGuestByGameId($id_game);
+			
+			$saves_owner = $this->gameStatisticsModel->getSavesOwnerByGameId($id_game);
+			$saves_guest = $this->gameStatisticsModel->getSavesGuestByGameId($id_game);
+			
+			$fouls_owner = $this->gameStatisticsModel->getFoulsOwnerByGameId($id_game);
+			$fouls_guest = $this->gameStatisticsModel->getFoulsGuestByGameId($id_game);
+			
+			$yellow_cards_owner - $this->gameStatisticsModel->getYellowCardsOwnerByGameId($id_game);
+			$yellow_cards_guest - $this->gameStatisticsModel->getYellowCardsGuestByGameId($id_game);
+			
+			$red_cards_owner - $this->gameStatisticsModel->getRedCardsOwnerByGameId($id_game);
+			$red_cards_guest - $this->gameStatisticsModel->getRedCardsGuestByGameId($id_game);
 			echo "
 			<table align='right' style='width:43%'>
 			<tr id='tr_header'><td colspan='3'><center>Статистика</td></tr>
 			<tr><td style='width:40%;'></td><td class='black_td'>".$team_owner_name."</td><td class='black_td'>".$team_guest_name."</td></tr>
-			<tr><td class='black_td'>Владение мячом</td><center><td><center><span id='possession_owner'>25</span>%&nbsp;&nbsp;<input type='button' onclick='possesion_changed(possession_owner, possession_guest);' value='+'></center></td><td ><center><span id='possession_guest'>25</span>%&nbsp;&nbsp;<input type='button' onclick='possesion_changed(possession_guest, possession_owner);' value='+'></center></td></tr>
-			<tr><td class='black_td'>Удары</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Удары в створ</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Удары мимо</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Угловые</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Офсайды</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Сэйвы</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Нарушения</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Жёлтые карточки</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
-			<tr><td class='black_td'>Красные карточки</td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td><td><center>25%&nbsp;&nbsp;<input type='button' value='+'></center></td></tr>
+			<tr><td class='black_td'>Владение мячом</td><center><td><center><span id='possession_owner'>50</span>%&nbsp;&nbsp;<button class='small_button' onclick='possesion_changed(possession_owner, possession_guest);' >+</button></center></td><td ><center><span id='possession_guest'>50</span>%&nbsp;&nbsp;<button class='small_button' onclick='possesion_changed(possession_guest, possession_owner);'>+</button></center></td></tr>
+			<tr><td class='black_td'>Удары</td><td><center><span id='shots_owner'>0</span>&nbsp;&nbsp;<button class='small_button' onclick='statistics_changed(shots_owner)'>+</button></center></td><td><center><span id='shots_guest'>0</span>&nbsp;&nbsp;<button class='small_button' onclick='statistics_changed(shots_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Удары в створ</td><td><center><span id='shots_on_target_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(shots_on_target_owner, \"shots_on_target_owner\")'>+</button></center></td><td><center><span id='shots_on_target_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(shots_on_target_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Удары мимо</td><td><center><span id='shots_wide_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(shots_wide_owner)'>+</button></center></td><td><center><span id='shots_wide_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(shots_wide_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Угловые</td><td><center><span id='corners_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(corners_owner)'>+</button></center></td><td><center><span id='corners_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(corners_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Офсайды</td><td><center><span id='offsides_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(offsides_owner)'>+</button></center></td><td><center><span id='offsides_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(offsides_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Сэйвы</td><td><center><span id='saves_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(saves_owner)'>+</button></center></td><td><center><span id='saves_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(saves_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Нарушения</td><td><center><span id='fouls_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(fouls_owner)'>+</button></center></td><td><center><span id='fouls_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(fouls_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Жёлтые карточки</td><td><center><span id='yellow_cards_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(yellow_cards_owner)'>+</button></center></td><td><center><span id='yellow_cards_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(yellow_cards_guest)'>+</button></center></td></tr>
+			<tr><td class='black_td'>Красные карточки</td><td><center><span id='red_cards_owner'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(red_cards_owner)'>+</button></center></td><td><center><span id='red_cards_guest'>0</span>&nbsp;&nbsp;<button class='small_button'  onclick='statistics_changed(red_cards_guest)'>+</button></center></td></tr>
 			
-			</table><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+			</table><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 			";
 			///КОНЕЦ СТАТИСТИКИ
 			

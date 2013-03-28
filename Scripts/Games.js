@@ -420,7 +420,11 @@ function possesion_changed(possesion_plus, possession_minus) {
 	$(possession_minus).html(old_minus - 1);
 }
 
-
+function statistics_changed(id) {
+	var old_id = parseInt($(id).html());
+	$(id).html(old_id + 1);
+	//alert($(id).attr('id'));
+}
 
 
 
