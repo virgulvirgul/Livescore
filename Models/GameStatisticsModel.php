@@ -35,6 +35,15 @@ class GameStatisticsModel {
 		$this->pdo = Config::getInstance()->getPDO();
 	}
 
+	/**
+	 * Добавление статистики при добавлении новой игры
+	 * @param id игры $id_game
+	 */
+	public function addGameStatistics($id_game) {
+		$exec_query = "INSERT INTO game_statistics(id_game_statistics, id_game)
+				VALUES ('NULL', ".$id_game.")";
+		return $this->getExec($exec_query, "Невозможно добавить статистику при добавлении новой игры ", __FUNCTION__);
+	}
 
 	/**
 	 * Получаем процент владения мячом хозяевами по id игры
@@ -255,6 +264,248 @@ class GameStatisticsModel {
 		WHERE id_game = {$id_game}";
 		return $this->getQuery($query, "Невозможно получить количество красных карточек гостей по id игры ", __FUNCTION__)->fetchColumn(0);
 	}
+
+
+
+	/**
+	 * Обновляем процент владения мячом (на +1) хозяевами по id игры
+	 * @param id игры $id_game
+	 */
+	public function updatePossesionOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET possession_owner = possession_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить процент владения мячом хозяевами по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+	 * Обновляем процент владения мячом (на +1) хозяевами по id игры
+	 * @param id игры $id_game
+	 */
+	public function updatePossesionGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET possession_guest = possession_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить процент владения мячом гостями по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+	 * Обновляем процент владения мячом (на -1) хозяевами по id игры
+	 * @param id игры $id_game
+	 */
+	public function updatePossesionDecOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET possession_owner = possession_owner - 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить процент владения мячом хозяевами по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем процент владения мячом (на -1) хозяевами по id игры
+		* @param id игры $id_game
+		*/
+	public function updatePossesionDecGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET possession_guest = possession_guest - 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить процент владения мячом гостями по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Обновляем количество ударов хозяев по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateShotsOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET shots_owner = shots_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество ударов хозяев по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество ударов гостей по id игры
+		* @param id игры $id_game
+		*/
+	public function updateShotsGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET shots_guest = shots_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество ударов гостями по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+	 * Обновляем количество ударов в створ хозяевами по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateShotsOnTargetOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET shots_on_target_owner = shots_on_target_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество ударов по воротам хозяевами по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество ударов в створ гостей по id игры
+		* @param id игры $id_game
+		*/
+	public function updateShotsOnTargetGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET shots_on_target_guest = shots_on_target_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество ударов по воротам гостями по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+	 * Обновляем количество ударов мимо хозяевами по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateShotsWideOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET shots_wide_owner = shots_wide_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество ударов по мимо хозяевами по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество ударов мимо гостями по id игры
+		* @param id игры $id_game
+		*/
+	public function updateShotsWideGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET shots_wide_guest = shots_wide_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество ударов мимо гостями по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+
+	/**
+	 * Обновляем количество угловых хозяев по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateCornersOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET corners_owner = corners_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество угловых хозяев по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество угловых гостей по id игры
+		* @param id игры $id_game
+		*/
+	public function updateCornersGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET corners_guest = corners_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество угловых гостей по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+	 * Обновляем количество офсайдов хозяев по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateOffsidesOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET offsides_owner = offsides_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество офсайдов хозяев по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество офсайдов гостей по id игры
+		* @param id игры $id_game
+		*/
+	public function updateOffsidesGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET offsides_guest = offsides_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество офсайдов гостей по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+	 * Обновляем количество сэйвов хозяев по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateSavesOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET saves_owner = saves_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество сэйвов хозяев по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+	 * Обновляем количество сэйвов гостей по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateSavesGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET saves_guest = saves_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество сэйвов гостей по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Обновляем количество нарушений хозяев по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateFoulsOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET fouls_owner = fouls_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество нарушений хозяев по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество нарушений гостей по id игры
+		* @param id игры $id_game
+		*/
+	public function updateFoulsGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET fouls_guest = fouls_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество нарушений гостей по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Обновляем количество жёлтых карточек хозяев по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateYellowCardsOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET yellow_cards_owner = yellow_cards_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество жёлтых карточек хозяев по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество жёлтых карточек гостей по id игры
+		* @param id игры $id_game
+		*/
+	public function updateYellowCardsGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET yellow_cards_guest = yellow_cards_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество жёлтых карточек гостей по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Обновляем количество красных карточек хозяев по id игры
+	 * @param id игры $id_game
+	 */
+	public function updateRedCardsOwnerByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET red_cards_owner = red_cards_owner + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество красных карточек хозяев по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
+	/**
+		* Обновляем количество красных карточек гостей по id игры
+		* @param id игры $id_game
+		*/
+	public function updateRedCardsGuestByGameId($id_game) {
+		$query = "UPDATE game_statistics
+		SET red_cards_guest = red_cards_guest + 1
+		WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно обновить количество красных карточек гостей по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+
 	/**
 	 *
 	 * Выполняем запрос

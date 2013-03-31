@@ -25,17 +25,15 @@ class GamesAjax {
 	 * PlayersModel()
 	 */
 	private $playersModel;
-	/**
-	 * 
-	 * id команды
-	 */
-	private $team_name;
+		private $team_name;
 	/**
 	 * 
 	 * StadiumsModel()
 	 */
 	private $stadiumsModel;
 	private $teamGamePlayersModel;
+	private $gameStatisticsModel;
+	
 	private $team_owner_id;
 	private $team_guest_id;
 	private $team_owner_start;
@@ -60,6 +58,7 @@ class GamesAjax {
 	private $tactic_owner;
 	private $tactic_guest;
 	private $video_broadcast;
+	private $statAction;
 	
 	private $COUNTRY_IMAGES = '../Images/countries_flags/';
 	private $SITE_IMAGES = '../Images/site_images/';
@@ -69,13 +68,14 @@ class GamesAjax {
 								$announcement = null, $id_team = null,
 								$id_player = null, $minute = null, $id_game = null, $id_second_player = null, $year = null,
 								$month = null, $id_championship = null, $own_goal = null, $team_owner_goal_diff = null, $team_guest_goal_diff = null,
-								$tactic_owner = null, $tactic_guest = null, $video_broadcast = null) {
+								$tactic_owner = null, $tactic_guest = null, $video_broadcast = null, $statAction = null) {
 		$this->teamPlayersModel = new TeamPlayersModel();
 		$this->playersModel = new PlayersModel();
 		$this->teamsModel = new TeamsModel();
 		$this->stadiumsModel = new StadiumsModel();
 		$this->gamesModel = new GamesModel();
 		$this->teamGamePlayersModel = new TeamGamePlayersModel();
+		$this->gameStatisticsModel = new GameStatisticsModel();
 		
 		$this->action = $action;
 		
@@ -104,6 +104,7 @@ class GamesAjax {
 		if ($tactic_owner != null) $this->tactic_owner = $tactic_owner;
 		if ($tactic_guest != null) $this->tactic_guest = $tactic_guest;
 		if ($video_broadcast != null) $this->video_broadcast = $video_broadcast;
+		if ($statAction != null) $this->statAction = $statAction;
 		
 		if ($this->action == "showPlayers") $this->showTeamPlayersAndStadium();
 		if ($this->action == "addGame") $this->addGame();
@@ -120,6 +121,7 @@ class GamesAjax {
 		if ($this->action == "penalty_scored") $this->penalty_scored();
 		if ($this->action == "penalty_not_scored") $this->penalty_not_scored();
 		if ($this->action == "postponed") $this->posponed_game();
+		if ($this->action == "statisticsChanged") $this->statistics_changed();
 		
 	}
 	/**
@@ -154,6 +156,7 @@ class GamesAjax {
 		$id_game = $this->gamesModel->getLastInsertedGameId();
 		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_owner_start), $this->team_owner_id, $id_game, $this->tactic_owner);
 		$this->teamGamePlayersModel->addTeamGamePlayers(implode(',', $this->team_guest_start), $this->team_guest_id, $id_game, $this->tactic_guest);
+		$this->gameStatisticsModel->addGameStatistics($id_game);
 	}
 	/**
 	 * Обрабатываем забитый гол.
@@ -314,6 +317,34 @@ class GamesAjax {
 		}
 		echo "</table></center>";
 	}
+	
+	
+	private function statistics_changed() {
+		switch ($this->statAction) {
+			case "shots_owner" : $this->gameStatisticsModel->updateShotsOwnerByGameId($this->id_game); break;
+			case "shots_guest" : $this->gameStatisticsModel->updateShotsGuestByGameId($this->id_game); break;
+			case "shots_on_target_owner" : $this->gameStatisticsModel->updateShotsOnTargetOwnerByGameId($this->id_game); break;
+			case "shots_on_target_guest" : $this->gameStatisticsModel->updateShotsOnTargetGuestByGameId($this->id_game); break;
+			case "shots_wide_owner" : $this->gameStatisticsModel->updateShotsWideOwnerByGameId($this->id_game); break;
+			case "shots_wide_guest" : $this->gameStatisticsModel->updateShotsWideGuestByGameId($this->id_game); break;
+			case "fouls_owner" : $this->gameStatisticsModel->updateFoulsOwnerByGameId($this->id_game); break;
+			case "fouls_guest" : $this->gameStatisticsModel->updateFoulsGuestByGameId($this->id_game); break;
+			case "saves_owner" : $this->gameStatisticsModel->updateSavesOwnerByGameId($this->id_game); break;
+			case "saves_guest" : $this->gameStatisticsModel->updateSavesGuestByGameId($this->id_game); break;
+			case "offsides_owner" : $this->gameStatisticsModel->updateOffsidesOwnerByGameId($this->id_game); break;
+			case "offsides_guest" : $this->gameStatisticsModel->updateOffsidesGuestByGameId($this->id_game); break;
+			case "corners_owner" : $this->gameStatisticsModel->updateCornersOwnerByGameId($this->id_game); break;
+			case "corners_guest" : $this->gameStatisticsModel->updateCornersGuestByGameId($this->id_game); break;
+			case "yellow_cards_owner" : $this->gameStatisticsModel->updateYellowCardsOwnerByGameId($this->id_game); break;
+			case "yellow_cards_guest" : $this->gameStatisticsModel->updateYellowCardsGuestByGameId($this->id_game); break;
+			case "red_cards_owner" : $this->gameStatisticsModel->updateRedCardsOwnerByGameId($this->id_game); break;
+			case "red_cards_guest" : $this->gameStatisticsModel->updateRedCardsGuestByGameId($this->id_game); break;
+			case "possession_owner" : $this->gameStatisticsModel->updatePossesionOwnerByGameId($this->id_game); 
+									  $this->gameStatisticsModel->updatePossesionDecGuestByGameId($this->id_game);break;
+			case "possession_guest" : $this->gameStatisticsModel->updatePossesionGuestByGameId($this->id_game);
+									  $this->gameStatisticsModel->updatePossesionDecOwnerByGameId($this->id_game);break;
+		}
+	}
 }
 
 $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_owner_id'], $_POST['team_guest_id'], $_POST['team_owner_start'], 
@@ -321,5 +352,5 @@ $gamesAjax = new GamesAjax($_POST['action'], $_POST['team_name'], $_POST['team_o
 							$_POST['announcement'], $_POST['id_team'], 
 							$_POST['id_player'], $_POST['minute'], $_POST['id_game'], $_POST['id_second_player'], $_POST['year'], $_POST['month'],
 							 $_POST['id_championship'], $_POST['own_goal'], $_POST['team_owner_goal_diff'], $_POST['team_guest_goal_diff'],
-							$_POST['tactic_owner'], $_POST['tactic_guest'], $_POST['video_broadcast']);
+							$_POST['tactic_owner'], $_POST['tactic_guest'], $_POST['video_broadcast'], $_POST['statAction']);
 ?>

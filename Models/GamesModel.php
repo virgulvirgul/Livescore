@@ -64,7 +64,7 @@ class GamesModel {
 	 * Получаем все ближайшие матчи
 	 */
 	public function getAllNearestGames() {
-		$query = "SELECT DISTINCT DATE(date) as date, id_team_owner
+		$query = "SELECT DISTINCT DATE(date) as date
 					FROM games
 						WHERE DATEDIFF(date, SYSDATE()) = 0 ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить все ближайшие матчи", __FUNCTION__);

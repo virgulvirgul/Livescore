@@ -411,19 +411,35 @@ function show_games(year, month, id_championship, div) {
 
 
 
-function possesion_changed(possesion_plus, possession_minus) {
+function possesion_changed(possesion_plus, possession_minus, id_game) {
 	var old_plus = parseInt($(possesion_plus).html());
 	$(possesion_plus).html(old_plus + 1);
 	
 	
 	var old_minus = parseInt($(possession_minus).html());
 	$(possession_minus).html(old_minus - 1);
+	
+	$.post('../Ajax/GamesAjax.php', {
+		id_game : id_game,
+		statAction : $(possesion_plus).attr('id'),
+		action : "statisticsChanged"
+	}, function(result) {
+	});
+	
 }
 
-function statistics_changed(id) {
+function statistics_changed(id, id_game) {
+	
 	var old_id = parseInt($(id).html());
 	$(id).html(old_id + 1);
 	//alert($(id).attr('id'));
+	
+	$.post('../Ajax/GamesAjax.php', {
+		id_game : id_game,
+		statAction : $(id).attr('id'),
+		action : "statisticsChanged"
+	}, function(result) {
+	});
 }
 
 
