@@ -51,6 +51,9 @@ $previous_meetings_array = $result['previous_meetings_array'];
 $referee = $result['referee'];
 $stadium = $result['stadium'];
 $tour = $result['tour'];
+
+$championship_table_array = $result['championship_table_array'];
+
 echo "<center><table>";
 	foreach ($teams as $row_teams) {
 		$team_owner_name = $row_teams['team_owner_name'];
@@ -64,6 +67,7 @@ echo "<center><table border='1'>";
 echo "<tr id='tr_header'><td><a id='statistics'>Статистика</a></td>
 						<td><a id='lines_up'>Составы</a></td>
 						<td><a id='previous_meetings'>Предыдущие встречи</a></td>
+						<td><a id='championship_table'>Таблица чемпионата</a></td>
 						<td><a id='addition_info'>Доп инфо</a></td>
 					</tr>";
 echo "</table></center>";
@@ -206,17 +210,35 @@ echo "</table></center>";
 
 echo "</div>";
 
+echo "<div id='championship_table_show' style='display:none'>";
+echo "<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td><td width='1px'>И</td><td width='1px'>В</td><td width='1px'>П</td><td width='1px'>Н</td><td width='1px'>Рм</td><td width='1px'>О</td></tr>";
+$number = 0;
+foreach ($championship_table_array as $row) {
+	$number++;
+	echo "<tr><td>".$number."</td>";
+	echo "<td>".$row['team_name']."</td>";
+	echo "<td>".$row['games']."</td>
+							<td>".$row['win']."</td>
+									<td>".$row['draw']."</td>
+											<td>".$row['lose']."</td>
+													<td>".$row['goal_diff']."</td>
+															<td>".$row['points']."</td></tr>";
+}
+
+echo "</table>";
+echo "</div>";
+
+
 
 echo "<div id='addition_info_table' style='display:none'>";
 echo "<center><table>";
 echo "<tr id='tr_header'><td>Тур</td></tr>";
-
 echo "<tr><td>".$tour['tour']."</td></tr>";
+
 echo "<tr id='tr_header'><td>Судья</td></tr>";
-
 echo "<tr><td>".$referee['referee_name']."</td></tr>";
-echo "<tr id='tr_header'><td>Стадион</td></tr>";
 
+echo "<tr id='tr_header'><td>Стадион</td></tr>";
 echo "<tr><td>".$stadium['stadium_name']." (".$stadium['stadium_capacity'].")</td></tr><tr><td>".$stadium['stadium_image']."</td></tr>";
 echo "</table></center>";
 

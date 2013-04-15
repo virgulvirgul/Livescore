@@ -8,6 +8,7 @@ $(document).ready(function() {
 		$('#previous_meetings_table').hide('slow');
 		$('#addition_info_table').hide('slow');
 		$('#lines_up_table').show('slow');
+		$('#championship_table_show').hide('slow');
 	});
 	
 	$('#statistics').click(function () {
@@ -15,16 +16,25 @@ $(document).ready(function() {
 		$('#previous_meetings_table').hide('slow');
 		$('#lines_up_table').hide('slow');
 		$('#addition_info_table').hide('slow');
-
+		$('#championship_table_show').hide('slow');
 	});
 	$('#previous_meetings').click(function () {
 		$('#previous_meetings_table').show('slow');
 		$('#statistics_table').hide('slow');
 		$('#lines_up_table').hide('slow');
 		$('#addition_info_table').hide('slow');
+		$('#championship_table_show').hide('slow');
+	});
+	$('#championship_table').click(function () {
+		$('#championship_table_show').show('slow');
+		$('#addition_info_table').hide('slow');
+		$('#statistics_table').hide('slow');
+		$('#lines_up_table').hide('slow');
+		$('#previous_meetings_table').hide('slow');
 
 	});
 	$('#addition_info').click(function () {
+		$('#championship_table_show').hide('slow');
 		$('#addition_info_table').show('slow');
 		$('#statistics_table').hide('slow');
 		$('#lines_up_table').hide('slow');

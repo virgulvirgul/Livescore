@@ -553,6 +553,15 @@ class GamesModel {
 		$this->getExec($exec_query, "Невозможно изменить значение пенальти", __FUNCTION__);
 	}
 	/**
+	 * Получаем все ближайшие даты
+	 */
+	public function getAllNearestDates() {
+		$query = "SELECT DISTINCT DATE(date) as date
+		FROM games
+		WHERE DATEDIFF(date, SYSDATE()) = 0 OR DATEDIFF(date, SYSDATE()) = 1 ORDER BY date";
+		return $this->getQuery($query, "Невозможно получить все ближайшие даты", __FUNCTION__);
+	}
+	/**
 	*
 	* Выполняем запрос
 	* @param запрос $query

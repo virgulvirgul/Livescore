@@ -49,11 +49,11 @@ class TeamsModel {
 	 * @throws PDOException
 	 */
 	public function getTeamsByChampionshipId($id_championship) {
-		$query = "SELECT name, id_team, id_championship 
+		$query = "SELECT name, id_team, id_championship, games, win, draw, lose, goal_diff, points
 					FROM teams 
 						WHERE id_championship like '%{$id_championship};%'
 							OR id_championship like '{$id_championship}'
-								OR id_championship like '%;{$id_championship}' ORDER BY id_team";
+								OR id_championship like '%;{$id_championship}' ORDER BY points DESC";
 		return $this->getQuery($query, "Невозможно получить команды по id чемпионата ", __FUNCTION__);
 	}
 	/**

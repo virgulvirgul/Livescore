@@ -38,7 +38,6 @@ class TeamsController {
 					echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=champ_show_archive_games'>Архив матчей</a><br>";
 				}
 				else {
-						echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=teams_list'>Список команд</a><br>";
 						echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=add_game'>Добавить матч</a><br>";
 						echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_games'>Список матчей</a><br>";
 						echo "<a id='a_champ' href='index.php?id_championship=".$_GET['id_championship']."&option=show_archive_games'>Архив матчей</a><br><br>";

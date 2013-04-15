@@ -58,9 +58,7 @@
 						<!-- Main Slide Item -->
 						<div class="featured-main">
 						
-						<?php # HelloClient.php
-# Copyright (c) 2005 by Dr. Herong Yang
-#
+						<?php 
    	$client = new SoapClient(null, array(
       'location' => "http://localhost/Livescore/WebService/server.php",
       'uri'      => "urn://www.livescore.com/req",

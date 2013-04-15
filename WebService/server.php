@@ -112,12 +112,26 @@ function getStatistics($id_game) {
 													"team_guest_score" => $row_prev['score_guest'], "id_game" => $row_prev['id_game'],
 												"team_owner_name" => $team_owner_name_, "team_guest_name" => $team_guest_name_);
 		}
+		
+		
 		$tour = array("tour" => $row['tour']);
 		$referee = array("referee_name" => $refereesModel->getRefereeNameById($gamesModel->getRefereeIdByGameId($row['id_game'])));
 		$stadium_image = "<img height='200px' width='200px'  src='http://localhost/Livescore/Images/stadiums/".$stadiumsModel->getStadiumImageByStadiumId($gamesModel->getRefereeIdByGameId($row['id_game']))."'";
 		$stadium = array("stadium_name" => $stadiumsModel->getStadiumNameById($gamesModel->getStadiumIdByGameId($row['id_game'])),
 							"stadium_image" => $stadium_image,
 								"stadium_capacity" => $stadiumsModel->getStadiumCapacityById($gamesModel->getStadiumIdByGameId($row['id_game'])));
+		
+		foreach ($teamsModel->getTeamsByChampionshipId($teamsModel->getChampionshipIdByTeamId($row['id_team_owner'])) as $row_championship_table){
+			$championship_table_array[] = array("team_name" => $row_championship_table['name'],
+												"games" => $row_championship_table['games'],
+												"win" => $row_championship_table['win'],
+												"draw" => $row_championship_table['draw'],
+												"lose" => $row_championship_table['lose'],
+												"goal_diff" => $row_championship_table['goal_diff'],
+												"points" => $row_championship_table['points']);
+		}
+	//	$championshipTable = array("")
+		
 		
 	}
 	return array('teams_array' => $teams_array, "goals_array" => $goals_array,
@@ -129,7 +143,9 @@ function getStatistics($id_game) {
 			"stadium" => $stadium, "tour" => $tour, "penalty_shootout_flag" => $penalty_shootout_flag,
 			"penalty_shootout_owner_array" => $penalty_shootout_owner_array,
 			"penalty_shootout_guest_array" => $penalty_shootout_guest_array,
-			"penalty_score_owner_array" => $penalty_score_owner_array, "penalty_score_guest_array" => $penalty_score_guest_array);
+			"penalty_score_owner_array" => $penalty_score_owner_array,
+			"penalty_score_guest_array" => $penalty_score_guest_array,
+			"championship_table_array" => $championship_table_array);
 }
 /**
  * Получаем карточки команды
