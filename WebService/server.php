@@ -120,7 +120,9 @@ function getStatistics($id_game) {
 		$stadium = array("stadium_name" => $stadiumsModel->getStadiumNameById($gamesModel->getStadiumIdByGameId($row['id_game'])),
 							"stadium_image" => $stadium_image,
 								"stadium_capacity" => $stadiumsModel->getStadiumCapacityById($gamesModel->getStadiumIdByGameId($row['id_game'])));
-		
+		/**
+		 * Статистика матча
+		 */
 		foreach ($teamsModel->getTeamsByChampionshipId($teamsModel->getChampionshipIdByTeamId($row['id_team_owner'])) as $row_championship_table){
 			$championship_table_array[] = array("team_name" => $row_championship_table['name'],
 												"games" => $row_championship_table['games'],
@@ -130,8 +132,14 @@ function getStatistics($id_game) {
 												"goal_diff" => $row_championship_table['goal_diff'],
 												"points" => $row_championship_table['points']);
 		}
-	//	$championshipTable = array("")
+		/**
+		 * Конец статистики
+		 */
+
+		$forecast_and_announcement_array = array("forecast" => $gamesModel->getForecastByGameId($id_game),
+											"announcement" => $gamesModel->getAnnouncementByGameId($id_game));	
 		
+		$video_broadcast_array = array("video_broadcast" => $gamesModel->getVideoBroadcastByGameId($id_game));
 		
 	}
 	return array('teams_array' => $teams_array, "goals_array" => $goals_array,
@@ -145,7 +153,9 @@ function getStatistics($id_game) {
 			"penalty_shootout_guest_array" => $penalty_shootout_guest_array,
 			"penalty_score_owner_array" => $penalty_score_owner_array,
 			"penalty_score_guest_array" => $penalty_score_guest_array,
-			"championship_table_array" => $championship_table_array);
+			"championship_table_array" => $championship_table_array,
+			"forecast_and_announcement_array" => $forecast_and_announcement_array,
+			"video_broadcast_array" => $video_broadcast_array);
 }
 /**
  * Получаем карточки команды

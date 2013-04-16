@@ -340,6 +340,16 @@ class GamesModel {
 		return $this->getQuery($query, "Невозможно получить видео трансляцию матча по id игры ", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
+	 * Получаем анонс матча
+	 * @param id игры $id_game
+	 */
+	public function getAnnouncementByGameId($id_game) {
+		$query = "SELECT announcement
+					FROM games
+						WHERE id_game = {$id_game}";
+		return $this->getQuery($query, "Невозможно получить анонс матча по id игры ", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
 	 * 
 	 * Добавляем игру
 	 * @param дата игры $date

@@ -214,7 +214,7 @@
 	var newWindow; //глобальная переменная для ссылки на окно
 	function openWindow(id_game){ //открытие первого окна
 		window.status = "Первое окно /*статусная строка главного окна*/";
-		strfeatures = "top=200,left=150, width=500, height=400, scrollbars=yes";
+		strfeatures = "top=200,left=150, width=550, height=550, scrollbars=yes, location=no";
 		window.open("statistics.php?id_game="+id_game, "Win1", strfeatures);
 	}
 </script>

@@ -52,7 +52,10 @@ $referee = $result['referee'];
 $stadium = $result['stadium'];
 $tour = $result['tour'];
 
+
 $championship_table_array = $result['championship_table_array'];
+$forecast_and_announcement_array = $result['forecast_and_announcement_array'];
+$video_broadcast_array = $result['video_broadcast_array'];
 
 echo "<center><table>";
 	foreach ($teams as $row_teams) {
@@ -64,11 +67,12 @@ echo "<center><table>";
    	echo "</table></center>";
    	
 echo "<center><table border='1'>";
-echo "<tr id='tr_header'><td><a id='statistics'>Статистика</a></td>
+echo "<tr id='tr_header'><td><a id='statistics'>Ход матча</a></td>
 						<td><a id='lines_up'>Составы</a></td>
 						<td><a id='previous_meetings'>Предыдущие встречи</a></td>
 						<td><a id='championship_table'>Таблица чемпионата</a></td>
 						<td><a id='addition_info'>Доп инфо</a></td>
+						</tr><tr id='tr_header'><td><a id='video_broadcast'>Онлайн трансляция</a></td>
 					</tr>";
 echo "</table></center>";
 
@@ -238,11 +242,27 @@ echo "<tr><td>".$tour['tour']."</td></tr>";
 echo "<tr id='tr_header'><td>Судья</td></tr>";
 echo "<tr><td>".$referee['referee_name']."</td></tr>";
 
+echo "<tr id='tr_header'><td>Прогноз</td></tr>";
+foreach ($teams as $row_teams) {
+	$team_owner_name = $row_teams['team_owner_name'];
+	$team_guest_name = $row_teams['team_guest_name'];
+	echo "<tr>
+	<td>".$row_teams['team_owner_name']." ".$forecast_and_announcement_array['forecast']." ".$row_teams['team_guest_name']."</td></tr>";
+}
+
+echo "<tr id='tr_header'><td>Анонс матча</td></tr>";
+
+echo "<tr><td>".$forecast_and_announcement_array['announcement']."</td></tr>";
+
 echo "<tr id='tr_header'><td>Стадион</td></tr>";
 echo "<tr><td>".$stadium['stadium_name']." (".$stadium['stadium_capacity'].")</td></tr><tr><td>".$stadium['stadium_image']."</td></tr>";
 echo "</table></center>";
 
 
+echo "</div>";
+
+echo "<div id='video_broadcast_table' style='display:none'>";
+echo $video_broadcast_array['video_broadcast'];
 echo "</div>";
 ?>
 
