@@ -103,6 +103,17 @@ class TeamGamePlayersModel {
 		return $this->getQuery($query, "Невозможно получить пенальти", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
+	 * Получаем id тактики
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function getTacticIdByGameAndTeamId($id_game, $id_team) {
+		$query = "SELECT id_tactic
+					FROM team_game_players
+		WHERE id_game = {$id_game} AND id_team = {$id_team}";
+		return $this->getQuery($query, "Невозможно получить id тактики", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
 	 * Если пенальти забито то пишим id игрока и 1(забито)
 	 * @param id игры $id_game
 	 * @param id команды $id_team

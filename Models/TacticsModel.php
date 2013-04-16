@@ -32,6 +32,17 @@ class TacticsModel {
 		return $this->getQuery($query, "Невозможно получить все названия тактик ", __FUNCTION__);
 	}
 	
+	/**
+	 * Получаем название тактики по id
+	 * @throws PDOException
+	 */
+	public function getTacticNameByTacticId($id_tactic) {
+		$query = "SELECT tactic_name
+					FROM tactics
+						WHERE id_tactic = {$id_tactic}";
+		return $this->getQuery($query, "Невозможно получить  название тактики ", __FUNCTION__)->fetchColumn(0);
+	}
+	
 	
 	/**
 	 *

@@ -57,6 +57,9 @@ $championship_table_array = $result['championship_table_array'];
 $forecast_and_announcement_array = $result['forecast_and_announcement_array'];
 $video_broadcast_array = $result['video_broadcast_array'];
 $form_array = $result['form_array'];
+$game_statistics_array = $result['game_statistics_array'];
+$tactics_array = $result['tactics_array'];
+
 
 echo "<center><table>";
 	foreach ($teams as $row_teams) {
@@ -74,11 +77,11 @@ echo "<tr id='tr_header'><td><a id='statistics'>Ход матча</a></td>
 						<td><a id='championship_table'>Таблица чемпионата</a></td>
 						<td><a id='addition_info'>Доп инфо</a></td>
 						</tr><tr id='tr_header'><td><a id='video_broadcast'>Онлайн трансляция</a></td>
+						<td><a id='game_statistics'>Статистика матча</a></td>
 					</tr>";
 echo "</table></center>";
 
 echo "<div id='statistics_table'>";
-
 echo "<center><table border='1'>";
 echo "<tr id='tr_header'><td width='300px'><center>".$team_owner_name."</td><td width='300px'><center>".$team_guest_name."</td></tr>";
 	foreach ($goals_owner as $row_goals) {
@@ -165,12 +168,15 @@ if ($penalty_shootout_flag == 1) {
 }
 echo "</table></center>";
 echo "</div>";
-
+/**
+ * Составы
+ */
 echo "<div id='lines_up_table' style='display:none'>";
 echo "<table align='left' style='width:50%;'>";
 
 echo "<tr id='tr_header'><td colspan='3' width='300px'><center>".$team_owner_name."</td></td></tr>";
-
+echo "<tr id='tr_header'><td colspan='3'>Тактика</td></tr>";
+echo "<tr><td colspan='3'><center>".$tactics_array['tactics_owner']."<img style='height:250px;width:220px;' src='images/".$tactics_array['tactics_owner'].".jpg'></center></td></tr>";
 echo "<tr id='tr_header'>
 <td>№</td><td>Имя</td><td><div id='amplua'>Амплуа</div></td>
 </tr>";
@@ -184,6 +190,8 @@ echo "</table>";
 echo "<table align='right' style='width:50%;'>";
 
 echo "<tr id='tr_header'><td colspan='3' width='300px'><center>".$team_guest_name."</td></td></tr>";
+echo "<tr id='tr_header'><td colspan='3'>Тактика</td></tr>";
+echo "<tr><td colspan='3'><center>".$tactics_array['tactics_guest']."<img style='height:250px;width:220px;' src='images/".$tactics_array['tactics_guest'].".jpg'></center></td></tr>";
 
 echo "<tr id='tr_header'>
 <td>№</td><td>Имя</td><td><div id='amplua'>Амплуа</div></td>
@@ -195,6 +203,10 @@ foreach ($lines_up_team_guest as $guest) {
 }
 echo "</table>";
 echo "</div>";
+
+/**
+ * Конец составов
+ */
 
 echo "<div id='previous_meetings_table'  style='display:none'>";
 
@@ -291,6 +303,34 @@ echo "</div>";
 echo "<div id='video_broadcast_table' style='display:none'>";
 echo $video_broadcast_array['video_broadcast'];
 echo "</div>";
+/**
+ * Статистика матча
+ */
+echo "<div id='game_statistics_table' style='display:none'>";
+
+echo "<table>";
+echo "<tr id='tr_header'><td width='50%'>".$team_owner_name."</td><td></td><td width='50%'>".$team_guest_name."</td></tr>";
+
+$line_width = 5;
+
+
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['possession_owner']."%&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['possession_owner'] + 70)."px;' src='images/blue.png'></td><td height='20px'>Владение мячом</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['possession_guest'] + 70)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['possession_guest']."%</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['shots_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['shots_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Удары</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['shots_guest'] * 30)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['shots_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['shots_on_target_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['shots_on_target_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Удары в створ</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['shots_on_target_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['shots_on_target_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['shots_wide_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['shots_wide_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Удары мимо</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['shots_wide_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['shots_wide_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['corners_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['corners_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Угловые</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['corners_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['corners_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['offsides_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['offsides_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Офсайды</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['offsides_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['offsides_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['saves_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['saves_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Сэйвы</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['saves_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['saves_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['fouls_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['fouls_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Нарушения</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['fouls_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['fouls_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['yellow_cards_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['yellow_cards_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Жёлтые карточки</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['yellow_cards_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['yellow_cards_guest']."</td></tr>";
+echo "<tr><td style='text-align:right; font-size:17px;'>".$game_statistics_array['red_cards_owner']."&nbsp;&nbsp;<img style='height:16px; width:".($game_statistics_array['red_cards_owner'] * 20)."px;' src='images/blue.png'></td><td height='20px'>Красные карточки</td><td style='text-align:left; font-size:17px;'><img style='height:16px; width:".($game_statistics_array['red_cards_guest'] * 20)."px;' src='images/blue.png'>&nbsp;&nbsp;".$game_statistics_array['red_cards_guest']."</td></tr>";
+echo "</table>";
+
+
+echo "</div>";
+/**
+ * Конец статистики матча
+ */
 ?>
 
 </body>

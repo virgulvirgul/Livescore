@@ -8,6 +8,7 @@ function getStatistics($id_game) {
 	$teamPlayersModel = new TeamPlayersModel();
 	$usersModel = new UsersModel();
 	$gamesModel = new GamesModel();
+	$gameStatisticsModel = new GameStatisticsModel();
 	$teamsModel = new TeamsModel();
 	$championshipsModel = new ChampionshipsModel();
 	$gamesController = new GamesController();
@@ -15,12 +16,49 @@ function getStatistics($id_game) {
 	$playersModel = new PlayersModel();
 	$refereesModel = new RefereesModel();
 	$stadiumsModel = new StadiumsModel();
+	$tacticsModel = new TacticsModel();
 	
 	$teams_array = array();
 	$goals_array = array();
 	$lines_up_team_owner = array();
 	$lines_up_team_guest = array();
 	$previous_meetings_array = array();
+	
+	
+	
+	/**
+	 * 
+	 */
+	/**
+	 * Статистика игры
+	 */
+	
+	$game_statistics_array = array();
+	$game_statistics_array = array ("possession_owner" => $gameStatisticsModel->getPossesionOwnerByGameId($id_game),
+							"possession_guest" => $gameStatisticsModel->getPossesionGuestByGameId($id_game),
+							"shots_owner" => $gameStatisticsModel->getShotsOwnerByGameId($id_game),
+							"shots_guest" => $gameStatisticsModel->getShotsGuestByGameId($id_game),
+							"shots_on_target_owner" => $gameStatisticsModel->getShotsOnTargetOwnerByGameId($id_game),
+							"shots_on_target_guest" => $gameStatisticsModel->getShotsOnTargetGuestByGameId($id_game),
+							"shots_wide_owner" => $gameStatisticsModel->getShotsWideOwnerByGameId($id_game),
+							"shots_wide_guest" => $gameStatisticsModel->getShotsWideGuestByGameId($id_game),
+							"corners_owner" => $gameStatisticsModel->getCornersOwnerByGameId($id_game),
+							"corners_guest" => $gameStatisticsModel->getCornersGuestByGameId($id_game),
+							"offsides_owner" => $gameStatisticsModel->getOffsidesOwnerByGameId($id_game),
+							"offsides_guest" => $gameStatisticsModel->getOffsidesGuestByGameId($id_game),
+							"saves_owner" => $gameStatisticsModel->getSavesOwnerByGameId($id_game),
+							"saves_guest" => $gameStatisticsModel->getSavesGuestByGameId($id_game),
+							"fouls_owner" => $gameStatisticsModel->getFoulsOwnerByGameId($id_game),
+							"fouls_guest" => $gameStatisticsModel->getFoulsGuestByGameId($id_game),
+							"yellow_cards_owner" => $gameStatisticsModel->getYellowCardsOwnerByGameId($id_game),
+							"yellow_cards_guest" => $gameStatisticsModel->getYellowCardsGuestByGameId($id_game),
+							"red_cards_owner" => $gameStatisticsModel->getRedCardsOwnerByGameId($id_game),
+							"red_cards_guest" => $gameStatisticsModel->getRedCardsGuestByGameId($id_game));
+	
+	
+	/**
+	 * 
+	 */
 	
 	
 	/**
@@ -59,8 +97,6 @@ function getStatistics($id_game) {
 				"form" => $symb);
 		$symb = "";
 		print_r ($form_array);echo"<br>";
-		//$last_five_games = $gamesModel->getLastFiveGamesForTeamByTamId($row_teams['id_team']);
-		//print_r ($last_five_games);
 	}
 	
 	/**
@@ -150,6 +186,16 @@ function getStatistics($id_game) {
 		$penalty_score_owner_array = $gamesModel->getPenaltyShootoutOwnerScoreByGameId($row['id_game']);
 		$penalty_score_guest_array = $gamesModel->getPenaltyShootoutGuestScoreByGameId($row['id_game']);
 		
+		
+		/**
+		 * Тактики команд
+		 */
+		
+		$tactics_array = array();
+		$tactics_array = array("tactics_owner" => $tacticsModel->getTacticNameByTacticId($teamGamePlayersModel->getTacticIdByGameAndTeamId($id_game, $row['id_team_owner'])),
+								"tactics_guest" => $tacticsModel->getTacticNameByTacticId($teamGamePlayersModel->getTacticIdByGameAndTeamId($id_game, $row['id_team_guest'])));
+		
+		
 		foreach ($gamesModel->getPreviousMeetingsByTeamOwnerAndGuestId($row['id_team_owner'], $row['id_team_guest']) as $row_prev) {
 			
 			$team_owner_name_ = $teamsModel->getTeamNameByTeamId($row_prev['id_team_owner']);
@@ -203,7 +249,9 @@ function getStatistics($id_game) {
 			"championship_table_array" => $championship_table_array,
 			"forecast_and_announcement_array" => $forecast_and_announcement_array,
 			"video_broadcast_array" => $video_broadcast_array,
-			"form_array" => $form_array);
+			"form_array" => $form_array,
+			"game_statistics_array" => $game_statistics_array,
+			"tactics_array" => $tactics_array);
 }
 /**
  * Получаем карточки команды
