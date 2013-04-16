@@ -56,6 +56,7 @@ $tour = $result['tour'];
 $championship_table_array = $result['championship_table_array'];
 $forecast_and_announcement_array = $result['forecast_and_announcement_array'];
 $video_broadcast_array = $result['video_broadcast_array'];
+$form_array = $result['form_array'];
 
 echo "<center><table>";
 	foreach ($teams as $row_teams) {
@@ -215,18 +216,44 @@ echo "</table></center>";
 echo "</div>";
 
 echo "<div id='championship_table_show' style='display:none'>";
-echo "<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td><td width='1px'>И</td><td width='1px'>В</td><td width='1px'>П</td><td width='1px'>Н</td><td width='1px'>Рм</td><td width='1px'>О</td></tr>";
+echo "<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td><td width='1px'>И</td><td width='1px'>В</td><td width='1px'>Н</td><td width='1px'>П</td><td width='1px'>Рм</td><td width='1px'>О</td><td>Форма</td></tr>";
 $number = 0;
 foreach ($championship_table_array as $row) {
 	$number++;
-	echo "<tr><td>".$number."</td>";
+	
+	if ($team_owner_name == $row['team_name'] || $team_guest_name == $row['team_name']) {
+		echo "<tr id='tr_header2'>";
+	}
+	else echo "<tr>";
+	
+	echo "<td>".$number."</td>";
 	echo "<td>".$row['team_name']."</td>";
 	echo "<td>".$row['games']."</td>
 							<td>".$row['win']."</td>
 									<td>".$row['draw']."</td>
 											<td>".$row['lose']."</td>
 													<td>".$row['goal_diff']."</td>
-															<td>".$row['points']."</td></tr>";
+															<td>".$row['points']."</td>";
+	
+	foreach ($form_array as $row_form) {
+		if ($row['team_name'] == $row_form['team_name']) {
+			if (strlen($row_form['form']) > 0) {
+				$symb = str_split($row_form['form']);
+			}
+			echo "<td>";
+			for ($i == 0; $i < count($symb); $i++) {
+				if ($symb[$i] == "W") { $img = "win";}
+				if ($symb[$i] == "L") { $img = "lose"; }
+				if ($symb[$i] == "D") { $img = "draw"; } 
+				echo "<img src='images/".$img.".png' style='height:15px;width:15px;'>";
+			}  
+			$i = 0;
+			$symb = null;
+				echo "</td><tr>";
+				
+		}
+		
+	}
 }
 
 echo "</table>";

@@ -571,6 +571,19 @@ class GamesModel {
 		WHERE DATEDIFF(date, SYSDATE()) = 0 OR DATEDIFF(date, SYSDATE()) = 1 ORDER BY date";
 		return $this->getQuery($query, "Невозможно получить все ближайшие даты", __FUNCTION__);
 	}
+	
+	/**
+	 * Получаем 5 последних матчей для команды
+	 */
+	public function getLastFiveGamesForTeamByTamId($id_team) {
+		$query = "SELECT id_game, date, id_team_owner, id_team_guest, score_owner, score_guest, id_championship,
+							tour, id_referee, id_stadium, break, finished, postponed, penalty_shootout,
+							penalty_shootout_owner_score, penalty_shootout_guest_score, forecast, announcement
+							video_broadcast, more_info
+					FROM games
+						WHERE (id_team_owner = {$id_team} OR id_team_guest = {$id_team}) AND finished = 1 ORDER BY date LIMIT 5";
+		return $this->getQuery($query, "Невозможно получить 5 последних матчей для команды", __FUNCTION__);
+	}
 	/**
 	*
 	* Выполняем запрос

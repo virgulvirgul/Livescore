@@ -64,12 +64,10 @@
       'uri'      => "urn://www.livescore.com/req",
       'trace'    => 1 ));
 
-   
    	$result = $client->getNearestMatches();
    	
    	$date = $result['date_array'];
    	$match = $result['match_array'];
-   	
    	
 	echo "<center><table border='1'>";
 	foreach ($date as $row) {

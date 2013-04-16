@@ -1,7 +1,7 @@
 <?php 
 require_once '../Scripts/autoload.php';
 
-
+//getStatistics(5);
 function getStatistics($id_game) {
 	$continentsModel = new ContinentsModel();
 	$countriesModel = new CountriesModel();
@@ -21,6 +21,53 @@ function getStatistics($id_game) {
 	$lines_up_team_owner = array();
 	$lines_up_team_guest = array();
 	$previous_meetings_array = array();
+	
+	
+	/**
+	 * Форма всех команд
+	 * @var unknown_type
+	 */
+	$form_array = array();
+	$symb = "";
+	foreach ($teamsModel->getAllTeams() as $row_teams) {
+		foreach ($gamesModel->getLastFiveGamesForTeamByTamId($row_teams['id_team']) as $row_last) {
+			
+			if ($gamesModel->getScoreOwnerByGameId($row_last['id_game']) > 
+					$gamesModel->getScoreGuestByGameId($row_last['id_game'])) {
+				if ($row_teams['id_team'] == $gamesModel->getTeamOwnerIdByGameId($row_last['id_game'])) {
+					$symb .= "W";
+				}
+				else {
+					$symb  .= "L";
+				}
+			} else if ($gamesModel->getScoreOwnerByGameId($row_last['id_game']) < 
+					$gamesModel->getScoreGuestByGameId($row_last['id_game'])) {
+				if ($row_teams['id_team'] == $gamesModel->getTeamOwnerIdByGameId($row_last['id_game'])) {
+					$symb  .= "L";
+				}
+				else {
+					$symb  .= "W";
+				}
+			} else {
+				$symb  .= "D";
+			}
+			
+			
+		}
+			
+		$form_array[] = array("team_name" => $row_teams['name'],
+				"form" => $symb);
+		$symb = "";
+		print_r ($form_array);echo"<br>";
+		//$last_five_games = $gamesModel->getLastFiveGamesForTeamByTamId($row_teams['id_team']);
+		//print_r ($last_five_games);
+	}
+	
+	/**
+	 * Конец формы всех команд
+	 */
+	
+	
 	
 	foreach ($gamesModel->getGameByGameId($id_game) as $row) {
 		$team_owner_name = $teamsModel->getTeamNameByTeamId($row['id_team_owner']);
@@ -155,7 +202,8 @@ function getStatistics($id_game) {
 			"penalty_score_guest_array" => $penalty_score_guest_array,
 			"championship_table_array" => $championship_table_array,
 			"forecast_and_announcement_array" => $forecast_and_announcement_array,
-			"video_broadcast_array" => $video_broadcast_array);
+			"video_broadcast_array" => $video_broadcast_array,
+			"form_array" => $form_array);
 }
 /**
  * Получаем карточки команды
