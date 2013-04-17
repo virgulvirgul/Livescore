@@ -79,10 +79,10 @@ $(document).ready(function() {
 }*/
 
 function getTooltipForGame(number, team_owner_name, team_guest_name, team_owner_score, 
-		team_guest_score, id_game) {
+		team_guest_score, id_game, date) {
 $("#show_game" + number).easyTooltip({
-	content: team_owner_name + ' ' + team_owner_score + ' - ' + team_guest_score + ' ' + team_guest_name,
-	xOffset: -200,
+	content: '<center>' + team_owner_name + ' <u>' + team_owner_score + ' - ' + team_guest_score + '</u> ' + team_guest_name + ' (' + date + ')</center>',
+	xOffset: -250,
 	yOffset: 50,
 	clickRemove: true
 });

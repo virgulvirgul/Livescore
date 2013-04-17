@@ -10,7 +10,8 @@ function getTeamsNamesAndSoreByGameId ($id_game) {
 	$teams_array = array("team_owner_name" => $teamsModel->getTeamNameByTeamId($gamesModel->getTeamOwnerIdByGameId($id_game)),
 						"team_guest_name" => $teamsModel->getTeamNameByTeamId($gamesModel->getTeamGuestIdByGameId($id_game)),
 						"team_owner_score" => $gamesModel->getScoreOwnerByGameId($id_game),
-						"team_guest_score" => $gamesModel->getScoreGuestByGameId($id_game));
+						"team_guest_score" => $gamesModel->getScoreGuestByGameId($id_game),
+						"date" => $gamesModel->getGameDateById($id_game));
 	return array("teams_names_array" => $teams_array);
 }
 //getStatistics(5);

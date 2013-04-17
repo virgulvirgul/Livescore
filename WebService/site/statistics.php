@@ -269,7 +269,16 @@ foreach ($championship_table_array as $row) {
 				$id_games = explode(";", $row_form['id_games']);
 				$result_teams_names = $client->getTeamsNamesAndSoreByGameId($id_games[$i]);
 				$teams_names_array = $result_teams_names['teams_names_array'];
-				echo "<span style='font-size:100px;' id='show_game{$number_form}' onmousemove='getTooltipForGame({$number_form}, \"".$teams_names_array['team_owner_name']."\", \"".$teams_names_array['team_guest_name']."\", \"".$teams_names_array['team_owner_score']."\", \"".$teams_names_array['team_guest_score']."\", {$id_games[$i]})'><a   onclick='openWindow(".$id_games[$i].");'><img src='images/".$img.".png' style='height:15px;width:15px;'></a></span>&nbsp;";
+				
+				$allDate = $teams_names_array['date'];
+				$year = substr($allDate, 0, 4);
+				$month = substr($allDate, 5, 2);
+				$day = substr($allDate, 8, 2);
+				$hour = substr($allDate, 11, 2);
+				$minute = substr($allDate, 14, 2);
+				$date = date('d F, Y',mktime($hour,$minute,0,$month, $day, $year));
+
+				echo "<span style='font-size:100px;' id='show_game{$number_form}' onmouseover='getTooltipForGame({$number_form}, \"".$teams_names_array['team_owner_name']."\", \"".$teams_names_array['team_guest_name']."\", \"".$teams_names_array['team_owner_score']."\", \"".$teams_names_array['team_guest_score']."\", {$id_games[$i]}, \"".$date."\")'><a   onclick='openWindow(".$id_games[$i].");'><img src='images/".$img.".png' style='height:15px;width:15px;'></a></span>&nbsp;";
 			}  
 			$i = 0;
 			$symb = null;
