@@ -9,7 +9,9 @@
 <body bgcolor = 'inactiveborder'>
 <script type="text/javascript" src="jquery-1.7.1.js"></script> 
 <script type="text/javascript" src="scripts.js"></script> 
+<script type="text/javascript" src="easyTooltip.js"></script>
 
+<script type="text/javascript" src="easyTooltip1.js"></script>
 <?php
 
 
@@ -75,9 +77,9 @@ echo "<tr id='tr_header'><td><a id='statistics'>Ход матча</a></td>
 						<td><a id='lines_up'>Составы</a></td>
 						<td><a id='previous_meetings'>Предыдущие встречи</a></td>
 						<td><a id='championship_table'>Таблица чемпионата</a></td>
-						<td><a id='addition_info'>Доп инфо</a></td>
-						</tr><tr id='tr_header'><td><a id='video_broadcast'>Онлайн трансляция</a></td>
-						<td><a id='game_statistics'>Статистика матча</a></td>
+						<td><a id='addition_info'>Доп инфо</a></td></td>
+						<tr id='tr_header'><td></td><td><a id='video_broadcast'>Онлайн трансляция</a></td>
+						<td></td><td><a id='game_statistics'>Статистика матча</a></td><td></td>
 					</tr>";
 echo "</table></center>";
 
@@ -208,6 +210,9 @@ echo "</div>";
  * Конец составов
  */
 
+/**
+ * Предыдущие встречи
+ */
 echo "<div id='previous_meetings_table'  style='display:none'>";
 
 echo "<center><table>";
@@ -226,10 +231,13 @@ echo "</table></center>";
 
 
 echo "</div>";
-
+/**
+ * Конец предыдущие встречи
+ */
 echo "<div id='championship_table_show' style='display:none'>";
 echo "<table><tr id='tr_header'><td width='1px'>№</td><td>Команда</td><td width='1px'>И</td><td width='1px'>В</td><td width='1px'>Н</td><td width='1px'>П</td><td width='1px'>Рм</td><td width='1px'>О</td><td>Форма</td></tr>";
 $number = 0;
+$number_form = 0;
 foreach ($championship_table_array as $row) {
 	$number++;
 	
@@ -254,10 +262,14 @@ foreach ($championship_table_array as $row) {
 			}
 			echo "<td>";
 			for ($i == 0; $i < count($symb); $i++) {
+				$number_form++;
 				if ($symb[$i] == "W") { $img = "win";}
 				if ($symb[$i] == "L") { $img = "lose"; }
 				if ($symb[$i] == "D") { $img = "draw"; } 
-				echo "<img src='images/".$img.".png' style='height:15px;width:15px;'>";
+				$id_games = explode(";", $row_form['id_games']);
+				$result_teams_names = $client->getTeamsNamesAndSoreByGameId($id_games[$i]);
+				$teams_names_array = $result_teams_names['teams_names_array'];
+				echo "<span style='font-size:100px;' id='show_game{$number_form}' onmousemove='getTooltipForGame({$number_form}, \"".$teams_names_array['team_owner_name']."\", \"".$teams_names_array['team_guest_name']."\", \"".$teams_names_array['team_owner_score']."\", \"".$teams_names_array['team_guest_score']."\", {$id_games[$i]})'><a   onclick='openWindow(".$id_games[$i].");'><img src='images/".$img.".png' style='height:15px;width:15px;'></a></span>&nbsp;";
 			}  
 			$i = 0;
 			$symb = null;
@@ -334,4 +346,13 @@ echo "</div>";
 ?>
 
 </body>
+<script language="JavaScript">
+	var newWindow; //глобальная переменная для ссылки на окно
+	function openWindow(id_game){ //открытие первого окна
+		window.status = "Первое окно /*статусная строка главного окна*/";
+		strfeatures = "top=200,left=150, width=550, height=550, scrollbars=yes, location=no";
+		window.open("statistics.php?id_game="+id_game, "Win1", strfeatures);
+	}
+</script>
+
 </html>

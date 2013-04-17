@@ -161,4 +161,29 @@ text-shadow: 0 -1px #00468C,1px 0 #00468C,0 1px #00468C,-1px 0 #00468C;
 td {
 text-align: left;
 }
-
+.tooltip {
+position: absolute;
+z-index: 1000;
+border: 1px solid gray;
+#background-color: #FFFFD4;
+	background: #4A4A4A url('../Images/site_images/menu-bg.gif') repeat-x 0 0;
+text-align: left;
+padding: 10px 10px 10px 10px;
+opacity: 0.85;
+filter: alpha(opacity=85);
+color: #D0F500;
+font-size: 1.1em;
+}
+#easyTooltip{
+position: absolute;
+z-index: 1000;
+border: 1px solid gray;
+	background: #4A4A4A url('../Images/site_images/menu-bg.gif') repeat-x 0 0;
+text-align: left;
+padding: 10px 10px 10px 10px;
+opacity: 0.85;
+filter: alpha(opacity=85);
+color: #D0F500;
+font-size: 1.1em;
+font-weight:  bold;
+}

@@ -1,6 +1,18 @@
 <?php 
 require_once '../Scripts/autoload.php';
 
+
+function getTeamsNamesAndSoreByGameId ($id_game) {
+	$gamesModel = new GamesModel();
+	$teamsModel = new TeamsModel();
+	
+	$teams_array = array();
+	$teams_array = array("team_owner_name" => $teamsModel->getTeamNameByTeamId($gamesModel->getTeamOwnerIdByGameId($id_game)),
+						"team_guest_name" => $teamsModel->getTeamNameByTeamId($gamesModel->getTeamGuestIdByGameId($id_game)),
+						"team_owner_score" => $gamesModel->getScoreOwnerByGameId($id_game),
+						"team_guest_score" => $gamesModel->getScoreGuestByGameId($id_game));
+	return array("teams_names_array" => $teams_array);
+}
 //getStatistics(5);
 function getStatistics($id_game) {
 	$continentsModel = new ContinentsModel();
@@ -74,28 +86,39 @@ function getStatistics($id_game) {
 					$gamesModel->getScoreGuestByGameId($row_last['id_game'])) {
 				if ($row_teams['id_team'] == $gamesModel->getTeamOwnerIdByGameId($row_last['id_game'])) {
 					$symb .= "W";
+					$id_games .= $row_last['id_game'].";";
 				}
 				else {
 					$symb  .= "L";
+					$id_games .= $row_last['id_game'].";";
+						
 				}
 			} else if ($gamesModel->getScoreOwnerByGameId($row_last['id_game']) < 
 					$gamesModel->getScoreGuestByGameId($row_last['id_game'])) {
 				if ($row_teams['id_team'] == $gamesModel->getTeamOwnerIdByGameId($row_last['id_game'])) {
 					$symb  .= "L";
+					$id_games .= $row_last['id_game'].";";
+						
 				}
 				else {
 					$symb  .= "W";
+					$id_games .= $row_last['id_game'].";";
+						
 				}
 			} else {
 				$symb  .= "D";
+				$id_games .= $row_last['id_game'].";";
+				
 			}
 			
 			
 		}
-			
+		$id_games = substr_replace($id_games, "", strlen($id_games) - 1);
 		$form_array[] = array("team_name" => $row_teams['name'],
-				"form" => $symb);
+				"form" => $symb,
+				"id_games" => $id_games);
 		$symb = "";
+		$id_games = "";
 		print_r ($form_array);echo"<br>";
 	}
 	
@@ -430,6 +453,7 @@ function getNearestMatches() {
     						array('uri' => "urn://www.livescore.com/res"));
    $server->addFunction("getNearestMatches"); 
    $server->addFunction("getStatistics");
+   $server->addFunction("getTeamsNamesAndSoreByGameId");
     
    $server->handle(); 
 ?>

@@ -1,8 +1,7 @@
 
 $(document).ready(function() {
-			/**
- 			* При наведениие на ячейку меняем её цвет
- 			*/
+	$("a").easyTooltip();
+	
 	$('#lines_up').click(function () {
 		$('#statistics_table').hide('slow');
 		$('#previous_meetings_table').hide('slow');
@@ -67,4 +66,24 @@ $(document).ready(function() {
 		$('#championship_table_show').hide('slow');
 		$('#video_broadcast_table').hide('slow');
 	});
+	
+
 });
+
+/*function getTooltipForGame(number, team_owner_name, team_guest_name, team_owner_score, 
+							team_guest_score, id_game) {
+	$("#show_game" + number).tooltip({
+		txt: team_owner_name + ' ' + team_owner_score + ' - ' + team_guest_score + ' ' + team_guest_name,            
+		effect: 'fadeIn'
+	});
+}*/
+
+function getTooltipForGame(number, team_owner_name, team_guest_name, team_owner_score, 
+		team_guest_score, id_game) {
+$("#show_game" + number).easyTooltip({
+	content: team_owner_name + ' ' + team_owner_score + ' - ' + team_guest_score + ' ' + team_guest_name,
+	xOffset: -200,
+	yOffset: 50,
+	clickRemove: true
+});
+}
