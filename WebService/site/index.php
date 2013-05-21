@@ -68,7 +68,6 @@
    	
    	$date = $result['date_array'];
    	$match = $result['match_array'];
-   	
 	echo "<center><table border='1'>";
 	foreach ($date as $row) {
    		echo "<tr id='tr_header'><td colspan='4'><u>".$row['country_name']."</u> - ".$row['championship_name']."<div align='right'>".$row['date']."</div></td></tr>";

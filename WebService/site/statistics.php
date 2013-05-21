@@ -87,11 +87,11 @@ echo "<div id='statistics_table'>";
 echo "<center><table border='1'>";
 echo "<tr id='tr_header'><td width='300px'><center>".$team_owner_name."</td><td width='300px'><center>".$team_guest_name."</td></tr>";
 	foreach ($goals_owner as $row_goals) {
-		$minutes_owner[] = (int)$row_goals['team_owner_goal_minute'];
+		$minutes_owner[] = $row_goals['team_owner_goal_minute'];
 		$names_owner[] = $row_goals['team_owner_goal_player_name'];
 	}
 	foreach ($goals_guest as $row_goals) {
-		$minutes_guest[] = (int)$row_goals['team_guest_goal_minute'];
+		$minutes_guest[] = $row_goals['team_guest_goal_minute'];
 		$names_guest[] = $row_goals['team_guest_goal_player_name'];
 	}
 	if (count($minutes_owner) >= count($minutes_guest)) {

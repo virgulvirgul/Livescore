@@ -127,7 +127,7 @@ class TeamsController {
 									<td>".$this->teamsModel->getLoseByIdTeam($row['id_team'])."</td>
 											<td>".$this->teamsModel->getDrawByIdTeam($row['id_team'])."</td>
 													<td>".$this->teamsModel->getGoalDiffByIdTeam($row['id_team'])."</td>
-															<td>".$this->teamsModel->getPointsByIdTeam($row['id_team'])."</td>";
+															<td style='background-color:#D0F500'>".$this->teamsModel->getPointsByIdTeam($row['id_team'])."</td>";
 					echo "</tr>";
 				}
 				echo "</table></center>";
