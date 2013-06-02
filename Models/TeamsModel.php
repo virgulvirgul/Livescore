@@ -16,6 +16,15 @@ class TeamsModel {
 		return $this->getQuery($query, "Невозможно получить все команды ", __FUNCTION__);
 	}
 	/**
+	 *
+	 * Получаем все команды по id чемпионата
+	 * @throws PDOException
+	 */
+	public function getAllTeamsByChampionshipId($id_championship) {
+		$query = "SELECT name, id_team, id_championship FROM teams WHERE id_championship = {$id_championship}";
+		return $this->getQuery($query, "Невозможно получить все команды по id чемпионата", __FUNCTION__);
+	}
+	/**
 	 * Получаем названия всех команд
 	 */
 	public function getTeamsNames() {

@@ -49,6 +49,8 @@ $lines_up_team_owner = $result['lines_up_team_owner'];
 $lines_up_team_guest = $result['lines_up_team_guest'];
 
 $previous_meetings_array = $result['previous_meetings_array'];
+$last_games_owner_array = $result['last_games_owner_array'];
+$last_games_guest_array = $result['last_games_guest_array'];
 
 $referee = $result['referee'];
 $stadium = $result['stadium'];
@@ -61,8 +63,9 @@ $video_broadcast_array = $result['video_broadcast_array'];
 $form_array = $result['form_array'];
 $game_statistics_array = $result['game_statistics_array'];
 $tactics_array = $result['tactics_array'];
-
-
+$strikers_array = $result['strikers_array'];
+$yellow_cards_statistics_array = $result['yellow_cards_statistics_array'];
+$red_cards_statistics_array = $result['red_cards_statistics_array'];
 echo "<center><table>";
 	foreach ($teams as $row_teams) {
 		$team_owner_name = $row_teams['team_owner_name'];
@@ -75,11 +78,11 @@ echo "<center><table>";
 echo "<center><table border='1'>";
 echo "<tr id='tr_header'><td><a id='statistics'>Ход матча</a></td>
 						<td><a id='lines_up'>Составы</a></td>
-						<td><a id='previous_meetings'>Предыдущие встречи</a></td>
+						<td><a id='previous_meetings'>Последние игры</a></td>
 						<td><a id='championship_table'>Таблица чемпионата</a></td>
 						<td><a id='addition_info'>Доп инфо</a></td></td>
 						<tr id='tr_header'><td></td><td><a id='video_broadcast'>Онлайн трансляция</a></td>
-						<td></td><td><a id='game_statistics'>Статистика матча</a></td><td></td>
+						<td><a id='game_statistics'>Статистика матча</a></td><td><a id='players_statistics'>Статистика игроков</a></td><td></td>
 					</tr>";
 echo "</table></center>";
 
@@ -217,13 +220,75 @@ echo "<div id='previous_meetings_table'  style='display:none'>";
 
 echo "<center><table>";
 
+echo "<tr id='tr_header'><td colspan=4>Последние встречи: <span style='color:#7FCAEB'>".$team_owner_name."</span><td></tr>";
+foreach ($last_games_owner_array as $row_prev) {
+		$allDate = $row_prev['date'];
+	$year = substr($allDate, 0, 4);
+	$month = substr($allDate, 5, 2);
+	$day = substr($allDate, 8, 2);
+	$date = date('d F Y',mktime(0,0,0,$month, $day, $year));
+	$temp_owner = ''; $temp_guest = '';
+	if ($row_prev['team_owner_name'] == $team_owner_name) {
+		$temp_owner = "style='background-color:#7FCAEB;color:black'";
+	} else if ($row_prev['team_guest_name'] == $team_owner_name) {
+		$temp_guest = "style='background-color:#7FCAEB;color:black'";
+	} 
+	echo "<tr><td style='width:95px'>".$date."</td><td ".$temp_owner."><div align='right'>".$row_prev['team_owner_name']."</b></div></td><td style='width:30px'><a onclick='openWindow(".$row_prev['id_game'].");'>".$row_prev['team_owner_score']." - ".$row_prev['team_guest_score']."</a></td><td ".$temp_guest.">".$row_prev['team_guest_name']."</td>";
+	echo "<td style='width:5px'>";
+	if ($team_owner_name == $row_prev['team_owner_name'] && $row_prev['team_owner_score'] > $row_prev['team_guest_score']) {
+		echo "<img src='images/win.png' style='height:15px;width:15px;'>";
+	} else if ($team_owner_name == $row_prev['team_owner_name'] && $row_prev['team_owner_score'] < $row_prev['team_guest_score']) {
+		echo "<img src='images/lose.png' style='height:15px;width:15px;'>";
+	} else if ($team_owner_name == $row_prev['team_guest_name'] && $row_prev['team_owner_score'] < $row_prev['team_guest_score']) {
+		echo "<img src='images/win.png' style='height:15px;width:15px;'>";
+	} else if ($team_owner_name == $row_prev['team_guest_name'] && $row_prev['team_owner_score'] > $row_prev['team_guest_score']) {
+		echo "<img src='images/lose.png' style='height:15px;width:15px;'>";
+	} else echo "<img src='images/draw.png' style='height:15px;width:15px;'>";
+	echo "</td></tr>";
+}
+
+echo "</table></center>";
+echo "<center><table style='width:100%'>";
+
+echo "<tr id='tr_header'><td colspan=4>Последние встречи: <span style='color:#7FCAEB'>".$team_guest_name."</span><td></tr>";
+foreach ($last_games_guest_array as $row_prev) {
+	$allDate = $row_prev['date'];
+	$year = substr($allDate, 0, 4);
+	$month = substr($allDate, 5, 2);
+	$day = substr($allDate, 8, 2);
+	$date = date('d F Y',mktime(0,0,0,$month, $day, $year));
+	$temp_owner = ''; $temp_guest = '';
+	if ($row_prev['team_owner_name'] == $team_guest_name) {
+		$temp_owner = "style='background-color:#7FCAEB;color:black'";
+	} else if ($row_prev['team_guest_name'] == $team_guest_name) {
+		$temp_guest = "style='background-color:#7FCAEB;color:black'";
+	} 
+	echo "<tr><td style='width:95px'>".$date."</td><td ".$temp_owner."><div align='right'>".$row_prev['team_owner_name']."</b></div></td><td style='width:30px'><a onclick='openWindow(".$row_prev['id_game'].");'>".$row_prev['team_owner_score']." - ".$row_prev['team_guest_score']."</a></td><td ".$temp_guest.">".$row_prev['team_guest_name']."</td>";
+	echo "<td style='width:5px'>";
+	if ($team_guest_name == $row_prev['team_owner_name'] && $row_prev['team_owner_score'] > $row_prev['team_guest_score']) {
+		echo "<img src='images/win.png' style='height:15px;width:15px;'>";
+	} else if ($team_guest_name == $row_prev['team_owner_name'] && $row_prev['team_owner_score'] < $row_prev['team_guest_score']) {
+		echo "<img src='images/lose.png' style='height:15px;width:15px;'>";
+	} else if ($team_guest_name == $row_prev['team_guest_name'] && $row_prev['team_owner_score'] < $row_prev['team_guest_score']) {
+		echo "<img src='images/win.png' style='height:15px;width:15px;'>";
+	} else if ($team_guest_name == $row_prev['team_guest_name'] && $row_prev['team_owner_score'] > $row_prev['team_guest_score']) {
+		echo "<img src='images/lose.png' style='height:15px;width:15px;'>";
+	} else echo "<img src='images/draw.png' style='height:15px;width:15px;'>";
+	echo "</td></tr>";
+}
+
+
+echo "</table></center>";
+echo "<center><table>";
+
+echo "<tr id='tr_header'><td colspan=3>Очные встречи: <span style='color:#7FCAEB'>".$team_owner_name."</span> - <span style='color:#7FCAEB'>".$team_guest_name."</span><td></tr>";
 foreach ($previous_meetings_array as $row_prev) {
 	$allDate = $row_prev['date'];
 	$year = substr($allDate, 0, 4);
 	$month = substr($allDate, 5, 2);
 	$day = substr($allDate, 8, 2);
 	$date = date('d F Y',mktime(0,0,0,$month, $day, $year));
-	echo "<tr><td style='width:80px'>".$date."</td><td width='100px'><div align='right'>".$row_prev['team_owner_name']."</div></td><td width='15px'><a onclick='openWindow(".$row_prev['id_game'].");'>".$row_prev['team_owner_score']." - ".$row_prev['team_guest_score']."</a></td><td width='100px'>".$row_prev['team_guest_name']."</td></tr>";
+	echo "<tr><td style='width:95px'>".$date."</td><td><div align='right'>".$row_prev['team_owner_name']."</div></td><td style='width:30px'><a onclick='openWindow(".$row_prev['id_game'].");'>".$row_prev['team_owner_score']." - ".$row_prev['team_guest_score']."</a></td><td>".$row_prev['team_guest_name']."</td></tr>";
 }
 
 
@@ -351,6 +416,52 @@ echo "</table>";
 echo "</div>";
 /**
  * Конец статистики матча
+ */
+
+
+
+/**
+ * Статистика игроков
+ */
+
+echo "<div id='players_statistics_table' style='display:none'>";
+
+echo "<table><tr id='tr_header'><td onclick='changeActive(strikers_statistics)' id='td_strikers_statistics' style='background-color:#D0F500'><a id='strikers_statistics'  style='color:black'>Бомбардиры</a>&nbsp;&nbsp;<img style='height:15px;width:15px;' src='images/ball.png'></td><td onclick='changeActive(yellow_cards_statistics)' id='td_yellow_cards_statistics' ><a id='yellow_cards_statistics' style='color:#D0F500'>Жёлтые карточки</a>&nbsp;&nbsp;<img style='height:15px;width:15px;' src='images/yellow_card.gif'></td><td onclick='changeActive(red_cards_statistics)' id='td_red_cards_statistics'><a id='red_cards_statistics' style='color:#D0F500'>Красные карточки</a>&nbsp;&nbsp;<img style='height:15px;width:15px;' src='images/red_card.gif'></td></tr></table>";
+
+
+echo "<div id='strikers_statistics_table'><table>";
+echo "<tr id='tr_header'><td style='width:10px'>#</td><td>Игрок</td><td>Команда</td><td>Амплуа</td><td style='width:10px'>Кол-во голов</td></tr>";
+
+$i = 0;
+foreach ($strikers_array as $row_strikers) {
+	$i++;
+	echo "<tr><td>{$i}<td>".$row_strikers['player_name']."<td>".$row_strikers['player_team_name']."</td><td>".$row_strikers['player_position']."</td><td><center>".$row_strikers['goal_count']."&nbsp;&nbsp;<img style='height:10px;width:10px;' src='images/ball.png'></center></td></tr>";
+}
+
+
+echo "</table></div>";
+
+echo "<div id='yellow_cards_statistics_table' style='display:none'><table>";
+echo "<tr id='tr_header'><td style='width:10px'>#</td><td>Игрок</td><td>Команда</td><td>Амплуа</td><td style='width:100px;'>Кол-во карточек</td></tr>";
+$i = 0;
+foreach ($yellow_cards_statistics_array as $row_yellow_cards) {
+	$i++;
+	echo "<tr><td>{$i}<td>".$row_yellow_cards['player_name']."<td>".$row_yellow_cards['player_team_name']."</td><td>".$row_yellow_cards['player_position']."</td><td><center>".$row_yellow_cards['cards_count']."&nbsp;&nbsp;<img style='height:10px;width:10px;' src='images/yellow_card.gif'></center></td></tr>";
+}
+echo "</table></div>";
+
+echo "<div id='red_cards_statistics_table' style='display:none'><table>";
+echo "<tr id='tr_header'><td style='width:10px'>#</td><td>Игрок</td><td>Команда</td><td>Амплуа</td><td style='width:100px;'>Кол-во карточек</td></tr>";
+$i = 0;
+foreach ($red_cards_statistics_array as $row_red_cards) {
+	$i++;
+	echo "<tr><td>{$i}<td>".$row_red_cards['player_name']."<td>".$row_red_cards['player_team_name']."</td><td>".$row_red_cards['player_position']."</td><td><center>".$row_red_cards['cards_count']."&nbsp;&nbsp;<img style='height:10px;width:10px;' src='images/red_card.gif'></center></td></tr>";
+}
+echo "</table></div>";
+echo "</div>"
+
+/**
+ * Конец статистики игроков
  */
 ?>
 

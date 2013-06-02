@@ -122,7 +122,7 @@ color:#D0F500;
 #tr_header td{
 	#background: #4A4A4A url('../Images/site_images/menu-bg.gif') repeat-x 0 0;
 	#background-color: #636363;
-	background: url(images/news-divider.gif) repeat-x 0 bottom; ;
+	background: url(images/news-divider.gif) repeat-x 0 bottom; 
 	color: white;
 }
 #tr_header td:HOVER{

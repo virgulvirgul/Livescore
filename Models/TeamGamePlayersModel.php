@@ -46,6 +46,28 @@ class TeamGamePlayersModel {
 		return $this->getQuery($query, "Невозможно получить жёлтые карточки", __FUNCTION__)->fetchColumn(0);
 	}
 	/**
+	 * Получаем кто и на какой минуте получил жёлтую карточку
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function getYellowCardsByTeamId($id_team) {
+		$query = "SELECT yellow_card
+		FROM team_game_players
+		WHERE id_team = {$id_team} AND yellow_card != ''";
+		return $this->getQuery($query, "Невозможно получить жёлтые карточки", __FUNCTION__);
+	}
+	/**
+	 * Получаем кто и на какой минуте получил жёлтую карточку
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function getRedCardsByTeamId($id_team) {
+		$query = "SELECT red_card
+		FROM team_game_players
+		WHERE id_team = {$id_team} AND red_card != ''";
+		return $this->getQuery($query, "Невозможно получить жёлтые карточки", __FUNCTION__);
+	}
+	/**
 	 * Получаем кто и на какой минуте забил гол
 	 * @param id игры $id_game
 	 * @param id команды $id_team
@@ -55,6 +77,17 @@ class TeamGamePlayersModel {
 					FROM team_game_players
 						WHERE id_game = {$id_game} AND id_team = {$id_team}";
 		return $this->getQuery($query, "Невозможно получить голы", __FUNCTION__)->fetchColumn(0);
+	}
+	/**
+	 * Получаем кто и на какой минуте забил гол
+	 * @param id игры $id_game
+	 * @param id команды $id_team
+	 */
+	public function getScoreByTeamId($id_team) {
+		$query = "SELECT score
+						FROM team_game_players
+							WHERE id_team = {$id_team} AND score != ''";
+		return $this->getQuery($query, "Невозможно получить голы", __FUNCTION__);
 	}
 	/**
 	 * Получаем замены для команды

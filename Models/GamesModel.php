@@ -46,7 +46,7 @@ class GamesModel {
 					FROM games
 						WHERE (id_team_owner  = {$id_team_owner} AND id_team_guest = {$id_team_guest})
 							OR (id_team_owner  = {$id_team_guest} AND id_team_guest = {$id_team_owner})
-						ORDER BY date";
+						ORDER BY date LIMIT 5";
 		return $this->getQuery($query, "Невозможно получить предыдущие встречи по id команд", __FUNCTION__);
 	}
 	/**

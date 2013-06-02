@@ -14,8 +14,7 @@ function getTeamsNamesAndSoreByGameId ($id_game) {
 						"date" => $gamesModel->getGameDateById($id_game));
 	return array("teams_names_array" => $teams_array);
 }
-//getStatistics(5);
-function getStatistics($id_game) {
+function getStatistics($id_game) { 
 	$continentsModel = new ContinentsModel();
 	$countriesModel = new CountriesModel();
 	$teamPlayersModel = new TeamPlayersModel();
@@ -36,8 +35,11 @@ function getStatistics($id_game) {
 	$lines_up_team_owner = array();
 	$lines_up_team_guest = array();
 	$previous_meetings_array = array();
-	
-	
+	$last_games_owner_array = array();
+	$last_games_guest_array = array();
+	$strikers_array = array();
+	$yellow_cards_statistics_array = array();
+	$red_cards_statistics_array = array();
 	
 	/**
 	 * 
@@ -70,10 +72,81 @@ function getStatistics($id_game) {
 	
 	
 	/**
-	 * 
+	 * Бомбардиры
 	 */
-	
-	
+	foreach ($teamsModel->getAllTeamsByChampionshipId($gamesModel->getChampionshipIdByGameId($id_game)) as $row_teams) {
+		foreach ($teamGamePlayersModel->getScoreByTeamId($row_teams['id_team']) as $row_scores) {
+			$temp_array[] = explode(',', $row_scores['score']);
+		}
+	}
+	$players_id_array = array();
+	for ($i = 0; $i < count($temp_array);$i++) {
+		for ($j = 0; $j < count($temp_array[$i]); $j++) {
+			if ($j % 2 == 0 && $temp_array[$i][$j] != "") {
+				$players_id_array[] = $temp_array[$i][$j];
+			}
+		}
+	}
+	$count_goals_array = array_count_values($players_id_array);
+	arsort($count_goals_array);
+	foreach ($count_goals_array as $key=>$value) {
+		$strikers_array[] = array("player_name" => $playersModel->getPlayerNameById($key),
+								"player_team_name" => $teamsModel->getTeamNameByTeamId($teamPlayersModel->getTeamPlayersIdTeamByPlayerId($key)),
+								"player_position" => $teamPlayersModel->getTeamPlayersPlayerPositionByPlayerId($key),
+								"goal_count" => $value);
+	}
+	$temp_array = null;
+	$players_id_array = null;
+	/** 
+	 * Жёлтые карточки
+	 */
+	foreach ($teamsModel->getAllTeamsByChampionshipId($gamesModel->getChampionshipIdByGameId($id_game)) as $row_teams) {
+		foreach ($teamGamePlayersModel->getYellowCardsByTeamId($row_teams['id_team']) as $row_yellow_cards) {
+			$temp_array[] = explode(',', $row_yellow_cards['yellow_card']);
+		}
+	}
+	$players_id_array = array();
+	for ($i = 0; $i < count($temp_array);$i++) {
+		for ($j = 0; $j < count($temp_array[$i]); $j++) {
+			if ($j % 2 == 0 && $temp_array[$i][$j] != "") {
+				$players_id_array[] = $temp_array[$i][$j];
+			}
+		}
+	}
+	$count_yellow_cards_array = array_count_values($players_id_array);
+	arsort($count_yellow_cards_array);
+	foreach ($count_yellow_cards_array as $key=>$value) {
+		$yellow_cards_statistics_array[] = array("player_name" => $playersModel->getPlayerNameById($key),
+				"player_team_name" => $teamsModel->getTeamNameByTeamId($teamPlayersModel->getTeamPlayersIdTeamByPlayerId($key)),
+				"player_position" => $teamPlayersModel->getTeamPlayersPlayerPositionByPlayerId($key),
+				"cards_count" => $value);
+	}
+	$temp_array = null;
+	$players_id_array = null;
+	/**
+	 * Красные карточки
+	 */
+	foreach ($teamsModel->getAllTeamsByChampionshipId($gamesModel->getChampionshipIdByGameId($id_game)) as $row_teams) {
+		foreach ($teamGamePlayersModel->getRedCardsByTeamId($row_teams['id_team']) as $row_red_cards) {
+			$temp_array[] = explode(',', $row_red_cards['red_card']);
+		}
+	}
+	$players_id_array = array();
+	for ($i = 0; $i < count($temp_array);$i++) {
+		for ($j = 0; $j < count($temp_array[$i]); $j++) {
+			if ($j % 2 == 0 && $temp_array[$i][$j] != "") {
+				$players_id_array[] = $temp_array[$i][$j];
+			}
+		}
+	}
+	$count_red_cards_array = array_count_values($players_id_array);
+	arsort($count_red_cards_array);
+	foreach ($count_red_cards_array as $key=>$value) {
+		$red_cards_statistics_array[] = array("player_name" => $playersModel->getPlayerNameById($key),
+				"player_team_name" => $teamsModel->getTeamNameByTeamId($teamPlayersModel->getTeamPlayersIdTeamByPlayerId($key)),
+				"player_position" => $teamPlayersModel->getTeamPlayersPlayerPositionByPlayerId($key),
+				"cards_count" => $value);
+	}
 	/**
 	 * Форма всех команд
 	 * @var unknown_type
@@ -120,7 +193,6 @@ function getStatistics($id_game) {
 				"id_games" => $id_games);
 		$symb = "";
 		$id_games = "";
-		print_r ($form_array);echo"<br>";
 	}
 	
 	/**
@@ -170,7 +242,6 @@ function getStatistics($id_game) {
 			//	$goals_array[] = array("team_owner_goal_minute" => $minute);
 				$goals_array_owner[] = array("team_owner_goal_minute" => $minute, 
 						"team_owner_goal_player_name" => $playersModel->getPlayerNameById($player_goal_id));
-				echo $minute.'<br>';
 			}
 			else
 				if ($i % 2 == 0 && $goals[$i] != "") {
@@ -185,7 +256,6 @@ function getStatistics($id_game) {
 				$minute = $goals_guest[$i];
 				$goals_array_guest[] = array("team_guest_goal_minute" => $minute, 
 						"team_guest_goal_player_name" => $playersModel->getPlayerNameById($player_goal_id));
-				echo $minute.'<br>';
 			}
 			else
 				if ($i % 2 == 0 && $goals_guest[$i] != "") {
@@ -230,6 +300,24 @@ function getStatistics($id_game) {
 												"team_owner_name" => $team_owner_name_, "team_guest_name" => $team_guest_name_);
 		}
 		
+		foreach ($gamesModel->getLastFiveGamesForTeamByTamId($row['id_team_owner']) as $row_prev) {
+				
+			$team_owner_name_ = $teamsModel->getTeamNameByTeamId($row_prev['id_team_owner']);
+			$team_guest_name_ = $teamsModel->getTeamNameByTeamId($row_prev['id_team_guest']);
+		
+			$last_games_owner_array[] = array("date" => $row_prev['date'], "team_owner_score" => $row_prev['score_owner'],
+					"team_guest_score" => $row_prev['score_guest'], "id_game" => $row_prev['id_game'],
+					"team_owner_name" => $team_owner_name_, "team_guest_name" => $team_guest_name_);
+		}
+		foreach ($gamesModel->getLastFiveGamesForTeamByTamId($row['id_team_guest']) as $row_prev) {
+		
+			$team_owner_name_ = $teamsModel->getTeamNameByTeamId($row_prev['id_team_owner']);
+			$team_guest_name_ = $teamsModel->getTeamNameByTeamId($row_prev['id_team_guest']);
+		
+			$last_games_guest_array[] = array("date" => $row_prev['date'], "team_owner_score" => $row_prev['score_owner'],
+					"team_guest_score" => $row_prev['score_guest'], "id_game" => $row_prev['id_game'],
+					"team_owner_name" => $team_owner_name_, "team_guest_name" => $team_guest_name_);
+		}
 		
 		$tour = array("tour" => $row['tour']);
 		$referee = array("referee_name" => $refereesModel->getRefereeNameById($gamesModel->getRefereeIdByGameId($row['id_game'])));
@@ -275,7 +363,13 @@ function getStatistics($id_game) {
 			"video_broadcast_array" => $video_broadcast_array,
 			"form_array" => $form_array,
 			"game_statistics_array" => $game_statistics_array,
-			"tactics_array" => $tactics_array);
+			"tactics_array" => $tactics_array,
+			"last_games_owner_array" => $last_games_owner_array,
+			"last_games_guest_array" => $last_games_guest_array,
+			"strikers_array" => $strikers_array,
+			"yellow_cards_statistics_array" => $yellow_cards_statistics_array,
+			"red_cards_statistics_array" => $red_cards_statistics_array
+	);
 }
 /**
  * Получаем карточки команды
@@ -333,7 +427,6 @@ function getSubstitutions($id_game, $id_team) {
 			$substitution_array[] = array("team_substitution_minute" => $minute,
 					"team_first_player_name" => $playersModel->getPlayerNameById($player_first_id),
 					"team_second_player_name" => $playersModel->getPlayerNameById($player_second_id));
-			echo $minute.'\'<br>';
 		}
 	}
 	return $substitution_array;
